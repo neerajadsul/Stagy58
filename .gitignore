@@ -2,3 +2,7 @@
 .DS_Store
 [tT]humbs.db
 
+# Kicad backups
+StagyOrtho58Hardware-backups/
+# Kicad UI Setup
+*.kicad_prl
