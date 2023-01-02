@@ -3311,7 +3311,7 @@
     (uuid b61c3e02-78ec-4875-b5a7-fba1468acaf9)
     (property "Reference" "SW35" (id 0) (at 46.99 135.255 0))
     (property "Value" "SW_Push" (id 1) (at 46.99 137.795 0))
-    (property "Footprint" "" (id 2) (at 46.99 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.25u" (id 2) (at 46.99 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 46.99 137.16 0)
@@ -3594,7 +3594,7 @@
     (uuid e2d13c09-bfa4-4a1c-bb32-a1d753622985)
     (property "Reference" "SW36" (id 0) (at 63.5 135.255 0))
     (property "Value" "SW_Push" (id 1) (at 63.5 137.795 0))
-    (property "Footprint" "" (id 2) (at 63.5 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.25u" (id 2) (at 63.5 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 63.5 137.16 0)
@@ -3712,7 +3712,7 @@
     (uuid f3f81d51-470c-4e92-9834-6924230cef2e)
     (property "Reference" "SW37" (id 0) (at 80.645 135.255 0))
     (property "Value" "SW_Push" (id 1) (at 80.645 137.795 0))
-    (property "Footprint" "" (id 2) (at 80.645 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.25u" (id 2) (at 80.645 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 80.645 137.16 0)
@@ -3985,13 +3985,13 @@
       (reference "SW34") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u")
     )
     (path "/b61c3e02-78ec-4875-b5a7-fba1468acaf9"
-      (reference "SW35") (unit 1) (value "SW_Push") (footprint "")
+      (reference "SW35") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.25u")
     )
     (path "/e2d13c09-bfa4-4a1c-bb32-a1d753622985"
-      (reference "SW36") (unit 1) (value "SW_Push") (footprint "")
+      (reference "SW36") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.25u")
     )
     (path "/f3f81d51-470c-4e92-9834-6924230cef2e"
-      (reference "SW37") (unit 1) (value "SW_Push") (footprint "")
+      (reference "SW37") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.25u")
     )
     (path "/3d1dea62-0eee-4a9a-93fb-3c3995e9536a"
       (reference "SW38") (unit 1) (value "SW_Push") (footprint "")
