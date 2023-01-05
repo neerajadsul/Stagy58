@@ -17,4 +17,6 @@ which makes it to 79 keys.
 # Layout
 The layout was customised at keyboard-layout-editor.com as shown below.
 
-image::images/MacSplit60Layout.png[]
+image::images/MacSplit60Layout.png[MacSplit60 Layout]
+
+image::images/Summary_MacSplit60.png[Summary of Switches, 400]
