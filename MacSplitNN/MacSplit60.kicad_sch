@@ -3000,7 +3000,7 @@
     (uuid b209455e-4689-40c6-9c5f-6ad42f23df4f)
     (property "Reference" "SW29" (id 0) (at 113.665 135.255 0))
     (property "Value" "SW_Push" (id 1) (at 113.665 137.795 0))
-    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (id 2) (at 113.665 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (id 2) (at 113.665 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 113.665 137.16 0)
@@ -3188,23 +3188,6 @@
     (pin "2" (uuid 686caf8a-a07a-42db-aa59-4a5b171508a9))
   )
 
-  (symbol (lib_id "Mechanical:MountingHole") (at 51.435 166.37 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
-    (uuid c8943267-b756-481f-9147-0e23908c7d5b)
-    (property "Reference" "H1" (id 0) (at 54.61 165.0999 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" "MountingHole" (id 1) (at 54.61 167.6399 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Footprint" "MountingHole:MountingHole_2.7mm_M2.5" (id 2) (at 51.435 166.37 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "~" (id 3) (at 51.435 166.37 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-  )
-
   (symbol (lib_id "Diode:1N4148W") (at 68.58 60.96 90) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid cc553b1d-fb66-4219-a2dc-6be16eff7e8d)
@@ -3229,7 +3212,7 @@
     (uuid cf30b61b-518f-4fc0-9759-5e2e77a579bf)
     (property "Reference" "SW30" (id 0) (at 130.175 134.62 0))
     (property "Value" "SW_Push" (id 1) (at 130.175 137.16 0))
-    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (id 2) (at 130.175 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (id 2) (at 130.175 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 130.175 137.16 0)
@@ -3783,9 +3766,6 @@
     (path "/7277226f-cf03-4da5-be70-fda3744f3f44"
       (reference "D33") (unit 1) (value "1N4148W") (footprint "Diode_SMD:D_SOD-123")
     )
-    (path "/c8943267-b756-481f-9147-0e23908c7d5b"
-      (reference "H1") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.7mm_M2.5")
-    )
     (path "/e72602a0-4c9b-49c1-aebc-770933c1510b"
       (reference "H2") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_3.2mm_M3")
     )
@@ -3895,10 +3875,10 @@
       (reference "SW28") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u")
     )
     (path "/b209455e-4689-40c6-9c5f-6ad42f23df4f"
-      (reference "SW29") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u")
+      (reference "SW29") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u")
     )
     (path "/cf30b61b-518f-4fc0-9759-5e2e77a579bf"
-      (reference "SW30") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u")
+      (reference "SW30") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u")
     )
     (path "/d341b761-c583-465c-b8e1-18cf1d826c04"
       (reference "SW100") (unit 1) (value "SW_SPST") (footprint "Button_Switch_SMD:SW_SPST_CK_RS282G05A3")
