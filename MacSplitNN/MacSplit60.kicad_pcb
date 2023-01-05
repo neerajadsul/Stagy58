@@ -4142,7 +4142,7 @@
 
   (footprint "Diode_SMD:D_SOD-323_Hand_Split_Keyboard" (layer "B.Cu")
     (tedit 58641869) (tstamp ade4aef5-13c2-450d-beec-daba35c12fac)
-    (at 114 126.8 -180)
+    (at 114 126.8 180)
     (descr "SOD-323")
     (tags "SOD-323")
     (property "Sheetfile" "MacSplit60.kicad_sch")
