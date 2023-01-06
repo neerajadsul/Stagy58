@@ -3,6 +3,11 @@
 [tT]humbs.db
 
 # Kicad backups
-StagyOrtho58Hardware-backups/
+*-backups/
+
 # Kicad UI Setup
 *.kicad_prl
+*.kicad_pcl
+fp-info-cache
+*.*-bak
+
