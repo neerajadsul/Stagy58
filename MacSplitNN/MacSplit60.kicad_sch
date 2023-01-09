@@ -3242,7 +3242,7 @@
     (uuid d137f386-2ca0-4a22-9eae-481a6c0fd279)
     (property "Reference" "J1" (id 0) (at 167.005 91.44 0))
     (property "Value" "USB_C_Receptacle_USB2.0" (id 1) (at 167.005 93.98 0))
-    (property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4085" (id 2) (at 170.815 114.3 0)
+    (property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4085_Circular" (id 2) (at 170.815 114.3 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://www.usb.org/sites/default/files/documents/usb_type-c.zip" (id 3) (at 170.815 114.3 0)
@@ -3785,7 +3785,7 @@
       (reference "H7") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_3.2mm_M3")
     )
     (path "/d137f386-2ca0-4a22-9eae-481a6c0fd279"
-      (reference "J1") (unit 1) (value "USB_C_Receptacle_USB2.0") (footprint "Connector_USB:USB_C_Receptacle_GCT_USB4085")
+      (reference "J1") (unit 1) (value "USB_C_Receptacle_USB2.0") (footprint "Connector_USB:USB_C_Receptacle_GCT_USB4085_Circular")
     )
     (path "/16c030dd-9a18-4f80-b59a-3f4922a29869"
       (reference "R1") (unit 1) (value "0") (footprint "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder")
