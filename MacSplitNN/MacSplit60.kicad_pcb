@@ -794,6 +794,11 @@
       (net 46 "unconnected-(U1-Pad43)") (pinfunction "SWDIO") (pintype "bidirectional+no_connect") (tstamp 93e85b73-bcee-490f-b0ae-af0e78266dc0))
     (pad "43" smd rect locked (at 2.54 23.9 90) (size 3.5 1.7) (drill (offset -0.9 0)) (layers "F.Cu" "F.Mask")
       (net 46 "unconnected-(U1-Pad43)") (pinfunction "SWDIO") (pintype "bidirectional+no_connect") (tstamp cd41232b-c667-4359-becc-8ac7f59af7c9))
+    (model "/Users/neeraj/Documents/KiCad/6.0/3dmodels/Pico-R3.step"
+      (offset (xyz 10.5 25.5 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz -90 0 180))
+    )
   )
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
@@ -1116,6 +1121,11 @@
     (model "${KICAD6_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_GCT_USB4085.wrl"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
+    (model "/Users/neeraj/Dropbox/125_Systems/Kicad Libraries/3DModelsFreecad/USB-C_rough-Extrude.wrl"
+      (offset (xyz -2.5 -7 0))
+      (scale (xyz 0.5 0.5 0.5))
       (rotate (xyz 0 0 0))
     )
   )
