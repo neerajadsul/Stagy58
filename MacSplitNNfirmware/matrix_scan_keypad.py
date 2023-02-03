@@ -84,7 +84,7 @@ KEYCODES_R = (
     # 18, 19, 20, 21, 22, 23
     Keycode.RIGHT_SHIFT, Keycode.FORWARD_SLASH, Keycode.PERIOD, Keycode.COMMA, Keycode.M, Keycode.N,
     # 24, 25, 26, 27, 28, 29
-    Keycode.RIGHT_CONTROL, Keycode.OPTION, Keycode.COMMAND, Keycode.SPACE, Keycode.BACKSLASH, Keycode.BACKSPACE,
+    Keycode.RIGHT_CONTROL, Keycode.OPTION, Keycode.COMMAND, Keycode.SPACE, Keycode.BACKSPACE, Keycode.BACKSLASH,
 )
 
 MOD_KEY_NUM = 28
