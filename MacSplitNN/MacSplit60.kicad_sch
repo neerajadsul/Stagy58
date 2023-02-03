@@ -2010,7 +2010,7 @@
   (symbol (lib_id "power:GND") (at 213.995 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 3ecd4da5-781f-4878-bc75-8c025a2cbd29)
-    (property "Reference" "#PWR?" (id 0) (at 213.995 115.57 0)
+    (property "Reference" "#PWR0102" (id 0) (at 213.995 115.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 213.995 113.665 0))
@@ -2240,9 +2240,9 @@
   (symbol (lib_id "Jumper:SolderJumper_3_Open") (at 238.76 131.445 180) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 625bff50-6d7b-4a08-9061-45f53bfbc727)
-    (property "Reference" "JP?" (id 0) (at 235.585 128.905 0))
+    (property "Reference" "JP4" (id 0) (at 235.585 128.905 0))
     (property "Value" "RX_RP2040" (id 1) (at 238.76 134.62 0))
-    (property "Footprint" "" (id 2) (at 238.76 131.445 0)
+    (property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_Pad1.0x1.5mm_NumberLabels" (id 2) (at 238.76 131.445 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 238.76 131.445 0)
@@ -2378,7 +2378,7 @@
     (uuid 79cf6d6f-d083-4216-a814-79d3190fefb5)
     (property "Reference" "SW100" (id 0) (at 182.245 48.895 0))
     (property "Value" "Toggle Mac/Win" (id 1) (at 182.245 53.975 0))
-    (property "Footprint" "" (id 2) (at 181.61 51.435 0)
+    (property "Footprint" "Button_Switch_SMD:SW_SPST_CK_RS282G05A3" (id 2) (at 181.61 51.435 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 181.61 51.435 0)
@@ -2512,7 +2512,7 @@
     (uuid 9c644cef-68a6-435b-8eb9-0f2d3a345bec)
     (property "Reference" "JP1" (id 0) (at 182.245 59.69 0))
     (property "Value" "Left/Right" (id 1) (at 181.61 64.77 0))
-    (property "Footprint" "" (id 2) (at 181.61 62.23 0)
+    (property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm" (id 2) (at 181.61 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 181.61 62.23 0)
@@ -2602,7 +2602,7 @@
   (symbol (lib_id "power:+VDC") (at 205.105 131.445 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid b0a1e65d-3a26-4633-b3bf-3ffda2bfe67e)
-    (property "Reference" "#PWR?" (id 0) (at 205.105 133.985 0)
+    (property "Reference" "#PWR0103" (id 0) (at 205.105 133.985 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+VDC" (id 1) (at 205.105 123.19 0))
@@ -2776,9 +2776,9 @@
   (symbol (lib_id "Jumper:SolderJumper_3_Open") (at 238.76 117.475 180) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid ba7492e4-52d5-4172-83a9-89726ecbce05)
-    (property "Reference" "JP?" (id 0) (at 236.22 114.935 0))
+    (property "Reference" "JP3" (id 0) (at 236.22 114.935 0))
     (property "Value" "TX_RP2040" (id 1) (at 238.76 120.65 0))
-    (property "Footprint" "" (id 2) (at 238.76 117.475 0)
+    (property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_Pad1.0x1.5mm_NumberLabels" (id 2) (at 238.76 117.475 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 238.76 117.475 0)
@@ -3135,10 +3135,10 @@
       (reference "#PWR0101") (unit 1) (value "GND") (footprint "")
     )
     (path "/3ecd4da5-781f-4878-bc75-8c025a2cbd29"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0102") (unit 1) (value "GND") (footprint "")
     )
     (path "/b0a1e65d-3a26-4633-b3bf-3ffda2bfe67e"
-      (reference "#PWR?") (unit 1) (value "+VDC") (footprint "")
+      (reference "#PWR0103") (unit 1) (value "+VDC") (footprint "")
     )
     (path "/1503565f-b461-4b6f-a205-df2f3236546f"
       (reference "C1") (unit 1) (value "C") (footprint "Capacitor_SMD:C_0603_1608Metric")
@@ -3260,11 +3260,11 @@
     (path "/b487f8b5-db88-465d-8fee-ac926d228d85"
       (reference "JP2") (unit 1) (value "Choice") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
     )
-    (path "/625bff50-6d7b-4a08-9061-45f53bfbc727"
-      (reference "JP?") (unit 1) (value "RX_RP2040") (footprint "")
-    )
     (path "/ba7492e4-52d5-4172-83a9-89726ecbce05"
-      (reference "JP?") (unit 1) (value "TX_RP2040") (footprint "")
+      (reference "JP3") (unit 1) (value "TX_RP2040") (footprint "Jumper:SolderJumper-3_P1.3mm_Open_Pad1.0x1.5mm_NumberLabels")
+    )
+    (path "/625bff50-6d7b-4a08-9061-45f53bfbc727"
+      (reference "JP4") (unit 1) (value "RX_RP2040") (footprint "Jumper:SolderJumper-3_P1.3mm_Open_Pad1.0x1.5mm_NumberLabels")
     )
     (path "/16c030dd-9a18-4f80-b59a-3f4922a29869"
       (reference "R1") (unit 1) (value "0") (footprint "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder")
@@ -3360,7 +3360,7 @@
       (reference "SW30") (unit 1) (value "SW_Push") (footprint "Button_Switch_Keyboard:SW_Cherry_MX_1.50u_Plate")
     )
     (path "/79cf6d6f-d083-4216-a814-79d3190fefb5"
-      (reference "SW100") (unit 1) (value "Toggle Mac/Win") (footprint "")
+      (reference "SW100") (unit 1) (value "Toggle Mac/Win") (footprint "Button_Switch_SMD:SW_SPST_CK_RS282G05A3")
     )
     (path "/3d0fec0a-0fd9-457c-964a-54992763e3c6"
       (reference "U2") (unit 1) (value "KB2040") (footprint "KB2040:Adafruit_KB2040")
