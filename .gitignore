@@ -9,5 +9,6 @@
 *.kicad_prl
 *.kicad_pcl
 fp-info-cache
+fp-lib-table
 *.*-bak
 
