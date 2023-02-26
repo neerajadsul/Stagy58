@@ -2777,7 +2777,7 @@
     (uuid b209455e-4689-40c6-9c5f-6ad42f23df4f)
     (property "Reference" "SW29" (id 0) (at 113.665 135.255 0))
     (property "Value" "SW_Push" (id 1) (at 113.665 137.795 0))
-    (property "Footprint" "Lily58-footprint:MX_PG1350-DoubleSide_Keycap_18mm_1.00u" (id 2) (at 113.665 137.16 0)
+    (property "Footprint" "Lily58-footprint:MX_PG1350-DoubleSide_Keycap_28mm_1.50u" (id 2) (at 113.665 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 113.665 137.16 0)
@@ -3520,7 +3520,7 @@
       (reference "SW28") (unit 1) (value "SW_Push") (footprint "Lily58-footprint:MX_PG1350-DoubleSide_Keycap_18mm_1.00u")
     )
     (path "/b209455e-4689-40c6-9c5f-6ad42f23df4f"
-      (reference "SW29") (unit 1) (value "SW_Push") (footprint "Lily58-footprint:MX_PG1350-DoubleSide_Keycap_18mm_1.00u")
+      (reference "SW29") (unit 1) (value "SW_Push") (footprint "Lily58-footprint:MX_PG1350-DoubleSide_Keycap_28mm_1.50u")
     )
     (path "/cf30b61b-518f-4fc0-9759-5e2e77a579bf"
       (reference "SW30") (unit 1) (value "SW_Push") (footprint "Lily58-footprint:MX_PG1350-DoubleSide_Keycap_18mm_1.00u")
