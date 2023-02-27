@@ -4202,7 +4202,7 @@
     (uuid cf30b61b-518f-4fc0-9759-5e2e77a579bf)
     (property "Reference" "SW30" (id 0) (at 130.175 134.62 0))
     (property "Value" "SW_Push" (id 1) (at 130.175 137.16 0))
-    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (id 2) (at 130.175 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (id 2) (at 130.175 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 130.175 137.16 0)
@@ -4969,7 +4969,7 @@
       (reference "SW29") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u")
     )
     (path "/cf30b61b-518f-4fc0-9759-5e2e77a579bf"
-      (reference "SW30") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u")
+      (reference "SW30") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u")
     )
     (path "/73eae815-5b46-42a8-bd47-b5e4553af68e"
       (reference "SW31") (unit 1) (value "SW_Push") (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u")

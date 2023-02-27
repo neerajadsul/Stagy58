@@ -242,7 +242,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 0365cbce-340a-4f09-91fa-270b6d299b8d)
-    (at 233.5 144.5)
+    (at 249 144.5)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -1339,7 +1339,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 36a577ea-f92a-4186-bfce-ba14b4f5bbdc)
-    (at 151.25 145.979185)
+    (at 139.25 145.979185)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -1564,7 +1564,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 3e1a5b03-e4c9-41f4-b265-9ebe7971c3a0)
-    (at 254.5 146.5)
+    (at 270 146.5)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -2470,7 +2470,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 5c1efa48-c365-45bf-af3d-bf149f494591)
-    (at 111.5 146.004185)
+    (at 99.5 146.004185)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -2695,7 +2695,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 614d5c7c-fcd3-4c70-a906-323b013f06c2)
-    (at 275.5 145)
+    (at 291 145)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -3290,7 +3290,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 70912377-1566-4333-b49d-2bb009152ab5)
-    (at 296 144.5)
+    (at 311.5 144.5)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -3541,7 +3541,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp 77e204e6-e0fa-4b0d-be4f-734a22b34713)
-    (at 171 146)
+    (at 159 146)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -4103,7 +4103,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (layer "F.Cu")
     (tedit 0) (tstamp 8dcf09c5-a212-4ac3-8674-35e9364e800f)
-    (at 321 86.38)
+    (at 203.5 144.5)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.50u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.50u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -5283,7 +5283,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp b92c08cf-f31e-4000-af79-4ad02a785763)
-    (at 212.5 144.5)
+    (at 228 144.5)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -5969,7 +5969,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp cd25064e-72ec-412b-a319-1ed966e3331e)
-    (at 131.25 146.004185)
+    (at 119.25 146.004185)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -7656,7 +7656,7 @@
 
   (footprint "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (layer "F.Cu")
     (tedit 0) (tstamp ff3d2a95-96c0-4ed4-88e0-4c6e0154f53a)
-    (at 91.4 145.979185)
+    (at 79.4 145.979185)
     (descr "Kailh Choc keyswitch CPG1350 V1 CPG1353 V2 with 1.00u keycap")
     (tags "Kailh Choc Keyswitch Switch CPG1350 V1 CPG1353 V2 Cutout 1.00u")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -8085,7 +8085,7 @@
 
   (footprint "Diode_SMD:D_SOD-323_Hand_Split_Keyboard" (layer "B.Cu")
     (tedit 58641869) (tstamp 31b7d889-e727-47eb-a248-c7ddca4b7d0f)
-    (at 85.9 140.379185 90)
+    (at 73.9 140.379185 90)
     (descr "SOD-323")
     (tags "SOD-323")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -8245,7 +8245,7 @@
 
   (footprint "Diode_SMD:D_SOD-323_Hand_Split_Keyboard" (layer "B.Cu")
     (tedit 58641869) (tstamp 4688344b-07d0-48dc-a3d7-46bf3e88d615)
-    (at 103.25 141.229185 -90)
+    (at 91.25 141.229185 -90)
     (descr "SOD-323")
     (tags "SOD-323")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -8304,7 +8304,7 @@
 
   (footprint "Diode_SMD:D_SOD-323_Hand_Split_Keyboard" (layer "B.Cu")
     (tedit 58641869) (tstamp 6429f189-c290-4da5-942e-54e7d599ade0)
-    (at 143 140.979185 -90)
+    (at 131 140.979185 -90)
     (descr "SOD-323")
     (tags "SOD-323")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -8658,7 +8658,7 @@
 
   (footprint "Diode_SMD:D_SOD-323_Hand_Split_Keyboard" (layer "B.Cu")
     (tedit 58641869) (tstamp ac0f4e51-0a26-4c57-9ddb-64241ac62baa)
-    (at 123.25 140.979185 -90)
+    (at 111.25 140.979185 -90)
     (descr "SOD-323")
     (tags "SOD-323")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
@@ -9366,7 +9366,7 @@
 
   (footprint "Diode_SMD:D_SOD-323_Hand_Split_Keyboard" (layer "B.Cu")
     (tedit 58641869) (tstamp e223c501-6cf5-456c-aeda-72d8d04bd32f)
-    (at 162.9 140.75 -89.99999997)
+    (at 150.9 140.75 -89.99999997)
     (descr "SOD-323")
     (tags "SOD-323")
     (property "Sheetfile" "Ortho62Unified.kicad_sch")
