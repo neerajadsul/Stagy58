@@ -22,9 +22,22 @@ Caps Lock is only good for typewriters, and the corner key for tilda/backtick is
 
 So finally left with 79 - 4 - 1 - 12 - 1 - 1 = 60 keys.
 
-# Layout
+## Layout
 The layout was customised at keyboard-layout-editor.com as shown below.
 
 image::images/macsplit60.jpg[MacSplit60 Layout]
 
 image::images/Summary_MacSplit60.png[Summary of Switches, 400]
+
+## Ortholinear Unified Keyboard
+
+image::images/
+
+### Mechanical Layout
+
+* Row-0    14  1 symbol, 10 numbers, 2 symbols, Backspace
+* Row-1    14  Tab, 10 letters, 2 symbols, 1 symbol
+* Row-2    14  Escape, 9 letters, 3 symbols, EnterReturn
+* Row-3    12  L-Shift, 7 letters, 3 symbols, R-shift
+* Row-4    7   2 Cmd, 2 Alt, fn, Spacebar, Ctr
+
