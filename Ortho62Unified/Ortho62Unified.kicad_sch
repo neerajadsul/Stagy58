@@ -6006,7 +6006,7 @@
     (property "Value" "SW_Push" (at 276.225 137.795 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (at 276.225 137.795 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (at 276.225 137.795 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 276.225 137.795 0)
