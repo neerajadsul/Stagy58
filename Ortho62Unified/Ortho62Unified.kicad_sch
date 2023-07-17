@@ -7008,7 +7008,7 @@
     (property "Value" "MCP1700T-3302E_TT" (at 76.2 212.09 0)
       (effects (font (size 1.524 1.524)))
     )
-    (property "Footprint" "digikey-footprints:SOT-23-3" (at 81.28 210.82 0)
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-3" (at 81.28 210.82 0)
       (effects (font (size 1.524 1.524)) (justify left) hide)
     )
     (property "Datasheet" "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en011779" (at 81.28 208.28 0)
