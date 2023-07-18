@@ -73,7 +73,9 @@ Data Stack size         : 1024
 
 // Declare your global variables here
 extern USB_KEYBOARD_t usb_keyboard;
-
+//extern unsigned char usb_putbuf(void *buffer, unsigned short length);
+unsigned char tx_buffer[8] = {0};
+int release_keys(void); 
 
 void main(void)
 {
@@ -82,6 +84,7 @@ void main(void)
 	uint8_t state = 0;
 	uint8_t rows = 0;
 	uint8_t i;
+	uint8_t modifier, key;
 
 	// Check the reset source
 	n = RST.STATUS;
@@ -219,6 +222,7 @@ void main(void)
 	// load any drivers needed by the USB device
 	delay_ms(1500);
 
+	
 
 	while (1)
 		{
@@ -226,45 +230,64 @@ void main(void)
 		// Turn COL_1 to COL_5
 		rows = PORTC.IN & 0b00111111;
 		printf("%u \r\n", rows);
-		for (i = 0; i < 6; i++)
+		for (i = 0; i < 6; i++) {
 			putchar(usb_keyboard.keys[i]);
-		if (rows > 0)
-			state = 1; else
-			state = 0;
-
-		if (rows == 0)
-			{
-			for (i = 0; i < 6; i++)
+		}
+		
+		if (rows == 0) {
+			for (i = 0; i < 6; i++) {
 				usb_keyboard.keys[i] = 0;
-			usb_keyboard.keys[0] = KM_RIGHT_ALT;
 			}
-
+			usb_keyboard_sendkeys();
+			usb_keyboard_keypress(0,0);
+		}
+		modifier = 0;
+		key = 0;
 		if (rows == 1) {
 			//usb_keyboard_keypress(KS_ESC, KM_LEFT_CTRL | KM_LEFT_SHIFT);
-			usb_keyboard.keys[0] = KM_RIGHT_ALT;
+			//usb_keyboard_keypress(0,KM_RIGHT_ALT);
+			modifier = KM_RIGHT_ALT;
 		}
 		if (rows == 2) {
-			usb_keyboard.keys[0] = KM_LEFT_ALT;
+			//usb_keyboard_keypress(0,KM_LEFT_ALT);
+			modifier = KM_LEFT_CTRL;
         }
 		if (rows == 4) {
-			usb_keyboard.keys[0] = KM_LEFT_SHIFT;
-        }
+			//usb_keyboard_keypress(0, KM_LEFT_SHIFT);
+			modifier = KM_LEFT_SHIFT;
+        }kicaki
 		if (rows == 8) {
-			usb_keyboard.keys[0] = KM_LEFT_CTRL;
+			//usb_keyboard_keypress(0, KM_LEFT_CTRL);
+			modifier = KM_LEFT_CTRL | KM_LEFT_SHIFT;
         }
 		if (rows == 16) {
-			usb_keyboard.keys[0] = KM_LEFT_GUI;
-            usb_keyboard.keys[1] = KS_E;            
+			//usb_keyboard_keypress(0, KM_LEFT_GUI);
+			modifier = KM_LEFT_CTRL | KM_LEFT_ALT;
         }
-
-
-
-
-
-
-
 		//usb_keyboard_sendkeys();
-		delay_ms(500);
+		if (modifier || key) {
+			tx_buffer[0] = modifier;
+			tx_buffer[2] = key;
+			usb_putbuf(tx_buffer, 8);         
+			delay_ms(5000);
+			release_keys();
+		}
+                
+		delay_ms(100);
 
 		}
+}
+
+
+int release_keys() 
+{
+	uint8_t i;
+
+	for ( i = 0; i < 8; i++)
+	{
+		tx_buffer[i] = 0;
+	}
+	usb_putbuf(tx_buffer, 8);
+	delay_ms(10);
+	return 0;
 }
