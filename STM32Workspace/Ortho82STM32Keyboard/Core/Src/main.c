@@ -101,6 +101,7 @@ int main(void)
   printf("STM32 Cube is Great!");
   uint_fast8_t state = 0;
   uint_fast8_t rows[5] = {0,0,0,0,0};
+  uint8_t modifier=0, key=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -121,37 +122,51 @@ int main(void)
 		  state = 0;
 	  }
 	  // 0b0000_0001_1100_1100
-	  // rows = GPIOC->IDR & 0b0000000111001100;
+	  // GPIOC->IDR & 0b0000000111001100;
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_0_Pin)) {
 		  rows[0] += 1;
+		  modifier = MOD_LEFT_ALT;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_1_Pin)) {
 		  rows[1] += 1;
+		  modifier = MOD_LEFT_SHIFT;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_2_Pin)) {
 		  rows[2] += 1;
+		  modifier = MOD_LEFT_CTRL;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_3_Pin)) {
 		  rows[3] += 1;
+		  modifier = MOD_LEFT_GUI;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_4_Pin)) {
 		  rows[4] += 1;
+		  modifier = MOD_LEFT_GUI;
+		  key = K_E;
+	  }
+	  if ((GPIOC->IDR & 0b0000000111001100) == 0) {
+		  modifier = 0;
+		  key = 0;
 	  }
 
-	  for (int i = 0; i < 5; ++i) {
-		  if (rows[i] > 2) {
-			printf("Row: %d\n", i);
-			rows[i] = 0;
-			HID_report[0] = MOD_LEFT_GUI;
-			HID_report[2] = K_E;
-			USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, HID_report, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-			HAL_Delay(20);
-			HID_report[0] = 0;
-			HID_report[2] = 0;
-			USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, HID_report, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-		}
-	  }
+//	  for (int i = 0; i < 5; ++i) {
+//		  if (rows[i] > 2) {
+//			printf("Row: %d\n", i);
+//			rows[i] = 0;
+//		}
+//	  }
 
+	  if (modifier || key) {
+		  HID_report[0] = modifier;
+		  HID_report[2] = key;
+		  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, HID_report, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+		  HAL_Delay(20);
+	  } else {
+		  for (uint8_t i = 0; i < 8; ++i) {
+			  HID_report[i] = 0;
+		  }
+		  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, HID_report, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+	  }
 
 
 
