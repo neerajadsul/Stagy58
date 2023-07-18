@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "usbd_custom_hid_if.h"
+#include "hid_keyboard.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,7 +62,8 @@ int __io_putchar(int ch)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+extern USBD_HandleTypeDef hUsbDeviceFS;
+uint8_t HID_report[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE] = {0};
 /* USER CODE END 0 */
 
 /**
@@ -95,9 +97,10 @@ int main(void)
   MX_USB_DEVICE_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+
   printf("STM32 Cube is Great!");
   uint_fast8_t state = 0;
-  uint_fast8_t rows = 0;
+  uint_fast8_t rows[5] = {0,0,0,0,0};
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -120,20 +123,38 @@ int main(void)
 	  // 0b0000_0001_1100_1100
 	  // rows = GPIOC->IDR & 0b0000000111001100;
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_0_Pin)) {
-		  state += 1;
+		  rows[0] += 1;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_1_Pin)) {
-		  state += 1;
+		  rows[1] += 1;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_2_Pin)) {
-		  state += 1;
+		  rows[2] += 1;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_3_Pin)) {
-		  state += 1;
+		  rows[3] += 1;
 	  }
 	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_4_Pin)) {
-		  state += 1;
+		  rows[4] += 1;
 	  }
+
+	  for (int i = 0; i < 5; ++i) {
+		  if (rows[i] > 2) {
+			printf("Row: %d\n", i);
+			rows[i] = 0;
+			HID_report[0] = MOD_LEFT_GUI;
+			HID_report[2] = K_E;
+			USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, HID_report, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+			HAL_Delay(20);
+			HID_report[0] = 0;
+			HID_report[2] = 0;
+			USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, HID_report, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+		}
+	  }
+
+
+
+
   }
   /* USER CODE END 3 */
 }
@@ -254,7 +275,7 @@ static void MX_GPIO_Init(void)
                            COL_4_Pin COL_5_Pin COL_6_Pin */
   GPIO_InitStruct.Pin = COL_0_Pin|COL_1_Pin|COL_2_Pin|COL_3_Pin
                           |COL_4_Pin|COL_5_Pin|COL_6_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
