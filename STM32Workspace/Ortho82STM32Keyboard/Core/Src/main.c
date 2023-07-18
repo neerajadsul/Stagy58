@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define COL_GPIO_PORT	GPIOC
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -97,6 +97,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   printf("STM32 Cube is Great!");
   uint_fast8_t state = 0;
+  uint_fast8_t rows = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,14 +107,32 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
+	  // 0b0111_1100_0000_0110
+	  COL_GPIO_PORT->BSRR = 0b0111110000000110;
 	  HAL_Delay(40);
-	  if (!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13)) {
+	  if (!HAL_GPIO_ReadPin(USER_B1_GPIO_Port, USER_B1_Pin)) {
 		  state += 1;
 	  }
 	  if (state > 2) {
 		  printf("Working!\n");
 		  state = 0;
+	  }
+	  // 0b0000_0001_1100_1100
+	  // rows = GPIOC->IDR & 0b0000000111001100;
+	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_0_Pin)) {
+		  state += 1;
+	  }
+	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_1_Pin)) {
+		  state += 1;
+	  }
+	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_2_Pin)) {
+		  state += 1;
+	  }
+	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_3_Pin)) {
+		  state += 1;
+	  }
+	  if (HAL_GPIO_ReadPin(ROW_0_GPIO_Port, ROW_4_Pin)) {
+		  state += 1;
 	  }
   }
   /* USER CODE END 3 */
