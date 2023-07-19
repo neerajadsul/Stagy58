@@ -2,5 +2,4 @@
   (version 7)
   (lib (name "Lily58-footprint")(type "KiCad")(uri "${KIPRJMOD}/Lily58-footprint.pretty")(options "")(descr ""))
   (lib (name "KB2040")(type "KiCad")(uri "${KIPRJMOD}/KB2040.pretty")(options "")(descr ""))
-  (lib (name "Switch_Keyboard_Kailh")(type "KiCad")(uri "/home/neeraj/Dropbox/125_Systems/Kicad Libraries/com_github_perigoso_keyswitch-kicad-library/Switch_Keyboard_Kailh.pretty")(options "")(descr ""))
 )
