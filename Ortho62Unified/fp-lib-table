@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Lily58-footprint")(type "KiCad")(uri "${KIPRJMOD}/Lily58-footprint.pretty")(options "")(descr ""))
+  (lib (name "KB2040")(type "KiCad")(uri "${KIPRJMOD}/KB2040.pretty")(options "")(descr ""))
+)

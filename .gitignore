@@ -5,6 +5,10 @@
 # Kicad backups
 *-backups/
 
+# Kicad autosave files
+*autosave*
+*auto_saved*/
+
 # Kicad UI Setup
 *.kicad_prl
 *.kicad_pcl
