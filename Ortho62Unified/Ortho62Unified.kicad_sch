@@ -6509,7 +6509,7 @@
     (property "Value" "SW_Push" (at 193.04 143.764 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (at 193.04 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (at 193.04 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 193.04 137.16 0)
@@ -6593,7 +6593,7 @@
     (property "Value" "SW_Push" (at 208.28 143.764 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.00u" (at 208.28 137.16 0)
+    (property "Footprint" "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2_1.50u" (at 208.28 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 208.28 137.16 0)
@@ -8872,8 +8872,8 @@
     (property "Datasheet" "~" (at 129.54 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 2e535b0e-bd2c-4df6-81a0-e7431bcfcb75))
-    (pin "2" (uuid 588afdf5-33ab-4eff-b939-ea29c6edb768))
+    (pin "1" (uuid 939e001a-7d14-4554-818d-82a261388a08))
+    (pin "2" (uuid 417968ca-8713-4e7b-bd02-f4097494345f))
     (instances
       (project "Ortho62Unified"
         (path "/439fef5a-3d16-441d-bc6a-72175770ebea"
