@@ -5,8 +5,14 @@
  * Copyright 2023 Neeraj Adsul
 */
 
+
+
 #include <avr/io.h>
 #include <util/delay.h>
+#include <stdio.h>
+
+// #define _ALTERNATE_PUTCHAR_
+// #define _ALTERNATE_GETCHAR_
 
 #include "system_clock.h"
 #include "ports.h"
@@ -23,10 +29,11 @@ main()
     while (1)
     {
         LED_ON;
-        _delay_ms(10);
+        _delay_ms(25);
         LED_OFF;
-        _delay_ms(10);
-        // blink_led(1);
+        _delay_ms(12);
+        sendchar('M');
+        _delay_ms(13);
     }
     
 }
