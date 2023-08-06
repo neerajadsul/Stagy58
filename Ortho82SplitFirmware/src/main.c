@@ -6,11 +6,13 @@
 */
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "system_clock.h"
 #include "ports.h"
 #include "usart.h"
 #include "usb.h"
+#include "led_indicator.h"
 
 main()
 {
@@ -20,7 +22,11 @@ main()
     usb_init();
     while (1)
     {
-        /* code */
+        LED_ON;
+        _delay_ms(10);
+        LED_OFF;
+        _delay_ms(10);
+        // blink_led(1);
     }
     
 }
