@@ -14,4 +14,13 @@ void system_clock_init()
     CLK_CTRL = OSC_RC32MCREF0_bm;
     // Prescaler: A Divide by 2, B Divide by 2, C divide by 2
     CLK_PSCTRL = CLK_PSADIV2_bm | CLK_PSBCDIV_gm;
+
+    while (OSC_STATUS & OSC_RC32MRDY_bm)
+    {
+        // wait until 32MHz internal oscillator is ready.
+    }
+    
+
+    // Enable global interrupts
+    sei();
 }
