@@ -18,13 +18,14 @@
 // #include "system_clock.h"
 // #include "ports.h"
 // #include "usart.h"
-// #include "usb.h"
+#include "usb.h"
 // #include "led_indicator.h"
 
 void system_clocks_init();
 void ports_init();
 void usartE0_init();
 void USARTE0_WriteChar(unsigned char);
+int usb_init();
 
 FILE USARTE0_stdout = FDEV_SETUP_STREAM (USARTE0_WriteChar, NULL, _FDEV_SETUP_WRITE); 
 
