@@ -89,12 +89,12 @@ PORTA.INT1MASK=0x00;
 
 // PORTB initialization
 // OUT register
-PORTB.OUT=0x00;
+PORTB.OUT=0x08;
 // Pin0: Input
 // Pin1: Input
 // Pin2: Input
-// Pin3: Input
-PORTB.DIR=0x00;
+// Pin3: Output
+PORTB.DIR=0x08;
 // Pin0 Output/Pull configuration: Totempole/No
 // Pin0 Input/Sense configuration: Sense both edges
 // Pin0 Inverted: Off
@@ -105,16 +105,16 @@ PORTB.PIN0CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
 // Pin1 Inverted: Off
 // Pin1 Slew Rate Limitation: Off
 PORTB.PIN1CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin2 Output/Pull configuration: Totempole/No
+// Pin2 Output/Pull configuration: Totempole/Pull-down (on input)
 // Pin2 Input/Sense configuration: Sense both edges
 // Pin2 Inverted: Off
 // Pin2 Slew Rate Limitation: Off
-PORTB.PIN2CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
+PORTB.PIN2CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
 // Pin3 Output/Pull configuration: Totempole/No
-// Pin3 Input/Sense configuration: Sense both edges
+// Pin3 Input/Sense configuration: Input buffer disabled
 // Pin3 Inverted: Off
 // Pin3 Slew Rate Limitation: Off
-PORTB.PIN3CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
+PORTB.PIN3CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_INPUT_DISABLE_gc;
 // Interrupt 0 level: Disabled
 // Interrupt 1 level: Disabled
 PORTB.INTCTRL=(PORTB.INTCTRL & (~(PORT_INT1LVL_gm | PORT_INT0LVL_gm))) |
@@ -132,51 +132,51 @@ PORTB.INT1MASK=0x00;
 
 // PORTC initialization
 // OUT register
-PORTC.OUT=0x00;
-// Pin0: Input
-// Pin1: Input
-// Pin2: Input
-// Pin3: Input
-// Pin4: Input
-// Pin5: Input
-// Pin6: Input
+PORTC.OUT=0x01;
+// Pin0: Output
+// Pin1: Output
+// Pin2: Output
+// Pin3: Output
+// Pin4: Output
+// Pin5: Output
+// Pin6: Output
 // Pin7: Input
-PORTC.DIR=0x00;
-// Pin0 Output/Pull configuration: Totempole/Pull-down
-// Pin0 Input/Sense configuration: Sense both edges
+PORTC.DIR=0x7F;
+// Pin0 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin0 Input/Sense configuration: Input buffer disabled
 // Pin0 Inverted: Off
 // Pin0 Slew Rate Limitation: Off
-PORTC.PIN0CTRL=PORT_OPC_TOTEM_gc | PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin1 Output/Pull configuration: Totempole/Pull-down
-// Pin1 Input/Sense configuration: Sense both edges
+PORTC.PIN0CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
+// Pin1 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin1 Input/Sense configuration: Input buffer disabled
 // Pin1 Inverted: Off
 // Pin1 Slew Rate Limitation: Off
-PORTC.PIN1CTRL=PORT_OPC_TOTEM_gc | PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin2 Output/Pull configuration: Totempole/Pull-down
-// Pin2 Input/Sense configuration: Sense both edges
+PORTC.PIN1CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
+// Pin2 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin2 Input/Sense configuration: Input buffer disabled
 // Pin2 Inverted: Off
 // Pin2 Slew Rate Limitation: Off
-PORTC.PIN2CTRL=PORT_OPC_TOTEM_gc | PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin3 Output/Pull configuration: Totempole/Pull-down
-// Pin3 Input/Sense configuration: Sense both edges
+PORTC.PIN2CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
+// Pin3 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin3 Input/Sense configuration: Input buffer disabled
 // Pin3 Inverted: Off
 // Pin3 Slew Rate Limitation: Off
-PORTC.PIN3CTRL=PORT_OPC_TOTEM_gc | PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin4 Output/Pull configuration: Totempole/Pull-down
-// Pin4 Input/Sense configuration: Sense both edges
+PORTC.PIN3CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
+// Pin4 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin4 Input/Sense configuration: Input buffer disabled
 // Pin4 Inverted: Off
 // Pin4 Slew Rate Limitation: Off
-PORTC.PIN4CTRL=PORT_OPC_TOTEM_gc | PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin5 Output/Pull configuration: Totempole/Pull-down
-// Pin5 Input/Sense configuration: Sense both edges
+PORTC.PIN4CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
+// Pin5 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin5 Input/Sense configuration: Input buffer disabled
 // Pin5 Inverted: Off
 // Pin5 Slew Rate Limitation: Off
-PORTC.PIN5CTRL=PORT_OPC_TOTEM_gc | PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin6 Output/Pull configuration: Totempole/No
-// Pin6 Input/Sense configuration: Sense both edges
+PORTC.PIN5CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
+// Pin6 Output/Pull configuration: Totempole/Pull-up (on input)
+// Pin6 Input/Sense configuration: Input buffer disabled
 // Pin6 Inverted: Off
 // Pin6 Slew Rate Limitation: Off
-PORTC.PIN6CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
+PORTC.PIN6CTRL=PORT_OPC_PULLUP_gc | PORT_ISC_INPUT_DISABLE_gc;
 // Pin7 Output/Pull configuration: Totempole/No
 // Pin7 Input/Sense configuration: Sense both edges
 // Pin7 Inverted: Off
@@ -219,15 +219,15 @@ PORTC.INT1MASK=0x00;
 // PORTD initialization
 // OUT register
 PORTD.OUT=0x00;
-// Pin0: Output
-// Pin1: Output
-// Pin2: Output
-// Pin3: Output
-// Pin4: Output
-// Pin5: Output
+// Pin0: Input
+// Pin1: Input
+// Pin2: Input
+// Pin3: Input
+// Pin4: Input
+// Pin5: Input
 // Pin6: Input
 // Pin7: Input
-PORTD.DIR=0x3F;
+PORTD.DIR=0x00;
 // Pin0 Output/Pull configuration: Totempole/No
 // Pin0 Input/Sense configuration: Sense both edges
 // Pin0 Inverted: Off
@@ -365,11 +365,10 @@ PORTR.INT1MASK=0x00;
 // Virtual Ports initialization
 void vports_init(void)
 {
-// PORTA mapped to VPORT0
-// PORTB mapped to VPORT1
-PORTCFG.VPCTRLA=PORTCFG_VP13MAP_PORTB_gc | PORTCFG_VP02MAP_PORTA_gc;
-// PORTC mapped to VPORT2
-// PORTD mapped to VPORT3
-PORTCFG.VPCTRLB=PORTCFG_VP13MAP_PORTD_gc | PORTCFG_VP02MAP_PORTC_gc;
+// PORTC mapped to VPORT0
+// PORTD mapped to VPORT1
+PORTCFG.VPCTRLA=PORTCFG_VP13MAP_PORTD_gc | PORTCFG_VP02MAP_PORTC_gc;
+// PORTB mapped to VPORT2
+// PORTE mapped to VPORT3
+PORTCFG.VPCTRLB=PORTCFG_VP13MAP_PORTE_gc | PORTCFG_VP02MAP_PORTB_gc;
 }
-

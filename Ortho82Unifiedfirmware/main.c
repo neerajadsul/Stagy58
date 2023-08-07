@@ -71,6 +71,8 @@ Data Stack size         : 1024
 // USB initialization
 #include "usb_init.h"
 
+#define USE_USB_CONNECTION	0
+
 // Declare your global variables here
 extern USB_KEYBOARD_t usb_keyboard;
 //extern unsigned char usb_putbuf(void *buffer, unsigned short length);
@@ -212,68 +214,30 @@ void main(void)
 	// Globally enable interrupts
 #asm("sei")
 
-	// USB Controller initialization in Full Speed, Device mode
-	usb_init_device(&usb_config);
+	if (USE_USB_CONNECTION) {
+		// USB Controller initialization in Full Speed, Device mode
+		usb_init_device(&usb_config);
+		// Wait for the USB device to be enumerated by the host
+		while (!usb_enumerated);
 
-	// Wait for the USB device to be enumerated by the host
-	while (!usb_enumerated);
-
-	// Wait 1.5 seconds for the operating system to
-	// load any drivers needed by the USB device
-	delay_ms(1500);
-
-	
+		// Wait 1.5 seconds for the operating system to
+		// load any drivers needed by the USB device
+		delay_ms(1500);
+	}
+    
+    TGLBIT(PORTB.OUT, 3);
+    delay_ms(200);
+    TGLBIT(PORTB.OUT, 3);
+    delay_ms(200);
 
 	while (1)
 		{
 
 		// Turn COL_1 to COL_5
-		rows = PORTC.IN & 0b00111111;
-		printf("%u \r\n", rows);
-		for (i = 0; i < 6; i++) {
-			putchar(usb_keyboard.keys[i]);
-		}
-		
-		if (rows == 0) {
-			for (i = 0; i < 6; i++) {
-				usb_keyboard.keys[i] = 0;
-			}
-			usb_keyboard_sendkeys();
-			usb_keyboard_keypress(0,0);
-		}
-		modifier = 0;
-		key = 0;
-		if (rows == 1) {
-			//usb_keyboard_keypress(KS_ESC, KM_LEFT_CTRL | KM_LEFT_SHIFT);
-			//usb_keyboard_keypress(0,KM_RIGHT_ALT);
-			modifier = KM_RIGHT_ALT;
-		}
-		if (rows == 2) {
-			//usb_keyboard_keypress(0,KM_LEFT_ALT);
-			modifier = KM_LEFT_CTRL;
-        }
-		if (rows == 4) {
-			//usb_keyboard_keypress(0, KM_LEFT_SHIFT);
-			modifier = KM_LEFT_SHIFT;
-        }kicaki
-		if (rows == 8) {
-			//usb_keyboard_keypress(0, KM_LEFT_CTRL);
-			modifier = KM_LEFT_CTRL | KM_LEFT_SHIFT;
-        }
-		if (rows == 16) {
-			//usb_keyboard_keypress(0, KM_LEFT_GUI);
-			modifier = KM_LEFT_CTRL | KM_LEFT_ALT;
-        }
-		//usb_keyboard_sendkeys();
-		if (modifier || key) {
-			tx_buffer[0] = modifier;
-			tx_buffer[2] = key;
-			usb_putbuf(tx_buffer, 8);         
-			delay_ms(5000);
-			release_keys();
-		}
+		rows = PORTD.IN & 0b00111111;
                 
 		delay_ms(100);
+		TGLBIT(PORTB.OUT, 3);
 
 		}
 }
