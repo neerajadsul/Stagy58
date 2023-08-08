@@ -6,7 +6,7 @@
 
   (title_block
     (title "82 Keys Ortholinear Keyboard")
-    (rev "1.0")
+    (rev "1.0-doc1")
     (company "125 Systems")
     (comment 1 "Designer: Neeraj Adsul")
     (comment 2 "The keyboard is designed as split 41 keys x 2 parts.")
@@ -2800,6 +2800,11 @@
   (text "MetaSpc\nRow" (at 12.7 124.46 0)
     (effects (font (face "Arial") (size 3 3) (color 72 0 72 1)) (justify left bottom))
     (uuid 9296054a-ccdd-4e8b-a5d2-1f47bdd3b12b)
+  )
+  (text "Columns and Rows are arrange differently on the PCB, check PCB for correct keys placements."
+    (at 25.4 20.32 0)
+    (effects (font (face "Arial") (size 3 3) (color 72 0 72 1)) (justify left bottom))
+    (uuid bfa33aa1-7528-4d95-972c-617d8b198d8c)
   )
   (text "Numbers\nRow" (at 12.7 38.1 0)
     (effects (font (face "Arial") (size 3 3) (color 72 0 72 1)) (justify left bottom))
