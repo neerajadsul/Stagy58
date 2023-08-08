@@ -71,11 +71,16 @@ Data Stack size         : 1024
 // USB initialization
 #include "usb_init.h"
 
+#include "keyboard.h"
+
 #define USE_USB_CONNECTION	0
 
 // Declare your global variables here
 extern USB_KEYBOARD_t usb_keyboard;
-//extern unsigned char usb_putbuf(void *buffer, unsigned short length);
+extern uint8_t keys[N_COLS];
+extern char key_buffer[N_KEYS_BUFFER];
+extern volatile uint8_t key_buffer_index;
+extern unsigned char usb_putbuf(void *buffer, unsigned short length);
 unsigned char tx_buffer[8] = {0};
 int release_keys(void); 
 
@@ -83,46 +88,11 @@ void main(void)
 {
 	// Declare your local variables here
 	unsigned char n;
-	uint8_t state = 0;
-	uint8_t rows = 0;
-	uint8_t i;
+	char ch;
+	uint8_t state = 0, left_or_right = 0;
+	//uint8_t i;
 	uint8_t modifier, key;
-
-	// Check the reset source
-	n = RST.STATUS;
-	if (n & RST_PORF_bm)
-		{
-		// Power on reset
-
-		}
-	else if (n & RST_EXTRF_bm)
-		{
-		// External reset
-
-		}
-	else if (n & RST_BORF_bm)
-		{
-		// Brown out reset
-
-		}
-	else if (n & RST_WDRF_bm)
-		{
-		// Watchdog reset
-
-		}
-	else if (n & RST_PDIRF_bm)
-		{
-		// Program and debug interface reset
-
-		}
-	else if (n & RST_SRF_bm)
-		{
-		// Software reset
-
-		}
-	// Clear the reset flag
-	RST.STATUS = n;
-
+	
 	// Interrupt system initialization
 	// Optimize for speed
 #pragma optsize-
@@ -225,20 +195,37 @@ void main(void)
 		delay_ms(1500);
 	}
     
-    TGLBIT(PORTB.OUT, 3);
-    delay_ms(200);
-    TGLBIT(PORTB.OUT, 3);
-    delay_ms(200);
-
+	PORTB.OUTCLR = 1 << 3;
+	left_or_right = PORTB.IN & 0x04;
+	
+	if (left_or_right==LEFT_HALF)
+	{
+		printf("<LEFT>\n");
+	} else {
+		printf("<RIGHT>\n");
+	}
+	
+	show_scanmap();
+	
 	while (1)
 		{
+			// Process input from right half
+			if (left_or_right == LEFT_HALF && rx_counter_usarte0 > 0)
+			{
+				ch = getchar();
+			}
 
-		// Turn COL_1 to COL_5
-		rows = PORTD.IN & 0b00111111;
-                
-		delay_ms(100);
-		TGLBIT(PORTB.OUT, 3);
-
+			if (scan_keys())
+			{
+				//log_keys();	
+			}
+				
+				
+			if (left_or_right == RIGHT_HALF)
+			{
+				// Send key-presses to Left-Half
+			}
+				
 		}
 }
 
