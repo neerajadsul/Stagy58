@@ -74,6 +74,12 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="keyboard.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="keyboard.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
