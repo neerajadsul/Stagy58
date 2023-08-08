@@ -22,6 +22,15 @@ char left_scanmap[N_ROWS][N_COLS] = {
 	{KS_SPACE, NO_KEY, KM_LEFT_CTRL, MOD_KEY, FN_KEY, KM_LEFT_ALT, KM_LEFT_GUI},
 };
 
+char right_scanmap[N_ROWS][N_COLS] = {
+	{KS_F7, KS_F8, KS_F9, KS_F10, KS_F11, KS_F12, KS_DELETE},
+	{KS_7_AMPERSAND, KS_8_ASTERISK, KS_9_OPENING_PARENS, KS_0_CLOSING_PARENS, KS_MINUS_UNDERSCORE, KS_EQUAL_PLUS, KS_BACKSPACE},
+	{KS_U, KS_I, KS_O, KS_P, KS_OPENING_BRACKET_BRACE, KS_CLOSING_BRACKET_BRACE, KS_ENTER},
+	{KS_J, KS_ENTER, KS_3_HASHMARK, KS_APOSTROPHE_QUOTE, KS_SEMICOLON_COLON, KS_L, KS_K},
+	{KS_N, KM_RIGHT_SHIFT, KS_UP_ARROW, KS_SLASH_QUESTION_MARK, KS_DOT_GREATER_THAN, KS_COMMA_LESS_THAN, KS_M},
+	{KS_SPACE, KM_RIGHT_GUI, KM_LEFT_ALT, KS_LEFT_ARROW, KS_DOWN_ARROW, NO_KEY, KS_RIGHT_ARROW},
+};
+
 unsigned char keys[N_COLS] = {0};
 
 char key_buffer[N_KEYS_BUFFER];
@@ -88,12 +97,18 @@ void log_keys()
 void show_scanmap()
 {
 	uint8_t nrow, ncol;
-	
+	bit left_or_right;
+	left_or_right = PORTB.IN & 0x04;
 	for (nrow=0;nrow<N_ROWS;nrow++)
 	{
 		for (ncol=0;ncol<N_COLS;ncol++)
 		{
-			printf("%02x ",left_scanmap[nrow][ncol]);
+			if (left_or_right == LEFT_HALF)
+			{
+				printf("%02x ",left_scanmap[nrow][ncol]);
+			} else {
+				printf("%02x ",right_scanmap[nrow][ncol]);
+			}
 		}
 		putchar('\n');
 	}
