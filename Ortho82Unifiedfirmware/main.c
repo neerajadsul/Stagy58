@@ -195,8 +195,8 @@ void main(void)
 		delay_ms(1500);
 	}
     
-	PORTB.OUTCLR = 1 << 3;
-	left_or_right = PORTB.IN & 0x04;
+	LED_ON;
+	left_or_right = LEFT_RIGHT_PORT.IN & LEFT_RIGHT_PIN_bm;
 	
 	if (left_or_right==LEFT_HALF)
 	{
@@ -205,7 +205,7 @@ void main(void)
 		printf("<RIGHT>\n");
 	}
 	
-	show_scanmap();
+	show_scanmap(left_or_right);
 	
 	while (1)
 		{
@@ -215,7 +215,7 @@ void main(void)
 				ch = getchar();
 			}
 
-			if (scan_keys())
+			if (scan_keys(left_or_right))
 			{
 				//log_keys();	
 			}
@@ -226,6 +226,7 @@ void main(void)
 				// Send key-presses to Left-Half
 			}
 				
+			delay_ms(50);
 		}
 }
 

@@ -21,12 +21,17 @@
 
 #define ROW_PORT	PORTD
 #define COL_PORT	PORTC
+#define LEFT_RIGHT_PORT	PORTB
+#define LEFT_RIGHT_PIN_bm	0x04
+
+#define LED_ON	(PORTB.OUTCLR = 1 << 3)
+#define LED_OFF	(PORTB.OUTSET = 1 << 3)
 
 #define ROW_MASK	0b00111111
 
-uint8_t scan_keys();
+uint8_t scan_keys(uint8_t);
 void log_keys();
-void show_scanmap();
+void show_scanmap(uint8_t);
 
 
 #endif /* KEYBOARD_H_ */
