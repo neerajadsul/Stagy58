@@ -228,36 +228,36 @@ PORTD.OUT=0x00;
 // Pin6: Input
 // Pin7: Input
 PORTD.DIR=0x00;
-// Pin0 Output/Pull configuration: Totempole/No
+// Pin0 Output/Pull configuration: Pull-down/No
 // Pin0 Input/Sense configuration: Sense both edges
 // Pin0 Inverted: Off
 // Pin0 Slew Rate Limitation: Off
-PORTD.PIN0CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin1 Output/Pull configuration: Totempole/No
+PORTD.PIN0CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
+// Pin1 Output/Pull configuration: Pull-down/No
 // Pin1 Input/Sense configuration: Sense both edges
 // Pin1 Inverted: Off
 // Pin1 Slew Rate Limitation: Off
-PORTD.PIN1CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin2 Output/Pull configuration: Totempole/No
+PORTD.PIN1CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
+// Pin2 Output/Pull configuration: Pull-down/No
 // Pin2 Input/Sense configuration: Sense both edges
 // Pin2 Inverted: Off
 // Pin2 Slew Rate Limitation: Off
-PORTD.PIN2CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin3 Output/Pull configuration: Totempole/No
+PORTD.PIN2CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
+// Pin3 Output/Pull configuration: Pull-down/No
 // Pin3 Input/Sense configuration: Sense both edges
 // Pin3 Inverted: Off
 // Pin3 Slew Rate Limitation: Off
-PORTD.PIN3CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin4 Output/Pull configuration: Totempole/No
+PORTD.PIN3CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
+// Pin4 Output/Pull configuration: Pull-down/No
 // Pin4 Input/Sense configuration: Sense both edges
 // Pin4 Inverted: Off
 // Pin4 Slew Rate Limitation: Off
-PORTD.PIN4CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
-// Pin5 Output/Pull configuration: Totempole/No
+PORTD.PIN4CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
+// Pin5 Output/Pull configuration: Pull-down/No
 // Pin5 Input/Sense configuration: Sense both edges
 // Pin5 Inverted: Off
 // Pin5 Slew Rate Limitation: Off
-PORTD.PIN5CTRL=PORT_OPC_TOTEM_gc | PORT_ISC_BOTHEDGES_gc;
+PORTD.PIN5CTRL=PORT_OPC_PULLDOWN_gc | PORT_ISC_BOTHEDGES_gc;
 // Pin6 Output/Pull configuration: Totempole/No
 // Pin6 Input/Sense configuration: Sense both edges
 // Pin6 Inverted: Off
