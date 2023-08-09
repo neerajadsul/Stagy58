@@ -15,4 +15,16 @@
 fp-info-cache
 *.*-bak
 
-Ortho82Unifiedfirmware/Ortho82UnifiedFirmware.prj
+*.cof
+*.fct
+*.cbi
+*.cfg
+.vs/
+*.prj
+*.prj~
+*.cw~
+*.cci
+*.hci
+
+Debug/
+
