@@ -13,8 +13,18 @@
 #define N_COLS	7
 #define N_ROWS	6
 #define NO_KEY	0
-#define FN_KEY	0
-#define MOD_KEY	0
+#define FN_KEY	0xFA
+#define SPECIAL_KEY	0xFB
+
+#define LEFT_CTRL	0xF1
+#define LEFT_ALT	0xF2
+#define LEFT_GUI	0xF3
+#define LEFT_SHIFT	0xF4
+
+#define RIGHT_CTRL	0xF5
+#define RIGHT_ALT	0xF6
+#define RIGHT_GUI	0xF7
+#define RIGHT_SHIFT	0xF8
 
 #define LEFT_HALF	0
 #define RIGHT_HALF	1

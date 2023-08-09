@@ -18,8 +18,8 @@ char left_scanmap[N_ROWS][N_COLS] = {
 	{KS_6_CARET, KS_GRAVE_ACCENT_TILDE, KS_1_EXCLAMATION, KS_2_AT, KS_3_HASHMARK, KS_4_DOLLAR, KS_5_PERCENTAGE},
 	{KS_Y, KS_TAB, KS_Q, KS_W, KS_E, KS_R, KS_T},
 	{KS_H, KS_CAPS_LOCK, KS_A, KS_S, KS_D, KS_F, KS_G},
-	{KS_B, KM_LEFT_SHIFT, KS_BACKSLASH_PIPE, KS_V, KS_X, KS_C, KS_Z},
-	{KS_SPACE, NO_KEY, KM_LEFT_CTRL, MOD_KEY, FN_KEY, KM_LEFT_ALT, KM_LEFT_GUI},
+	{KS_B, LEFT_SHIFT, KS_BACKSLASH_PIPE, KS_V, KS_X, KS_C, KS_Z},
+	{KS_SPACE, NO_KEY, LEFT_CTRL, SPECIAL_KEY, FN_KEY, LEFT_ALT, LEFT_GUI},
 };
 
 char right_scanmap[N_ROWS][N_COLS] = {
@@ -27,14 +27,14 @@ char right_scanmap[N_ROWS][N_COLS] = {
 	{KS_7_AMPERSAND, KS_BACKSPACE, KS_EQUAL_PLUS, KS_MINUS_UNDERSCORE, KS_0_CLOSING_PARENS, KS_9_OPENING_PARENS, KS_8_ASTERISK},
 	{KS_U, KS_ENTER, KS_CLOSING_BRACKET_BRACE, KS_OPENING_BRACKET_BRACE, KS_P, KS_O, KS_I},
 	{KS_J, KS_ENTER, KS_3_HASHMARK, KS_APOSTROPHE_QUOTE, KS_SEMICOLON_COLON, KS_L, KS_K},
-	{KS_N, KM_RIGHT_SHIFT, KS_UP_ARROW, KS_SLASH_QUESTION_MARK, KS_DOT_GREATER_THAN, KS_COMMA_LESS_THAN, KS_M},
-	{KS_SPACE, NO_KEY, KS_RIGHT_ARROW, KS_DOWN_ARROW, KS_LEFT_ARROW, KM_RIGHT_ALT, KM_RIGHT_GUI},
+	{KS_N, RIGHT_SHIFT, KS_UP_ARROW, KS_SLASH_QUESTION_MARK, KS_DOT_GREATER_THAN, KS_COMMA_LESS_THAN, KS_M},
+	{KS_SPACE, NO_KEY, KS_RIGHT_ARROW, KS_DOWN_ARROW, KS_LEFT_ARROW, RIGHT_ALT, RIGHT_GUI},
 };
 
 unsigned char keys[N_COLS] = {0};
 
-char key_buffer[N_KEYS_BUFFER];
-volatile uint8_t key_buffer_index = 0;
+volatile char key_buffer[N_KEYS_BUFFER] = {0};
+volatile int key_buffer_index = 0;
 
 uint8_t scan_keys(uint8_t left_or_right)
 {
@@ -78,6 +78,11 @@ uint8_t scan_keys(uint8_t left_or_right)
 					} else {
 						somekey = right_scanmap[nrow][ncol];
 					}
+					if (key_buffer_index < (N_KEYS_BUFFER-1) && key_buffer[key_buffer_index] != somekey)
+					{					
+						key_buffer[key_buffer_index] = somekey;
+						key_buffer_index++;
+					} 
 					printf("%02x %d %d \n", somekey, nrow, ncol);
 				}
 			}

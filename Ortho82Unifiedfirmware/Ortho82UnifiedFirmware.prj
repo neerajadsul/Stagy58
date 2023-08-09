@@ -7,7 +7,7 @@ A=Neeraj Adsul
 C=125 Systems
 D=15/07/2023
 Files=14
-OpenedFiles=3
+OpenedFiles=2
 OF1=main.c
 ActiveTab=1
 DebugOutputListFilesDirectory=Debug\List
@@ -20,9 +20,9 @@ OutputExecutableFilesDirectory=Release\Exe
 OutputLinkerFilesDirectory=Release\Link
 AllowDisplayFunctionCallTree=1
 CleanUp=2
-TimeStamp1=1458741473
-OF2=C:\cvavr\inc\usb_hid.h
-TimeStamp2=1154974889
+TimeStamp1=1460229820
+OF2=usb_init.c
+TimeStamp2=1460123067
 F1=main.c
 F2=clock_init.c
 F3=event_system_init.c
@@ -39,6 +39,7 @@ F13=usb_init.c
 OF3=usb_init.c
 TimeStamp3=1458654043
 F14=keyboard.c
+TimeStamp0=1460229820
 [CompilerDebug]
 Chip=ATxmega32A4U
 CPUClock=24000000
@@ -143,9 +144,9 @@ UseEEPROMLocation0=1
 DisplayCodeSizeError=1
 RebuildAll=0
 LinkageInformationPresent=1
-COFFileTimeStamp=1460177302
-Build=167
-GlobalVarAddr=10249
+COFFileTimeStamp=1460231264
+Build=210
+GlobalVarAddr=10257
 EEPROMVarAddr=0
 [DefinedSymbolsDebug]
 Count=0
@@ -254,7 +255,7 @@ DisplayCodeSizeError=1
 RebuildAll=1
 LinkageInformationPresent=0
 COFFileTimeStamp=-1
-Build=167
+Build=210
 IncludePath0=C:\cvavr\inc
 IncludePath1=
 IncludePath2=
@@ -513,18 +514,18 @@ Row=0
 Column=0
 ScrollPosX=0
 ScrollPosY=0
-TimeStamp=1458741497
+TimeStamp=1460229890
 [BookmarksFoldedCode]
 Files=3
 F1=main.c
 F2=C:\cvavr\inc\usb_hid.h
 F3=usb_init.c
 [Bookmarks1]
-TimeStamp=1458741473
-Row=0
-Column=0
+TimeStamp=1460229820
+Row=144
+Column=78
 ScrollPosX=0
-ScrollPosY=0
+ScrollPosY=168
 BK0=-1
 BK1=-1
 BK2=-1
@@ -552,10 +553,10 @@ L13=Enhanced function parameters passing: Mode 2
 L14=Automatic register allocation: Yes
 L15=Smart register allocation: Yes
 L16=
-L17=Build: 167
-L18=10048 line(s) compiled
+L17=Build: 210
+L18=12744 line(s) compiled
 L19=No errors
-L20=2 warning(s)
+L20=1 warning(s)
 L21=
 L22=Bit variables area: 0x2 to 0x2
 L23=Bit variables size: 1 byte(s)
@@ -564,29 +565,29 @@ L25=Data Stack area: 0x2000 to 0x23FF
 L26=Data Stack size: 1024 byte(s)
 L27=Estimated Data Stack usage: 80 byte(s)
 L28=
-L29=RAM Global variables area: 0x2400 to 0x2808
-L30=RAM Global variables size: 1033 byte(s)
+L29=RAM Global variables area: 0x2400 to 0x2810
+L30=RAM Global variables size: 1041 byte(s)
 L31=
-L32=Hardware Stack area: 0x2809 to 0x2FFF
-L33=Hardware Stack size: 2039 byte(s)
+L32=Hardware Stack area: 0x2811 to 0x2FFF
+L33=Hardware Stack size: 2031 byte(s)
 L34=
 L35=Heap size: 0 byte(s)
 L36=
 L37=EEPROM usage: 0 byte(s), 0.0% of EEPROM
-L38=Program size: 3296 words (6592 bytes), 20.1% of FLASH
-L39=98 words (196 bytes), 2.9% reduced by Code Compression
+L38=Program size: 3846 words (7692 bytes), 23.5% of FLASH
+L39=146 words (292 bytes), 3.7% reduced by Code Compression
 Lines=39
 [BuildInfoAssembler]
 L1=AVRASM: AVR macro assembler 2.1.30 (build 592 Nov  7 2008 12:38:17)
 L2=Copyright (C) 1995-2008 ATMEL Corporation
 L3=
-L4=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\Debug\List\Ortho82UnifiedFirmware.asm(5875): No EEPROM data, deleting E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\Debug\Exe\Ortho82UnifiedFirmware.eep
+L4=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\Debug\List\Ortho82UnifiedFirmware.asm(6534): No EEPROM data, deleting E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\Debug\Exe\Ortho82UnifiedFirmware.eep
 L5=
 L6=ATxmega32A4U memory use summary [bytes]:
 L7=Segment   Begin    End      Code   Data   Used    Size   Use%
 L8=---------------------------------------------------------------
-L9=[.cseg] 0x000000 0x0019c0   6120    472   6592   36864  17.9%
-L10=[.dseg] 0x002000 0x002809      0   1033   1033    4096  25.2%
+L9=[.cseg] 0x000000 0x001e0c   7184    508   7692   36864  20.9%
+L10=[.dseg] 0x002000 0x002811      0   1041   1041    4096  25.4%
 L11=[.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 L12=
 Lines=12
@@ -606,128 +607,12 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[HeadersList]
-Files=27
-F1=C:\Sources\Stagy58\Ortho82Unifiedfirmware\main.c
-F2=C:\Sources\Stagy58\Ortho82Unifiedfirmware\clock_init.c
-F3=C:\Sources\Stagy58\Ortho82Unifiedfirmware\event_system_init.c
-F4=C:\Sources\Stagy58\Ortho82Unifiedfirmware\ports_init.c
-F5=C:\Sources\Stagy58\Ortho82Unifiedfirmware\timers_init.c
-F6=C:\Sources\Stagy58\Ortho82Unifiedfirmware\rtc_init.c
-F7=C:\Sources\Stagy58\Ortho82Unifiedfirmware\watchdog_init.c
-F8=C:\Sources\Stagy58\Ortho82Unifiedfirmware\usarts_init.c
-F9=C:\Sources\Stagy58\Ortho82Unifiedfirmware\adc_init.c
-F10=C:\Sources\Stagy58\Ortho82Unifiedfirmware\analog_comp_init.c
-F11=C:\Sources\Stagy58\Ortho82Unifiedfirmware\spi_init.c
-F12=C:\Sources\Stagy58\Ortho82Unifiedfirmware\twi_init.c
-F13=C:\Sources\Stagy58\Ortho82Unifiedfirmware\usb_init.c
-F14=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\keyboard.c
-F15=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\ports_init.c
-F16=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\main.c
-F17=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\clock_init.c
-F18=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\event_system_init.c
-F19=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\timers_init.c
-F20=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\rtc_init.c
-F21=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\watchdog_init.c
-F22=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\usarts_init.c
-F23=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\adc_init.c
-F24=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\analog_comp_init.c
-F25=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\spi_init.c
-F26=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\twi_init.c
-F27=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\usb_init.c
-[Header2]
-Files=5
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-F5=C:\cvavr\inc\stddef.h
-[Header3]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header4]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header5]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header6]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header7]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header8]
-Files=5
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-F5=usarts_init.h
-[Header9]
-Files=6
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-F5=C:\cvavr\inc\delay.h
-F6=adc_init.h
-[Header10]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header11]
-Files=4
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-[Header12]
-Files=9
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-F5=twi_init.h
-F6=C:\cvavr\inc\twix.h
-F7=C:\cvavr\inc\stdbool.h
-F8=C:\cvavr\inc\string.h
-F9=C:\cvavr\inc\io.h
-[Header13]
-Files=10
-F1=usb_init.h
-F2=C:\cvavr\inc\usb_device.h
-F3=C:\cvavr\inc\io.h
-F4=C:\cvavr\inc\xmega32a4u.h
-F5=C:\cvavr\inc\xmstruct.h
-F6=C:\cvavr\inc\xmbits_a4u.h
-F7=C:\cvavr\inc\iobits.h
-F8=C:\cvavr\inc\stdbool.h
-F9=C:\cvavr\inc\string.h
-F10=C:\cvavr\inc\usb_hid.h
 [Bookmarks3]
-TimeStamp=1458654043
+TimeStamp=1460123067
 Row=0
 Column=0
 ScrollPosX=0
-ScrollPosY=30
+ScrollPosY=0
 BK0=-1
 BK1=-1
 BK2=-1
@@ -738,85 +623,69 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[Header1]
-Files=26
-F1=C:\cvavr\inc\xmega32a4u.h
-F2=C:\cvavr\inc\xmstruct.h
-F3=C:\cvavr\inc\xmbits_a4u.h
-F4=C:\cvavr\inc\iobits.h
-F5=C:\cvavr\inc\stdio.h
-F6=C:\cvavr\inc\io.h
-F7=C:\cvavr\inc\stdarg.h
-F8=C:\cvavr\inc\stdint.h
-F9=C:\cvavr\inc\delay.h
-F10=clock_init.h
-F11=event_system_init.h
-F12=ports_init.h
-F13=timers_init.h
-F14=rtc_init.h
-F15=watchdog_init.h
-F16=usarts_init.h
-F17=adc_init.h
-F18=analog_comp_init.h
-F19=spi_init.h
-F20=twi_init.h
-F21=C:\cvavr\inc\twix.h
-F22=C:\cvavr\inc\stdbool.h
-F23=C:\cvavr\inc\string.h
-F24=C:\cvavr\inc\usb_device.h
-F25=C:\cvavr\inc\usb_hid.h
-F26=usb_init.h
-[FoldedCode1]
-Blocks=0
-[FoldedCode3]
-Blocks=0
 [FoldedCode2]
 Blocks=0
-[Header17]
+[HeadersList]
+Files=14
+F1=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\main.c
+F2=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\clock_init.c
+F3=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\event_system_init.c
+F4=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\ports_init.c
+F5=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\timers_init.c
+F6=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\rtc_init.c
+F7=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\watchdog_init.c
+F8=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\usarts_init.c
+F9=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\adc_init.c
+F10=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\analog_comp_init.c
+F11=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\spi_init.c
+F12=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\twi_init.c
+F13=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\usb_init.c
+F14=E:\Sources\GitHub\Stagy58\Ortho82Unifiedfirmware\keyboard.c
+[Header2]
 Files=5
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
 F5=D:\cvavr\inc\stddef.h
-[Header18]
+[Header3]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header15]
+[Header4]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header19]
+[Header5]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header20]
+[Header6]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header21]
+[Header7]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header22]
+[Header8]
 Files=5
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
 F5=usarts_init.h
-[Header23]
+[Header9]
 Files=6
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
@@ -824,19 +693,19 @@ F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
 F5=D:\cvavr\inc\delay.h
 F6=adc_init.h
-[Header24]
+[Header10]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header25]
+[Header11]
 Files=4
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
 F3=D:\cvavr\inc\xmbits_a4u.h
 F4=D:\cvavr\inc\iobits.h
-[Header26]
+[Header12]
 Files=9
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
@@ -847,7 +716,7 @@ F6=D:\cvavr\inc\twix.h
 F7=D:\cvavr\inc\stdbool.h
 F8=D:\cvavr\inc\string.h
 F9=D:\cvavr\inc\io.h
-[Header27]
+[Header13]
 Files=10
 F1=usb_init.h
 F2=D:\cvavr\inc\usb_device.h
@@ -859,7 +728,27 @@ F7=D:\cvavr\inc\iobits.h
 F8=D:\cvavr\inc\stdbool.h
 F9=D:\cvavr\inc\string.h
 F10=D:\cvavr\inc\usb_hid.h
-[Header16]
+[FoldedCode1]
+Blocks=0
+[FoldedCode3]
+Blocks=0
+[Header14]
+Files=14
+F1=D:\cvavr\inc\xmega32a4u.h
+F2=D:\cvavr\inc\xmstruct.h
+F3=D:\cvavr\inc\xmbits_a4u.h
+F4=D:\cvavr\inc\iobits.h
+F5=D:\cvavr\inc\usb_hid.h
+F6=D:\cvavr\inc\usb_device.h
+F7=D:\cvavr\inc\io.h
+F8=D:\cvavr\inc\stdbool.h
+F9=D:\cvavr\inc\string.h
+F10=D:\cvavr\inc\stdint.h
+F11=D:\cvavr\inc\stdio.h
+F12=D:\cvavr\inc\stdarg.h
+F13=D:\cvavr\inc\delay.h
+F14=keyboard.h
+[Header1]
 Files=27
 F1=D:\cvavr\inc\xmega32a4u.h
 F2=D:\cvavr\inc\xmstruct.h
@@ -888,19 +777,3 @@ F24=D:\cvavr\inc\usb_device.h
 F25=D:\cvavr\inc\usb_hid.h
 F26=usb_init.h
 F27=keyboard.h
-[Header14]
-Files=14
-F1=D:\cvavr\inc\xmega32a4u.h
-F2=D:\cvavr\inc\xmstruct.h
-F3=D:\cvavr\inc\xmbits_a4u.h
-F4=D:\cvavr\inc\iobits.h
-F5=D:\cvavr\inc\usb_hid.h
-F6=D:\cvavr\inc\usb_device.h
-F7=D:\cvavr\inc\io.h
-F8=D:\cvavr\inc\stdbool.h
-F9=D:\cvavr\inc\string.h
-F10=D:\cvavr\inc\stdint.h
-F11=D:\cvavr\inc\stdio.h
-F12=D:\cvavr\inc\stdarg.h
-F13=D:\cvavr\inc\delay.h
-F14=keyboard.h
