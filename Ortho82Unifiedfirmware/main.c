@@ -41,26 +41,11 @@ Data Stack size         : 1024
 // Timers/Counters initialization functions
 #include "timers_init.h"
 
-// RTC initialization function
-#include "rtc_init.h"
-
 // Watchdog Timer initialization function
 #include "watchdog_init.h"
 
 // USARTs initialization functions
 #include "usarts_init.h"
-
-// ADC initialization functions
-#include "adc_init.h"
-
-// Analog Comparator(s) initialization function(s)
-#include "analog_comp_init.h"
-
-// SPI initialization functions
-#include "spi_init.h"
-
-// TWI initialization functions
-#include "twi_init.h"
 
 // USB Device functions
 #include <usb_device.h>
@@ -73,7 +58,7 @@ Data Stack size         : 1024
 
 #include "keyboard.h"
 
-#define USE_USB_CONNECTION	1
+#define USE_USB_CONNECTION	0
 
 // Declare your global variables here
 extern USB_KEYBOARD_t usb_keyboard;
@@ -130,62 +115,11 @@ void main(void)
 	// Virtual Ports initialization
 	vports_init();
 
-	// Timer/Counter TCC0 is disabled
-	tc0_disable(&TCC0);
-
-	// Timer/Counter TCC1 is disabled
-	tc1_disable(&TCC1);
-
-	// Timer/Counter TCD0 is disabled
-	tc0_disable(&TCD0);
-
-	// Timer/Counter TCD1 is disabled
-	tc1_disable(&TCD1);
-
-	// Timer/Counter TCE0 is disabled
-	tc0_disable(&TCE0);
-
-	// RTC initialization
-	rtcxm_init();
-
-	// USARTC0 is disabled
-	usart_disable(&USARTC0);
-
-	// USARTC1 is disabled
-	usart_disable(&USARTC1);
-
-	// USARTD0 is disabled
-	usart_disable(&USARTD0);
-
-	// USARTD1 is disabled
-	usart_disable(&USARTD1);
-
 	// USARTE0 initialization
 	usarte0_init();
 
-	// SPIC initialization
-	spic_init();
-
-	// SPID initialization
-	spid_init();
-
-	// TWIC initialization
-	twic_init();
-
-	// TWIE initialization
-	twie_init();
-
-	// ADCA initialization
-	adca_init();
-
-	// DACB is disabled
-	DACB.CTRLA = 0;
-
-	// Analog Comparator(s) for PORTA initialization
-	aca_init();
-
 	// Globally enable interrupts
-#asm("sei")
+	#asm("sei")
 
 	if (USE_USB_CONNECTION) {
 		// USB Controller initialization in Full Speed, Device mode
