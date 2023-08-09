@@ -18,7 +18,7 @@ char left_scanmap[N_ROWS][N_COLS] = {
 	{KS_6_CARET, KS_GRAVE_ACCENT_TILDE, KS_1_EXCLAMATION, KS_2_AT, KS_3_HASHMARK, KS_4_DOLLAR, KS_5_PERCENTAGE},
 	{KS_Y, KS_TAB, KS_Q, KS_W, KS_E, KS_R, KS_T},
 	{KS_H, KS_CAPS_LOCK, KS_A, KS_S, KS_D, KS_F, KS_G},
-	{KS_B, LEFT_SHIFT, KS_BACKSLASH_PIPE, KS_V, KS_X, KS_C, KS_Z},
+	{KS_B, LEFT_SHIFT, KS_BACKSLASH_PIPE, KS_Z, KS_X, KS_C, KS_V},
 	{KS_SPACE, NO_KEY, LEFT_CTRL, SPECIAL_KEY, FN_KEY, LEFT_ALT, LEFT_GUI},
 };
 
@@ -30,6 +30,16 @@ char right_scanmap[N_ROWS][N_COLS] = {
 	{KS_N, RIGHT_SHIFT, KS_UP_ARROW, KS_SLASH_QUESTION_MARK, KS_DOT_GREATER_THAN, KS_COMMA_LESS_THAN, KS_M},
 	{KS_SPACE, NO_KEY, KS_RIGHT_ARROW, KS_DOWN_ARROW, KS_LEFT_ARROW, RIGHT_ALT, RIGHT_GUI},
 };
+
+flash char * flash KEYNAMES[42] = {
+	"F6", "Esc", "F1", "F2", "F3", "F4", "F5",
+	"6^", "`¬", "1!", "2@", "3#", "4$", "5%",
+	"Yy", "TB", "Qq", "Ww", "Ee", "Rr", "Tt",
+	"Hh", "CP", "Aa", "Ss", "Dd", "Ff", "Gg",
+	"Bb", "LS", "~|", "Zz", "Xx", "Cc", "Vv",
+	"SP", "00", "LC", "mod", "Fn", "LA", "LG",
+};
+
 
 unsigned char keys[N_COLS] = {0};
 
@@ -57,7 +67,7 @@ uint8_t scan_keys(uint8_t left_or_right)
 	// Debounce Delay
 	delay_ms(10);
 	
-	// Seconds scan after debounce delay
+	// Second scan after debounce delay
 	for (ncol=0 ; ncol < N_COLS ; ncol++)
 	{
 		COL_PORT.OUT = col_scan_mask << ncol;	
@@ -72,18 +82,7 @@ uint8_t scan_keys(uint8_t left_or_right)
 				result = keys[ncol] & (1 << nrow);
 				if (result == 1)
 				{
-					if (left_or_right == LEFT_HALF)
-					{
-						somekey = left_scanmap[nrow][ncol];
-					} else {
-						somekey = right_scanmap[nrow][ncol];
-					}
-					if (key_buffer_index < (N_KEYS_BUFFER-1) && key_buffer[key_buffer_index] != somekey)
-					{					
-						key_buffer[key_buffer_index] = somekey;
-						key_buffer_index++;
-					} 
-					printf("%02x %d %d \n", somekey, nrow, ncol);
+					printf("%d %d %p\n", nrow, ncol, KEYNAMES[nrow*7 + ncol]);
 				}
 			}
 		}
