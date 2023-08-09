@@ -1,0 +1,20 @@
+# CodeVisionAVR and Microchip Atmel Studio files
+.atsuo
+Debug/
+Release/
+*.cci
+*.hci
+*.cbi
+*.cof
+*.fct
+*.prj~
+*.prj
+*.cfg
+*.c~
+*.cw~
+
+# OS generated files
+.DS_Store
+[Th]umbs.db
+
+
