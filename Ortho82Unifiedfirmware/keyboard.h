@@ -9,6 +9,21 @@
 #ifndef KEYBOARD_H_
 #define KEYBOARD_H_
 
+#define ROW_FUN		0x01
+#define ROW_NUMBERS	0x02
+#define ROW_TAB		0x04
+#define ROW_CAPS	0x08
+#define ROW_SHIFT	0x10
+#define ROW_SPACE	0x20
+
+#define COL_ESC_DEL		1 << 1
+#define COL_F1_EQUAL	1 << 2
+#define COL_F2_MINUS	1 << 3
+#define COL_F3_0		1 << 4
+#define COL_F4_9		1 << 5
+#define COL_F5_8		1 << 6
+#define COL_F6_7		1 << 0
+
 #define N_KEYS_BUFFER	6
 #define N_COLS	7
 #define N_ROWS	6
@@ -38,6 +53,7 @@
 #define LED_OFF	(PORTB.OUTSET = 1 << 3)
 
 #define ROW_MASK	0b00111111
+#define READ_ROW_INPUT	(PORTD.IN & ROW_MASK)
 
 uint8_t scan_keys(uint8_t);
 void log_keys();
