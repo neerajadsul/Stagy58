@@ -64,12 +64,12 @@ Data Stack size         : 1024
 extern USB_KEYBOARD_t usb_keyboard;
 
 extern volatile unsigned char curr_keys[N_COLS];
-extern volatile unsigned char prev_keys[N_COLS];
-extern volatile unsigned char next_keys[N_COLS];
+//extern volatile unsigned char prev_keys[N_COLS];
+//extern volatile unsigned char next_keys[N_COLS];
 	
-//extern volatile char key_buffer[N_KEYS_BUFFER];
-//extern volatile int key_buffer_index;
-//extern unsigned char usb_putbuf(void *buffer, unsigned short length);
+extern volatile char key_buffer[N_KEYS_BUFFER];
+extern volatile int key_buffer_index;
+// extern unsigned char usb_putbuf(void *buffer, unsigned short length);
 
 unsigned char tx_buffer[8] = {0};
 int release_keys(void); 
@@ -81,7 +81,7 @@ void main(void)
 	// Declare your local variables here
 	unsigned char n;
 	char ch;
-	uint8_t state = 0, left_or_right = 0;
+	uint8_t left_or_right = 0;
 	//uint8_t i;
 	unsigned char key, mod_key;
 	
@@ -154,9 +154,25 @@ while (1) {
 	{
 		ch = getchar();
 	}
-
-	if (scan_keys())
+	update_curr_keys();
+	update_debounce_matrix();
+	n = report_debounced_keys();
+	
+	
+	
+	if (n > 0)
 	{
+		for ( n = 0; n < 6; n++)
+		{
+			usb_keyboard.keys[n] = 0;
+		}
+		printf("Key Buffer Index: %d \n", key_buffer_index);
+		for (n=0; n < key_buffer_index ; n++)
+		{
+			key = key_buffer[n];
+			printf("%02x ", key);
+		}
+		printf("\n");
 		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
 		//usb_keyboard.keys[1] = KS_TAB;
 		//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
@@ -177,7 +193,7 @@ while (1) {
 	{
 		// Send key-presses to Left-Half
 	}
-	delay_ms(50);
+	delay_ms(2);
 }
 }
 

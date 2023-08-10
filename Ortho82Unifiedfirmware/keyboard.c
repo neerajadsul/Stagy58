@@ -12,6 +12,16 @@
 #include "delay.h"
 #include "keyboard.h"
 
+typedef enum rowid {
+	ALL_ROWS=0,
+	ROW_FUN=1<<0,
+	ROW_NUMBERS=1<<1,
+	ROW_TAB=1<<2,
+	ROW_CAPS=1<<3,
+	ROW_SHIFT=1<<4,
+	ROW_SPACE=1<<5,
+}row_id;
+
 // Due to PCB Layout the keys are physically mapped as below.
 char left_scanmap[N_ROWS][N_COLS] = {
 	{KS_F6, KS_ESC, KS_F1, KS_F2, KS_F3, KS_F4, KS_F5},
@@ -40,72 +50,115 @@ flash char * flash KEYNAMES[42] = {
 	"SP", "00", "LC", "mod", "Fn", "LA", "LG",
 };
 
-uint8_t debounce_th[N_ROWS][N_COLS] = {0};
+volatile uint8_t debounce_matrix[N_ROWS][N_COLS] = {0};
 
 volatile char curr_keys[N_COLS] = {0};
-volatile char prev_keys[N_COLS] = {0};
-volatile char next_keys[N_COLS] = {0};
+//volatile char prev_keys[N_COLS] = {0};
+//volatile char next_keys[N_COLS] = {0};
 
 
-//volatile char key_buffer[N_KEYS_BUFFER] = {0};
-//volatile int key_buffer_index = 0;
+volatile char key_buffer[N_KEYS_BUFFER] = {0};
+volatile int key_buffer_index = 0;
 
-uint8_t scan_keys()
+void update_curr_keys()
 {
-	uint8_t col_scan_mask = 0x01;
-	//uint8_t row_pattern = 0;
-	uint8_t ncol, nrow;
-	uint8_t row_val =0;
-	uint8_t keyevent = false;
-	bit result;
-	char somekey=0;
+	uint8_t ncol;
+	uint8_t COL_SCAN_bm = 0x01;
+	uint8_t row_val;
 	
-	
-	// First Scan
 	for (ncol=0 ; ncol < N_COLS ; ncol++)
 	{
-		COL_PORT.OUT = col_scan_mask << ncol;	
+		COL_PORT.OUT = COL_SCAN_bm << ncol;
 		row_val = ROW_PORT.IN & ROW_MASK;
 		curr_keys[ncol] = row_val;
-	}		
-	// De-bounce Delay
-	delay_ms(20);
-	
-	
-	/* Row val - Previous key status - Meaning
-		0	curr_keys != prev_keys		Previously pressed keys are not pressed
-		0	curr_keys == prev_keys		No keys are pressed and previously none were pressed
-		1	curr_keys != prev_keys		Different keys than previous are pressed or released
-		1	curr_keys == prev_keys		Same keys are pressed as previously
-	*/
-	
-	// Second scan after de-bounce delay
-	for (ncol=0 ; ncol < N_COLS ; ncol++)
-	{
-		COL_PORT.OUT = col_scan_mask << ncol;	
-		row_val = ROW_PORT.IN & ROW_MASK;
-		// 
-		if (row_val == 0 && curr_keys[ncol] != row_val)
-		{
-			curr_keys[ncol] = 0;
-		} 
-		else 
-		{
-			keyevent = true;
-			for (nrow = 0; nrow < N_ROWS ; nrow++)
-			{
-				result = curr_keys[ncol] & (1 << nrow);
-				if (result == 1)
-				{
-					printf("%d %d %p\n", nrow, ncol, KEYNAMES[nrow*7 + ncol]);
-				}
-			}
-		}
-	}		
-	delay_ms(10);
-	return keyevent;
+	}	
 }
 
+void update_debounce_matrix()
+{
+	uint8_t nrow, ncol;	
+	for (ncol=0 ; ncol < N_COLS ; ncol++)
+	{
+		for (nrow=0 ; nrow < N_ROWS ; nrow++)
+		{
+			if (curr_keys[ncol] & (1<<nrow))
+			{
+				debounce_matrix[nrow][ncol] += 1;
+			} else {
+				debounce_matrix[nrow][ncol] = 0;
+			}
+		}
+	}
+}
+
+
+
+
+uint8_t report_debounced_keys()
+{
+	uint8_t nrow, ncol, numkeys=0;	
+	for (ncol=0 ; ncol < N_COLS ; ncol++)
+	{
+		for (nrow=0 ; nrow < N_ROWS ; nrow++)
+		{
+			if (debounce_matrix[nrow][ncol] > 50) {
+				printf("%d %d %p\n", nrow, ncol, KEYNAMES[nrow*7 + ncol]);
+				add_key_buffer(left_scanmap[nrow][ncol]);
+				numkeys++;
+				debounce_matrix[nrow][ncol] = 0;
+			} 
+			//else if (debounce_matrix[nrow][ncol] == 0) {
+				//remove_key_buffer(left_scanmap[nrow][ncol]);
+			//}
+		}
+	}
+	return numkeys;
+}
+
+void add_key_buffer(uint8_t key)
+{
+	uint8_t idx;
+	for (idx=0 ; idx < N_KEYS_BUFFER ; idx++)
+	{
+		if (key_buffer[idx] == key)
+		{
+			return;
+		}
+	}
+	if (key_buffer_index >= N_KEYS_BUFFER)
+	{
+		return;
+	} else {
+		key_buffer[key_buffer_index++] = key;
+	}
+}
+
+void remove_key_buffer(char key)
+{
+	uint8_t idx, remove_idx;
+	
+	// Find matching key in key_buffer and record its index
+	for (idx=0 ; idx < N_KEYS_BUFFER ; idx++)
+	{
+		if (key_buffer[idx] == key)
+		{
+			remove_idx = idx;
+			key_buffer[idx] = 0;
+			key_buffer_index--;
+			break;
+		}
+	}
+	if (remove_idx > 0)
+	{
+		// Shift data from remove index by 1
+		for (idx=remove_idx; idx < (N_KEYS_BUFFER-1) ; idx++)
+		{
+			key_buffer[idx] = key_buffer[idx+1];
+		}
+		
+	}
+	
+}
 
 void log_keys()
 {
