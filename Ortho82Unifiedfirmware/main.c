@@ -58,15 +58,19 @@ Data Stack size         : 1024
 
 #include "keyboard.h"
 
-#define USE_USB_CONNECTION	0
+#define USE_USB_CONNECTION	1
 
 // Declare your global variables here
 extern USB_KEYBOARD_t usb_keyboard;
 
-extern uint8_t keys[N_COLS];
-extern volatile char key_buffer[N_KEYS_BUFFER];
-extern volatile int key_buffer_index;
+extern volatile unsigned char curr_keys[N_COLS];
+extern volatile unsigned char prev_keys[N_COLS];
+extern volatile unsigned char next_keys[N_COLS];
+	
+//extern volatile char key_buffer[N_KEYS_BUFFER];
+//extern volatile int key_buffer_index;
 //extern unsigned char usb_putbuf(void *buffer, unsigned short length);
+
 unsigned char tx_buffer[8] = {0};
 int release_keys(void); 
 
@@ -152,53 +156,25 @@ void main(void)
 				ch = getchar();
 			}
 
-			if (scan_keys(left_or_right))
+			if (scan_keys())
 			{
-				while (key_buffer_index > 0) {
-					key_buffer_index--;
-					key = key_buffer[key_buffer_index];
-					key_buffer[key_buffer_index] = 0;				
-					// Check if key is a modifier
-					mod_key = get_modifier(key);
-					if (mod_key != 0)
-					{
-						usb_keyboard.modifier_keys |= mod_key;
-						continue;
-					} else if (key == FN_KEY)
-					{
-						printf("FN_KEY\n");
-						
-					} else if (key == SPECIAL_KEY)
-					{
-						printf("MOD_KEY\n");
-					} else {
-					
-					} 
-					//tx_buffer[key_buffer_index] = key_buffer[key_buffer_index];
-					printf("%02x %d \n", key, key_buffer_index);
-					usb_keyboard_keypress(key, usb_keyboard.modifier_keys);
-				}								
-					//usb_keyboard_sendkeys();
-					//usb_putbuf(tx_buffer, sizeof(tx_buffer));
+				//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
+				//usb_keyboard.keys[1] = KS_TAB;
+				//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
+				//usb_keyboard_sendkeys();
+				//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
+				//usb_keyboard.keys[1] = 0;
+				//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
+				//usb_keyboard_sendkeys();
+				//usb_keyboard_keypress(KS_TAB, KM_LEFT_ALT);
+				
 			} else {
-				if ((usb_keyboard.modifier_keys & KM_LEFT_GUI) == 1)
-				{
-					printf("WinLEFT\n");
-				}
-				release_keys();	
-				usb_keyboard.modifier_keys = 0;
-				mod_key = 0;
-				for (n=0;n<8;n++)
-				{
-					tx_buffer[n] = 0;
-				}
+				//release_keys();
 			}
-			
 			if (left_or_right == RIGHT_HALF)
 			{
 				// Send key-presses to Left-Half
 			}
-			//usb_keyboard_sendkeys();
 			delay_ms(50);
 		}
 }
@@ -208,12 +184,19 @@ int release_keys()
 {
 	uint8_t i;
 
-	for ( i = 0; i < 8; i++)
+	for ( i = 0; i < 6; i++)
 	{
-		tx_buffer[i] = 0;
+		usb_keyboard.keys[i] = 0;
 	}
-	usb_putbuf(tx_buffer, 8);
-	delay_ms(10);
+	usb_keyboard.modifier_keys = 0;
+	usb_keyboard_sendkeys();
+
+	//for ( i = 0; i < 8; i++)
+	//{
+		//tx_buffer[i] = 0;
+	//}
+	//usb_putbuf(tx_buffer, 8);
+	//delay_ms(10);
 	return 0;
 }
 
