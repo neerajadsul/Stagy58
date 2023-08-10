@@ -148,35 +148,37 @@ void main(void)
 	
 	show_scanmap(left_or_right);
 	
-	while (1)
-		{
-			// Process input from right half
-			if (left_or_right == LEFT_HALF && rx_counter_usarte0 > 0)
-			{
-				ch = getchar();
-			}
+while (1) {
+	// Process input from right half
+	if (left_or_right == LEFT_HALF && rx_counter_usarte0 > 0)
+	{
+		ch = getchar();
+	}
 
-			if (scan_keys())
-			{
-				//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
-				//usb_keyboard.keys[1] = KS_TAB;
-				//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
-				//usb_keyboard_sendkeys();
-				//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
-				//usb_keyboard.keys[1] = 0;
-				//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
-				//usb_keyboard_sendkeys();
-				//usb_keyboard_keypress(KS_TAB, KM_LEFT_ALT);
-				
-			} else {
-				//release_keys();
-			}
-			if (left_or_right == RIGHT_HALF)
-			{
-				// Send key-presses to Left-Half
-			}
-			delay_ms(50);
-		}
+	if (scan_keys())
+	{
+		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
+		//usb_keyboard.keys[1] = KS_TAB;
+		//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
+		//usb_keyboard_sendkeys();
+		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
+		//usb_keyboard.keys[1] = 0;
+		//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
+		//usb_keyboard_sendkeys();
+		//usb_keyboard_keypress(KS_TAB, KM_LEFT_ALT);
+		
+	} else {
+		//release_keys();
+	}
+	
+	
+	// Special case when right-half of the keyboard.
+	if (left_or_right == RIGHT_HALF)
+	{
+		// Send key-presses to Left-Half
+	}
+	delay_ms(50);
+}
 }
 
 
