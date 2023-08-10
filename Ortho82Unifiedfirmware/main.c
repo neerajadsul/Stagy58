@@ -171,6 +171,9 @@ while (1) {
 		{
 			key = key_buffer[n];
 			printf("%02x ", key);
+			if (get_modifier(key))
+			{
+			}
 		}
 		printf("\n");
 		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
@@ -224,40 +227,14 @@ uint8_t get_modifier(uint8_t key)
 	
 	switch (key) 
 	{
-		case LEFT_CTRL:
-		result = KM_LEFT_CTRL;
-		break;
-		
-		case LEFT_ALT:
-		result = KM_LEFT_ALT;
-		break;
-		
-		case LEFT_GUI:
-		result = KM_LEFT_GUI;
-		break;
-		
-		case LEFT_SHIFT:
-		result = KM_LEFT_SHIFT;
-		break;
-		
-		case RIGHT_CTRL:
-		result = KM_RIGHT_CTRL;
-		break;
-		
-		case RIGHT_ALT:
-		result = KM_RIGHT_ALT;
-		break;
-		
-		case RIGHT_GUI:
-		result = KM_RIGHT_GUI;
-		break;
-		
-		case RIGHT_SHIFT:
-		result = KM_RIGHT_SHIFT;
-		break;
-		
+		case LEFT_CTRL: return KM_LEFT_CTRL;
+		case LEFT_ALT: return KM_LEFT_ALT;
+		case LEFT_GUI: return KM_LEFT_GUI;
+		case LEFT_SHIFT: return KM_LEFT_SHIFT;
+		case RIGHT_CTRL: return KM_RIGHT_CTRL;
+		case RIGHT_ALT: return KM_RIGHT_ALT;
+		case RIGHT_GUI: return KM_RIGHT_GUI;
+		case RIGHT_SHIFT: return KM_RIGHT_SHIFT;
 	}
-	
-	
 	return result;
 }
