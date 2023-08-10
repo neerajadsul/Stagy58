@@ -102,7 +102,7 @@ uint8_t report_debounced_keys()
 		for (nrow=0 ; nrow < N_ROWS ; nrow++)
 		{
 			if (debounce_matrix[nrow][ncol] > 50) {
-				printf("%d %d %p\n", nrow, ncol, KEYNAMES[nrow*7 + ncol]);
+				//printf("%d %d %p\n", nrow, ncol, KEYNAMES[nrow*7 + ncol]);
 				add_key_buffer(left_scanmap[nrow][ncol]);
 				numkeys++;
 				debounce_matrix[nrow][ncol] = 0;

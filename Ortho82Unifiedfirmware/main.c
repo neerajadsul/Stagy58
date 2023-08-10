@@ -84,7 +84,7 @@ int num_modifiers;
 	char ch;
 	uint8_t left_or_right = 0, num_keys, mm;
 	//uint8_t i;
-	unsigned char key, mod_key;
+	unsigned char key, regular_keys[6], mod_keys[8];
 	
 	// Interrupt system initialization
 	// Optimize for speed
@@ -149,52 +149,71 @@ int num_modifiers;
 	
 	show_scanmap(left_or_right);
 	
-while (1) {
-	// Process input from right half
-	if (left_or_right == LEFT_HALF && rx_counter_usarte0 > 0)
-	{
-		ch = getchar();
-	}
-	update_curr_keys();
-	update_debounce_matrix();
-	n = report_debounced_keys();
-	
-	
-	
-	if (n > 0)
-	{
-		printf("Key Buffer Index: %d \n", key_buffer_index);
-		num_keys = 0;
-		num_modifiers = 0;
-		for (mm=0 ; mm < key_buffer_index; mm++)
+	while (1) {
+		// Process input from right half
+		if (left_or_right == LEFT_HALF && rx_counter_usarte0 > 0)
 		{
-			key = key_buffer[mm];
-			//printf("%02x ", key);
-			if (key == FN_KEY)
+			ch = getchar();
+		}
+		update_curr_keys();
+		update_debounce_matrix();
+		n = report_debounced_keys();
+		
+		{
+			printf("Key Buffer Index: %d \n", key_buffer_index);
+			num_keys = 0;
+			num_modifiers = 0;
+			for (mm=0 ; mm < key_buffer_index; mm++)
 			{
-				//printf("FN Key\n");
-			} else if (key == SPECIAL_KEY)
-			{
-				//printf("Special Key\n");
-			} else if (get_modifier(key) != 0) // Modifier Keys Ctrl, Alt, Shift, Cmd/Win
-			{
-				num_modifiers++;
-			} else // Regular Key
-			{
-				num_keys++;
+				key = key_buffer[mm];
+				//printf("%02x ", key);
+				if (key == FN_KEY)
+				{
+					//printf("FN Key\n");
+				} else if (key == SPECIAL_KEY)
+				{
+					//printf("Special Key\n");
+				} else if (get_modifier(key) != 0) // Modifier Keys Ctrl, Alt, Shift, Cmd/Win
+				{
+					mod_keys[num_modifiers] = key;
+					num_modifiers++;
+				} else // Regular Key
+				{
+					regular_keys[num_keys] = key;
+					num_keys++;
+				}
 			}
+			printf("Mod: %d Reg: %d \n", num_modifiers, num_keys);
+
 		}
 		
-		printf("Mod: %d Reg: %d \n", num_modifiers, num_keys);
+		
+		for (mm=0; mm<num_modifiers ; mm++) {
+			usb_keyboard.modifier_keys |= mod_keys[mm];
+			mod_keys[mm] = 0;			
+		}
+		if (num_keys > 0 && num_modifiers > 0) {
+			usb_keyboard_keypress(regular_keys[num_keys-1], usb_keyboard.modifier_keys);			
+		}
+		if (num_keys > 0 && num_modifiers == 0) {
+			usb_keyboard_keypress(regular_keys[num_keys-1], 0);
+		}
+		if (num_keys == 0 && num_modifiers > 0) {
+			usb_keyboard_keypress(0, usb_keyboard.modifier_keys);			
+		}
+		
+		key_buffer_index = 0;
+		for (mm=0; mm<N_KEYS_BUFFER ; mm++) {
+			key_buffer[mm] = 0;
+		}
+		num_keys = 0;
+		num_modifiers = 0;
+		// Special case when right-half of the keyboard.
+		if (left_or_right == RIGHT_HALF){
+			// Send key-presses to Left-Half
+		}
+		delay_ms(4);
 	}
-	
-	// Special case when right-half of the keyboard.
-	if (left_or_right == RIGHT_HALF)
-	{
-		// Send key-presses to Left-Half
-	}
-	delay_ms(1);
-}
 }
 
 
