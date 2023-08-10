@@ -18,8 +18,8 @@ char left_scanmap[N_ROWS][N_COLS] = {
 	{KS_6_CARET, KS_GRAVE_ACCENT_TILDE, KS_1_EXCLAMATION, KS_2_AT, KS_3_HASHMARK, KS_4_DOLLAR, KS_5_PERCENTAGE},
 	{KS_Y, KS_TAB, KS_Q, KS_W, KS_E, KS_R, KS_T},
 	{KS_H, KS_CAPS_LOCK, KS_A, KS_S, KS_D, KS_F, KS_G},
-	{KS_B, LEFT_SHIFT, KS_BACKSLASH_PIPE, KS_Z, KS_X, KS_C, KS_V},
-	{KS_SPACE, NO_KEY, LEFT_CTRL, SPECIAL_KEY, FN_KEY, LEFT_ALT, LEFT_GUI},
+	{KS_B, KS_LEFT_SHIFT, KS_BACKSLASH_PIPE, KS_Z, KS_X, KS_C, KS_V},
+	{KS_SPACE, NO_KEY, KS_LEFT_CTRL, SPECIAL_KEY, FN_KEY, KS_LEFT_ALT, KS_LEFT_GUI},
 };
 
 char right_scanmap[N_ROWS][N_COLS] = {
@@ -27,8 +27,8 @@ char right_scanmap[N_ROWS][N_COLS] = {
 	{KS_7_AMPERSAND, KS_BACKSPACE, KS_EQUAL_PLUS, KS_MINUS_UNDERSCORE, KS_0_CLOSING_PARENS, KS_9_OPENING_PARENS, KS_8_ASTERISK},
 	{KS_U, KS_ENTER, KS_CLOSING_BRACKET_BRACE, KS_OPENING_BRACKET_BRACE, KS_P, KS_O, KS_I},
 	{KS_J, KS_ENTER, KS_3_HASHMARK, KS_APOSTROPHE_QUOTE, KS_SEMICOLON_COLON, KS_L, KS_K},
-	{KS_N, RIGHT_SHIFT, KS_UP_ARROW, KS_SLASH_QUESTION_MARK, KS_DOT_GREATER_THAN, KS_COMMA_LESS_THAN, KS_M},
-	{KS_SPACE, NO_KEY, KS_RIGHT_ARROW, KS_DOWN_ARROW, KS_LEFT_ARROW, RIGHT_ALT, RIGHT_GUI},
+	{KS_N, KS_RIGHT_SHIFT, KS_UP_ARROW, KS_SLASH_QUESTION_MARK, KS_DOT_GREATER_THAN, KS_COMMA_LESS_THAN, KS_M},
+	{KS_SPACE, NO_KEY, KS_RIGHT_ARROW, KS_DOWN_ARROW, KS_LEFT_ARROW, KS_RIGHT_ALT, KS_RIGHT_GUI},
 };
 
 flash char * flash KEYNAMES[42] = {
@@ -40,13 +40,17 @@ flash char * flash KEYNAMES[42] = {
 	"SP", "00", "LC", "mod", "Fn", "LA", "LG",
 };
 
+uint8_t debounce_th[N_ROWS][N_COLS] = {0};
 
-unsigned char keys[N_COLS] = {0};
+volatile char curr_keys[N_COLS] = {0};
+volatile char prev_keys[N_COLS] = {0};
+volatile char next_keys[N_COLS] = {0};
 
-volatile char key_buffer[N_KEYS_BUFFER] = {0};
-volatile int key_buffer_index = 0;
 
-uint8_t scan_keys(uint8_t left_or_right)
+//volatile char key_buffer[N_KEYS_BUFFER] = {0};
+//volatile int key_buffer_index = 0;
+
+uint8_t scan_keys()
 {
 	uint8_t col_scan_mask = 0x01;
 	//uint8_t row_pattern = 0;
@@ -62,24 +66,35 @@ uint8_t scan_keys(uint8_t left_or_right)
 	{
 		COL_PORT.OUT = col_scan_mask << ncol;	
 		row_val = ROW_PORT.IN & ROW_MASK;
-		keys[ncol] = row_val;
+		curr_keys[ncol] = row_val;
 	}		
-	// Debounce Delay
-	delay_ms(10);
+	// De-bounce Delay
+	delay_ms(20);
 	
-	// Second scan after debounce delay
+	
+	/* Row val - Previous key status - Meaning
+		0	curr_keys != prev_keys		Previously pressed keys are not pressed
+		0	curr_keys == prev_keys		No keys are pressed and previously none were pressed
+		1	curr_keys != prev_keys		Different keys than previous are pressed or released
+		1	curr_keys == prev_keys		Same keys are pressed as previously
+	*/
+	
+	// Second scan after de-bounce delay
 	for (ncol=0 ; ncol < N_COLS ; ncol++)
 	{
 		COL_PORT.OUT = col_scan_mask << ncol;	
 		row_val = ROW_PORT.IN & ROW_MASK;
-		if (row_val == 0 || keys[ncol] != row_val)
+		// 
+		if (row_val == 0 && curr_keys[ncol] != row_val)
 		{
-			keys[ncol] = 0;
-		} else {
+			curr_keys[ncol] = 0;
+		} 
+		else 
+		{
 			keyevent = true;
 			for (nrow = 0; nrow < N_ROWS ; nrow++)
 			{
-				result = keys[ncol] & (1 << nrow);
+				result = curr_keys[ncol] & (1 << nrow);
 				if (result == 1)
 				{
 					printf("%d %d %p\n", nrow, ncol, KEYNAMES[nrow*7 + ncol]);
@@ -87,7 +102,7 @@ uint8_t scan_keys(uint8_t left_or_right)
 			}
 		}
 	}		
-	
+	delay_ms(10);
 	return keyevent;
 }
 
@@ -97,7 +112,7 @@ void log_keys()
 	uint8_t ncol;
 	for (ncol=0 ; ncol < N_COLS ; ncol++)
 	{
-		printf("%02x ", keys[ncol]);	
+		printf("%02x ", curr_keys[ncol]);	
 	}
 	putchar('\n');
 	

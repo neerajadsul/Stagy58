@@ -55,7 +55,7 @@
 #define ROW_MASK	0b00111111
 #define READ_ROW_INPUT	(PORTD.IN & ROW_MASK)
 
-uint8_t scan_keys(uint8_t);
+uint8_t scan_keys();
 void log_keys();
 void show_scanmap(uint8_t);
 
