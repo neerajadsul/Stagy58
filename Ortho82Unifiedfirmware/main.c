@@ -186,16 +186,6 @@ while (1) {
 		}
 		
 		printf("Mod: %d Reg: %d \n", num_modifiers, num_keys);
-		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
-		//usb_keyboard.keys[1] = KS_TAB;
-		//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
-		//usb_keyboard_sendkeys();
-		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
-		//usb_keyboard.keys[1] = 0;
-		//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
-		//usb_keyboard_sendkeys();
-		//usb_keyboard_keypress(KS_TAB, KM_LEFT_ALT);
-		
 	}
 	
 	// Special case when right-half of the keyboard.
