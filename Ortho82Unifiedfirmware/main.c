@@ -78,10 +78,11 @@ uint8_t get_modifier(uint8_t key);
 
 void main(void)
 {
+int num_modifiers;
 	// Declare your local variables here
 	unsigned char n;
 	char ch;
-	uint8_t left_or_right = 0;
+	uint8_t left_or_right = 0, num_keys, mm;
 	//uint8_t i;
 	unsigned char key, mod_key;
 	
@@ -162,20 +163,29 @@ while (1) {
 	
 	if (n > 0)
 	{
-		for ( n = 0; n < 6; n++)
-		{
-			usb_keyboard.keys[n] = 0;
-		}
 		printf("Key Buffer Index: %d \n", key_buffer_index);
-		for (n=0; n < key_buffer_index ; n++)
+		num_keys = 0;
+		num_modifiers = 0;
+		for (mm=0 ; mm < key_buffer_index; mm++)
 		{
-			key = key_buffer[n];
-			printf("%02x ", key);
-			if (get_modifier(key))
+			key = key_buffer[mm];
+			//printf("%02x ", key);
+			if (key == FN_KEY)
 			{
+				//printf("FN Key\n");
+			} else if (key == SPECIAL_KEY)
+			{
+				//printf("Special Key\n");
+			} else if (get_modifier(key) != 0) // Modifier Keys Ctrl, Alt, Shift, Cmd/Win
+			{
+				num_modifiers++;
+			} else // Regular Key
+			{
+				num_keys++;
 			}
 		}
-		printf("\n");
+		
+		printf("Mod: %d Reg: %d \n", num_modifiers, num_keys);
 		//usb_keyboard.modifier_keys |= KM_LEFT_ALT;
 		//usb_keyboard.keys[1] = KS_TAB;
 		//usb_keyboard.modifier_keys |= KM_LEFT_SHIFT;
@@ -186,17 +196,14 @@ while (1) {
 		//usb_keyboard_sendkeys();
 		//usb_keyboard_keypress(KS_TAB, KM_LEFT_ALT);
 		
-	} else {
-		//release_keys();
 	}
-	
 	
 	// Special case when right-half of the keyboard.
 	if (left_or_right == RIGHT_HALF)
 	{
 		// Send key-presses to Left-Half
 	}
-	delay_ms(2);
+	delay_ms(1);
 }
 }
 
@@ -227,14 +234,14 @@ uint8_t get_modifier(uint8_t key)
 	
 	switch (key) 
 	{
-		case LEFT_CTRL: return KM_LEFT_CTRL;
-		case LEFT_ALT: return KM_LEFT_ALT;
-		case LEFT_GUI: return KM_LEFT_GUI;
-		case LEFT_SHIFT: return KM_LEFT_SHIFT;
-		case RIGHT_CTRL: return KM_RIGHT_CTRL;
-		case RIGHT_ALT: return KM_RIGHT_ALT;
-		case RIGHT_GUI: return KM_RIGHT_GUI;
-		case RIGHT_SHIFT: return KM_RIGHT_SHIFT;
+		case KS_LEFT_CTRL: return KM_LEFT_CTRL;
+		case KS_LEFT_ALT: return KM_LEFT_ALT;
+		case KS_LEFT_GUI: return KM_LEFT_GUI;
+		case KS_LEFT_SHIFT: return KM_LEFT_SHIFT;
+		case KS_RIGHT_CTRL: return KM_RIGHT_CTRL;
+		case KS_RIGHT_ALT: return KM_RIGHT_ALT;
+		case KS_RIGHT_GUI: return KM_RIGHT_GUI;
+		case KS_RIGHT_SHIFT: return KM_RIGHT_SHIFT;
 	}
 	return result;
 }

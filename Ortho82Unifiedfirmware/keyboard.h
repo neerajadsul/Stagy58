@@ -24,7 +24,7 @@
 #define COL_F5_8		1 << 6
 #define COL_F6_7		1 << 0
 
-#define N_KEYS_BUFFER	8
+#define N_KEYS_BUFFER	6
 #define N_COLS	7
 #define N_ROWS	6
 #define NO_KEY	0
