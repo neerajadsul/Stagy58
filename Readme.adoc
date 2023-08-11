@@ -1,7 +1,15 @@
 = Ortho82Split Keyboard
 This is the current design iteration which has 41 keys on each half in orthogonal matrix.
 
+KiCAD 7 Render
+
 image::images/Ortho82SplitLeftHalf.jpg[]
+
+
+Fully assembled two halves of the keyboard, side by side
+
+image::images/FullyAssembledLeftRight.jpg[]
+
 
 == Programmers Model
 
