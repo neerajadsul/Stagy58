@@ -3,11 +3,11 @@
 [tT]humbs.db
 
 # Kicad backups
-*-backups/
+**/*-backups/
 
 # Kicad autosave files
 *autosave*
-*auto_saved*/
+**/*auto_saved_files*
 
 # Kicad UI Setup
 *.kicad_prl

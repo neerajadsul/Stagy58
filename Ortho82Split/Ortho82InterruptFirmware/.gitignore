@@ -8,11 +8,13 @@ Release/
 *.cof
 *.fct
 *.prj~
+*.prj
 *.cfg
+*.c~
+*.cw~
 
 # OS generated files
 .DS_Store
 [Th]umbs.db
 
-# VS Code files
-.vscode/
+
