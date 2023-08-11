@@ -12,7 +12,7 @@
 # Run "make help" for target help.
 MCU          = atxmega32a4u
 ARCH         = XMEGA
-BOARD        = NONE
+BOARD        = BOARD_USER
 F_CPU        = 32000000
 F_USB        = 48000000
 OPTIMIZATION = 1
