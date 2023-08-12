@@ -8,6 +8,8 @@ import keypad
 import busio
 import supervisor
 
+LOG_DEBUG = False
+
 class DummyEvent():
     """ Emulates Keymatrix event based on data on serial port"""
     def __init__(self, event_string):
@@ -36,6 +38,38 @@ class DummyEventQueue():
     def add(self, event):
         self.events.append(event)
 
+
+def process_event(event):
+
+    mod_key_flag = False
+    fn_key_flag = False
+    key_active = None
+    key_id = event.key_number
+    if LR == 'L':
+        # Left half keys are documented above to maintain 1:1 mapping of physical placement
+        # [6 - (key_id%7) + 7*(key_id//7)] logic converts key_id to correct mapping
+        # This creates boundary value problem at 35 as it converts to 41, out of index
+        # Hence the value check to add 1 which makes correct mapping
+        if key_id > 34:
+            key_id += 1
+        key_id = 6 - (key_id%7) + 7*(key_id//7)
+
+    if key_id == MOD_KEY_NUM:
+        mod_key_flag = True
+    elif key_id == FN_KEY_NUM:
+        fn_key_flag = True
+    else:
+        key_active = KEYBOARD_KEYCODES[LR][key_id]
+
+    action = str(event).split(' ')[-1]
+    data = f"<{LR} {key_id} {action}\n"
+    if LOG_DEBUG:
+        print(data, KEYBOARD_STR_KEYCODES[LR][key_id].split('.')[-1])
+    print(data, end='')
+
+    return data, key_active, mod_key_flag, fn_key_flag
+
+
 LR_side = DigitalInOut(board.GP28)
 LR_side.direction = Direction.INPUT
 LR_side.pull = Pull.UP
@@ -54,7 +88,8 @@ FN_KEY_NUM = 81
 USB_connected = supervisor.runtime.usb_connected
 Serial_connected = supervisor.runtime.serial_connected
 
-print(f"Supervisor Status: USB: {USB_connected} Serial: {Serial_connected}")
+if LOG_DEBUG:
+    print(f"Supervisor Status: USB: {USB_connected} Serial: {Serial_connected}")
 
 
 KEYCODES_L = (
@@ -123,43 +158,35 @@ km = keypad.KeyMatrix(
 
 # Secondary dummy events to be created with data received
 # from other half keyboard via USART/Serial port
-dummy_events = DummyEventQueue()
+dummy_event_queue = DummyEventQueue()
 
-mod_key_flag = False
-fn_key_flag = False
-key_active = None
 
 while True:
     event = km.events.get()
     if event:
-        key_id = event.key_number
-        
-        if LR == 'L':
-            # Left half keys are documented above to maintain 1:1 mapping of physical placement
-            # [6 - (key_id%7) + 7*(key_id//7)] logic converts key_id to correct mapping
-            # This creates boundary value problem at 35 as it converts to 41, out of index
-            # Hence the value check to add 1 which makes correct mapping
-            if key_id > 34:
-                key_id += 1
-            key_id = 6 - (key_id%7) + 7*(key_id//7)
-        
-        if key_id == MOD_KEY_NUM:
-            mod_key_flag = True
-        elif key_id == FN_KEY_NUM:
-            fn_key_flag = True
-        else:                
-            key_active = KEYBOARD_KEYCODES[LR][key_id]
-            # kbd.press(KEYCODES_R[key_id])
-
-        action = str(event).split(' ')[-1]        
-        data = f"<{LR} {key_id} {KEYBOARD_STR_KEYCODES[LR][key_id].split('.')[-1]} {action}\n"
-        
-        print(data, end='')
-
+        data, key_active, mod_key_flag, fn_key_flag = process_event(event)
         if USB_connected:
             if event.pressed:
-                kbd.press(key_active)        
+                kbd.press(key_active)
             if event.released:
                 kbd.release(key_active)
         else:
             uart.write(data.encode())
+
+    if USB_connected:
+        serial_data = uart.readline()
+        if not serial_data:
+            continue
+        if len(serial_data) < 10:
+            uart.reset_input_buffer()
+            continue
+            
+        received_data = serial_data.decode().strip()
+        print(received_data, end='')
+        ev = DummyEvent(received_data)
+        dummy_event_queue.add(ev)
+
+    event_dummy = dummy_event_queue.get()
+
+    if event_dummy:
+        data, key_active, mod_key_flag, fn_key_flag = process_event(event_dummy)
