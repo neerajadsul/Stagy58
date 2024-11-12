@@ -1,9 +1,10 @@
 /*******************************************************
 USARTs initialization created by the
 CodeWizardAVR V3.38 Automatic Program Generator
-Copyright: Neeraj Adsul <neeraj.adsul[at]gmail.com>
+© Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
 
-Project : Ortho82UnifiedKeyboard
+Project : SplitKeyboardPS2
 *******************************************************/
 
 #ifndef _USARTS_INIT_INCLUDED_
@@ -22,7 +23,7 @@ void putchar(char c);
 // USARTE0 initialization
 void usarte0_init(void);
 // USARTE0 Receiver buffer
-#define RX_BUFFER_SIZE_USARTE0 16
+#define RX_BUFFER_SIZE_USARTE0 8
 extern char rx_buffer_usarte0[RX_BUFFER_SIZE_USARTE0];
 
 #if RX_BUFFER_SIZE_USARTE0 <= 256
@@ -40,7 +41,7 @@ extern volatile unsigned int rx_counter_usarte0;
 // This flag is set on USARTE0 Receiver buffer overflow
 extern bit rx_buffer_overflow_usarte0;
 // USARTE0 Transmitter buffer
-#define TX_BUFFER_SIZE_USARTE0 16
+#define TX_BUFFER_SIZE_USARTE0 8
 extern char tx_buffer_usarte0[TX_BUFFER_SIZE_USARTE0];
 
 #if TX_BUFFER_SIZE_USARTE0 <= 256

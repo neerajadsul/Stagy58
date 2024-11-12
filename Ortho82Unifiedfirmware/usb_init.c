@@ -1,9 +1,10 @@
 /*******************************************************
 USB library initialization created by the
-CodeWizardAVR V3.38 Automatic Program Generator 
-Copyright: Neeraj Adsul <neeraj.adsul[at]gmail.com>
+CodeWizardAVR V3.38 Automatic Program Generator
+© Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
 
-Project : Ortho82UnifiedKeyboard
+Project : SplitKeyboardPS2
 *******************************************************/
 
 #include "usb_init.h"
@@ -15,7 +16,7 @@ flash USB_DEVICE_DESCRIPTOR_t usb_device_descriptor =
 .bLength=sizeof(USB_DEVICE_DESCRIPTOR_t),
 .bDescriptorType=USB_DESCRIPTOR_TYPE_DEVICE,
 .bcdUSB=USB_SPEC,
-.bDeviceClass=USB_CLASS_NONE,
+.bDeviceClass=USB_CLASS_COMM_DEV_COMM,
 .bDeviceSubClass=USB_SUBCLASS_NONE,
 .bDeviceProtocol=USB_PROTOCOL_NONE,
 .bMaxPacketSize0=USB_ENDPOINT0_SIZE,
@@ -26,43 +27,6 @@ flash USB_DEVICE_DESCRIPTOR_t usb_device_descriptor =
 .iProduct=2,
 .iSerialNumber=3,
 .bNumConfigurations=1
-};
-
-// HID Keyboard report descriptor
-flash unsigned char hid_keyboard_report_descriptor[]=
-{
-HID_RD_USAGE_PAGE(8,1), // Generic desktop
-HID_RD_USAGE(8,6), // Keyboard
-HID_RD_COLLECTION(8,HID_RD_COLLECTION_APPLICATION),
-HID_RD_REPORT_SIZE(8,1),
-HID_RD_REPORT_COUNT(8,8),
-HID_RD_USAGE_PAGE(8,7), // Key codes
-HID_RD_USAGE_MIN(8,0xE0),
-HID_RD_USAGE_MAX(8,0xE7),
-HID_RD_LOGICAL_MIN(8,0),
-HID_RD_LOGICAL_MAX(8,1),
-HID_RD_INPUT(8,HID_RD_DATA_F | HID_RD_VARIABLE_F | HID_RD_ABSOLUTE_F),
-HID_RD_REPORT_COUNT(8,1),
-HID_RD_REPORT_SIZE(8,8),
-HID_RD_INPUT(8,HID_RD_CONSTANT_F | HID_RD_VARIABLE_F),
-HID_RD_REPORT_COUNT(8,5),
-HID_RD_REPORT_SIZE(8,1),
-HID_RD_USAGE_PAGE(8,8), // Leds
-HID_RD_USAGE_MIN(8,1),
-HID_RD_USAGE_MAX(8,5),
-HID_RD_OUTPUT(8,HID_RD_DATA_F | HID_RD_VARIABLE_F | HID_RD_ABSOLUTE_F | HID_RD_NON_VOLATILE_F),
-HID_RD_REPORT_COUNT(8,1),
-HID_RD_REPORT_SIZE(8,3),
-HID_RD_OUTPUT(8,HID_RD_CONSTANT_F | HID_RD_VARIABLE_F),
-HID_RD_REPORT_COUNT(8,6),
-HID_RD_REPORT_SIZE(8,8),
-HID_RD_LOGICAL_MIN(8,0),
-HID_RD_LOGICAL_MAX(8,0xFF),
-HID_RD_USAGE_PAGE(8,7), // Key codes
-HID_RD_USAGE_MIN(8,0),
-HID_RD_USAGE_MAX(8,0xFF),
-HID_RD_INPUT(8,HID_RD_DATA_F | HID_RD_ARRAY_F),
-HID_RD_END_COLLECTION(0)
 };
 
 // Strings descriptors
@@ -100,10 +64,17 @@ flash struct
 // Configuration Descriptor
 USB_CONFIG_DESCRIPTOR_t config_descriptor;
 
-// Interface 0 - HID Keyboard
+// Interface 0 - CDC Control
 USB_INTERFACE_DESCRIPTOR_t interface_descriptor0;
-USB_HID_INTERFACE_DESCRIPTOR_t interface_hid_descriptor0;
+USB_CDC_HEADER_FUNC_DESCRIPTOR_t cdc_header_func_descriptor0;
+USB_CDC_ACM_FUNC_DESCRIPTOR_t cdc_acm_func_descriptor0;
+USB_CDC_UNION_FUNC_DESCRIPTOR_t cdc_union_func_descriptor0;
 USB_ENDPOINT_DESCRIPTOR_t interface_in_endpoint_descriptor0;
+
+// Interface 1 - CDC Data
+USB_INTERFACE_DESCRIPTOR_t interface_descriptor1;
+USB_ENDPOINT_DESCRIPTOR_t interface_out_endpoint_descriptor1;
+USB_ENDPOINT_DESCRIPTOR_t interface_in_endpoint_descriptor1;
 } usb_config_descriptor=
 {
 // Configuration Descriptor
@@ -111,14 +82,14 @@ USB_ENDPOINT_DESCRIPTOR_t interface_in_endpoint_descriptor0;
 .bLength=sizeof(USB_CONFIG_DESCRIPTOR_t),
 .bDescriptorType=USB_DESCRIPTOR_TYPE_CONFIGURATION,
 .wTotalLength=sizeof(usb_config_descriptor),
-.bNumInterfaces=1,
+.bNumInterfaces=2,
 .bConfigurationValue=1,
 .iConfiguration=USB_STRING_NONE,
 .bmAttributes=USB_ATTR_COMPAT1 | USB_ATTR_SELF_POWERED,
 .bMaxPower=100/2
 },
 
-// Interface 0 - HID Keyboard
+// Interface 0 - CDC Control
 // Descriptor
 {
 .bLength=sizeof(USB_INTERFACE_DESCRIPTOR_t),
@@ -126,24 +97,41 @@ USB_ENDPOINT_DESCRIPTOR_t interface_in_endpoint_descriptor0;
 .bInterfaceNumber=0,
 .bAlternateSetting=USB_ALTERNATE_SETTING_NONE,
 .bNumEndpoints=1,
-.bInterfaceClass=USB_CLASS_HID,
-.bInterfaceSubClass=USB_SUBCLASS_HID_BOOT,
-.bInterfaceProtocol=USB_PROTOCOL_KEYBOARD,
+.bInterfaceClass=USB_CLASS_COMM_DEV_COMM,
+.bInterfaceSubClass=USB_SUBCLASS_ACM,
+.bInterfaceProtocol=USB_PROTOCOL_CDC_AT,
 .iInterface=USB_STRING_NONE
 },
 
-// HID Interface Descriptor - Keyboard
+// CDC Header Functional Descriptor
 {
-.bLength=sizeof(USB_HID_INTERFACE_DESCRIPTOR_t),
-.bDescriptorType=USB_DESCRIPTOR_TYPE_HID_INTERFACE,
-.bcdHID=USB_HID_SPEC,
-.bCountryCode=0,
-.bNumDescriptors=1,
-.bReportDescriptorType=USB_DESCRIPTOR_TYPE_REPORT,
-.wDescriptorLength=sizeof(hid_keyboard_report_descriptor)
+.bFunctionLength=sizeof(USB_CDC_HEADER_FUNC_DESCRIPTOR_t),
+.bDescriptorType=USB_DESCRIPTOR_TYPE_CS_INTERFACE,
+.bDescriptorSubtype=CDC_DST_HEADER,
+.bcdCDC=USB_CDC_SPEC
 },
 
-// IN Endpoint Descriptor
+// Abstract Control Management Functional Descriptor
+{
+.bFunctionLength=sizeof(USB_CDC_ACM_FUNC_DESCRIPTOR_t),
+.bDescriptorType=USB_DESCRIPTOR_TYPE_CS_INTERFACE,
+.bDescriptorSubtype=CDC_DST_ACM,
+// Device supports Send_Break, Set_Line_Coding,
+// Set_Control_Line_State, Get_Line_Coding and
+// the notification Serial_State
+.bmCapabilities=CDC_ACM_SEND_BREAK | CDC_ACM_LC_CLS_SS
+},
+
+// Union Functional Descriptor
+{
+.bFunctionLength=sizeof(USB_CDC_UNION_FUNC_DESCRIPTOR_t),
+.bDescriptorType=USB_DESCRIPTOR_TYPE_CS_INTERFACE,
+.bDescriptorSubtype=CDC_DST_UNION,
+.bMasterInterface=0, // Interface 0 is used for Control
+.bSlaveInterface0=1  // Interface 1 is used for Data
+},
+
+// IN Endpoint descriptor - Notification
 {
 .bLength=sizeof(USB_ENDPOINT_DESCRIPTOR_t),
 .bDescriptorType=USB_DESCRIPTOR_TYPE_ENDPOINT,
@@ -151,6 +139,40 @@ USB_ENDPOINT_DESCRIPTOR_t interface_in_endpoint_descriptor0;
 .bmAttributes=USB_TRANSFER_INTERRUPT | USB_EP_ATTR_NO_SYNC | USB_EP_USAGE_DATA,
 .wMaxPacketSize=USB_INTERFACE0_IN_EP_SIZE,
 .bInterval=USB_INTERFACE0_IN_EP_SERVICE_INTERVAL
+},
+
+// Interface 1 - CDC Data
+// Descriptor
+{
+.bLength=sizeof(USB_INTERFACE_DESCRIPTOR_t),
+.bDescriptorType=USB_DESCRIPTOR_TYPE_INTERFACE,
+.bInterfaceNumber=1, // Interface 1 is used for Data
+.bAlternateSetting=USB_ALTERNATE_SETTING_NONE,
+.bNumEndpoints=2,
+.bInterfaceClass=USB_CLASS_COMM_DEV_DATA,
+.bInterfaceSubClass=USB_SUBCLASS_NONE,
+.bInterfaceProtocol=USB_PROTOCOL_NONE,
+.iInterface=USB_STRING_NONE
+},
+
+// OUT Endpoint Descriptor - Data
+{
+.bLength=sizeof(USB_ENDPOINT_DESCRIPTOR_t),
+.bDescriptorType=USB_DESCRIPTOR_TYPE_ENDPOINT,
+.bEndpointAddress=USB_INTERFACE1_OUT_EP | USB_ENDPOINT_DIR_OUT,
+.bmAttributes=USB_TRANSFER_BULK | USB_EP_ATTR_NO_SYNC | USB_EP_USAGE_DATA,
+.wMaxPacketSize=USB_INTERFACE1_OUT_EP_SIZE,
+.bInterval=0
+},
+
+// IN Endpoint Descriptor - Data
+{
+.bLength=sizeof(USB_ENDPOINT_DESCRIPTOR_t),
+.bDescriptorType=USB_DESCRIPTOR_TYPE_ENDPOINT,
+.bEndpointAddress=USB_INTERFACE1_IN_EP | USB_ENDPOINT_DIR_IN,
+.bmAttributes=USB_TRANSFER_BULK | USB_EP_ATTR_NO_SYNC | USB_EP_USAGE_DATA,
+.wMaxPacketSize=USB_INTERFACE1_IN_EP_SIZE,
+.bInterval=0
 }
 };
 
@@ -160,8 +182,6 @@ flash USB_DESCRIPTOR_LIST_t usb_descriptor_list[]=
 {
 {0,USB_DESCRIPTOR_TYPE_DEVICE,0,&usb_device_descriptor,sizeof(usb_device_descriptor)},
 {0,USB_DESCRIPTOR_TYPE_CONFIGURATION,0,&usb_config_descriptor,sizeof(usb_config_descriptor)},
-{0,USB_DESCRIPTOR_TYPE_HID_INTERFACE,0 /* Interface # */,&usb_config_descriptor.interface_hid_descriptor0,sizeof(USB_HID_INTERFACE_DESCRIPTOR_t)},
-{0,USB_DESCRIPTOR_TYPE_REPORT,0 /* Interface # */,hid_keyboard_report_descriptor,sizeof(hid_keyboard_report_descriptor)},
 {0,USB_DESCRIPTOR_TYPE_STRING,0,&usb_string0,sizeof(usb_string0)},
 {1,USB_DESCRIPTOR_TYPE_STRING,USB_LANG_ID_US_ENGLISH,&usb_string1,sizeof(usb_string1)},
 {2,USB_DESCRIPTOR_TYPE_STRING,USB_LANG_ID_US_ENGLISH,&usb_string2,sizeof(usb_string2)},
@@ -176,21 +196,30 @@ flash USB_CONFIG_t usb_config=
 {
 // Interface 0
 {
-.bInterfaceClass=USB_CLASS_HID,
-.bInterfaceProtocol=USB_PROTOCOL_KEYBOARD,
-.report_data=&usb_keyboard,
-.report_size=sizeof(USB_KEYBOARD_t),
+.bInterfaceClass=USB_CLASS_COMM_DEV_COMM,
+.bInterfaceProtocol=USB_PROTOCOL_CDC_AT,
+.report_data=&usb_cdc_serial[0].parameters,
+.report_size=sizeof(USB_CDC_LINE_CODING_t),
 // IN endpoint configuration
 .in={.ep=USB_INTERFACE0_IN_EP,.type=USB_TRANSFER_INTERRUPT,.size=USB_INTERFACE0_IN_EP_SIZE}
+},
+// Interface 1
+{
+.bInterfaceClass=USB_CLASS_COMM_DEV_DATA,
+.bInterfaceProtocol=USB_PROTOCOL_NONE,
+.report_data=0,
+.report_size=0,
+// IN endpoint configuration
+.in={.ep=USB_INTERFACE1_IN_EP,.type=USB_TRANSFER_BULK,.size=USB_INTERFACE1_IN_EP_SIZE},
+// OUT endpoint configuration
+.out={.ep=USB_INTERFACE1_OUT_EP,.type=USB_TRANSFER_BULK,.size=USB_INTERFACE1_OUT_EP_SIZE}
 }
 },
 .pdescriptor_list=usb_descriptor_list,
 .descriptor_list_items=sizeof(usb_descriptor_list)/sizeof(USB_DESCRIPTOR_LIST_t),
 .timeout={.tx=USB_TX_TIMEOUT,.rx=USB_RX_TIMEOUT},
-// Use the internal 32 MHz RC oscillator, adjusted and
-// calibrated by the the DFLL and USB Start of Frame
-// to 48 MHz, as USB clock source
-.usb_clock=USB_CLOCK_RC32M_SOF,
+// Use the PLL running at 48 MHz as USB clock source
+.usb_clock=USB_CLOCK_PLL_48M,
 // USB interrupt priority level: Low Level
 .int_level=USB_INTLVL_LO_gc,
 // No device suspend handler is used

@@ -1,26 +1,27 @@
 /*******************************************************
 USB library initialization created by the
 CodeWizardAVR V3.38 Automatic Program Generator
-Copyright: Neeraj Adsul <neeraj.adsul[at]gmail.com>
+© Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
 
-Project : Ortho82UnifiedKeyboard
+Project : SplitKeyboardPS2
 *******************************************************/
 
 #ifndef _USB_INIT_INCLUDED_
 #define _USB_INIT_INCLUDED_
 
 #include <usb_device.h>
-#include <usb_hid.h>
+#include <usb_cdc.h>
 
 // Manufacturer string
-#define USB_STR_MANUFACTURER '1','2','5',' ','S','y','s','t','e','m','s'
+#define USB_STR_MANUFACTURER '1','2','5','S','y','s','t','e','m','s'
 // Number of characters in the manufacturer string
-#define USB_STR_MANUFACTURER_CHARS 11
+#define USB_STR_MANUFACTURER_CHARS 10
 
 // Product string
-#define USB_STR_PRODUCT 'O','r','t','h','o',' ','U','n','i','f','i','e','d','8','2',' ','K','e','y','b','o','a','r','d'
+#define USB_STR_PRODUCT 'O','r','t','h','o','l','i','n','e','a','r',' ','S','p','l','i','t',' ','K','e','y','b','o','a','r','d'
 // Number of characters in the product string
-#define USB_STR_PRODUCT_CHARS 24
+#define USB_STR_PRODUCT_CHARS 26
 
 // Serial number string
 #define USB_STR_SERIAL_NUMBER '0','0','0','0','1'
@@ -47,8 +48,16 @@ Project : Ortho82UnifiedKeyboard
 
 // Interface 0 IN endpoint settings
 #define USB_INTERFACE0_IN_EP 1
-#define USB_INTERFACE0_IN_EP_SIZE 8
-#define USB_INTERFACE0_IN_EP_SERVICE_INTERVAL 5
+#define USB_INTERFACE0_IN_EP_SIZE 16
+#define USB_INTERFACE0_IN_EP_SERVICE_INTERVAL 255
+
+// Interface 1 IN endpoint settings
+#define USB_INTERFACE1_IN_EP 2
+#define USB_INTERFACE1_IN_EP_SIZE 64
+
+// Interface 1 OUT endpoint settings
+#define USB_INTERFACE1_OUT_EP 2
+#define USB_INTERFACE1_OUT_EP_SIZE 64
 
 // USB configuration table
 extern flash USB_CONFIG_t usb_config;

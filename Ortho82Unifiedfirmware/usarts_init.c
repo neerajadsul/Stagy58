@@ -1,9 +1,10 @@
 /*******************************************************
 USARTs initialization created by the
-CodeWizardAVR V3.38 Automatic Program Generator 
-Copyright: Neeraj Adsul <neeraj.adsul[at]gmail.com>
+CodeWizardAVR V3.38 Automatic Program Generator
+© Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
 
-Project : Ortho82UnifiedKeyboard
+Project : SplitKeyboardPS2
 *******************************************************/
 
 // I/O Registers definitions
@@ -56,7 +57,7 @@ USARTE0.CTRLB=(USARTE0.CTRLB & (~(USART_RXEN_bm | USART_TXEN_bm | USART_CLK2X_bm
 	USART_RXEN_bm | USART_TXEN_bm | USART_CLK2X_bm;
 }
 
-// Note: RX_BUFFER_SIZE_USARTE0 is #define-d in 'usarts_init.h' with the value 16
+// Note: RX_BUFFER_SIZE_USARTE0 is #define-d in 'usarts_init.h' with the value 8
 char rx_buffer_usarte0[RX_BUFFER_SIZE_USARTE0];
 
 #if RX_BUFFER_SIZE_USARTE0 <= 256
@@ -120,7 +121,7 @@ return data;
 }
 #pragma used-
 
-// Note: TX_BUFFER_SIZE_USARTE0 is #define-d in 'usarts_init.h' with the value 16
+// Note: TX_BUFFER_SIZE_USARTE0 is #define-d in 'usarts_init.h' with the value 8
 char tx_buffer_usarte0[TX_BUFFER_SIZE_USARTE0];
 
 #if TX_BUFFER_SIZE_USARTE0 <= 256

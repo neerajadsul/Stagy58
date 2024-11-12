@@ -1,10 +1,15 @@
 /*******************************************************
-Project : Ortho82UnifiedKeyboard
-Version : 1.0
-Date    : 15/07/2023
-Author  : Neeraj Adsul
-Company : 125 Systems
-Comments:
+This program was created by the CodeWizardAVR V3.38 
+Automatic Program Generator
+© Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
+
+Project : SplitKeyboardPS2
+Version : 1.00
+Date    : 12/11/2024
+Author  : Neeraj
+Company : 125Systems
+Comments: 
 
 
 Chip type               : ATxmega32A4U
@@ -25,7 +30,7 @@ Data Stack size         : 1024
 #define _ALTERNATE_PUTCHAR_
 // Standard Input/Output functions
 #include <stdio.h>
-#include <stdint.h>
+
 // Delay functions
 #include <delay.h>
 
@@ -41,216 +46,153 @@ Data Stack size         : 1024
 // Timers/Counters initialization functions
 #include "timers_init.h"
 
+// RTC initialization function
+#include "rtc_init.h"
+
 // Watchdog Timer initialization function
 #include "watchdog_init.h"
 
 // USARTs initialization functions
 #include "usarts_init.h"
 
+// ADC initialization functions
+#include "adc_init.h"
+
+// Analog Comparator(s) initialization function(s)
+#include "analog_comp_init.h"
+
+// SPI initialization functions
+#include "spi_init.h"
+
+// TWI initialization functions
+#include "twi_init.h"
+
 // USB Device functions
 #include <usb_device.h>
 
-// USB Human Interface Device functions
-#include <usb_hid.h>
+// USB CDC Virtual Serial Port functions
+#include <usb_cdc.h>
 
 // USB initialization
 #include "usb_init.h"
 
-#include "keyboard.h"
-
-#define USE_USB_CONNECTION	1
-
 // Declare your global variables here
-extern USB_KEYBOARD_t usb_keyboard;
-
-extern volatile unsigned char curr_keys[N_COLS];
-//extern volatile unsigned char prev_keys[N_COLS];
-//extern volatile unsigned char next_keys[N_COLS];
-	
-extern volatile char key_buffer[N_KEYS_BUFFER];
-extern volatile int key_buffer_index;
-// extern unsigned char usb_putbuf(void *buffer, unsigned short length);
-
-unsigned char tx_buffer[8] = {0};
-int release_keys(void); 
-
-uint8_t get_modifier(uint8_t key);
 
 void main(void)
 {
-int num_modifiers;
-	// Declare your local variables here
-	unsigned char n;
-	char ch;
-	uint8_t left_or_right = 0, num_keys, mm;
-	//uint8_t i;
-	unsigned char key, regular_keys[6], mod_keys[8];
-	
-	// Interrupt system initialization
-	// Optimize for speed
-#pragma optsize-
-	// Make sure the interrupts are disabled
+// Declare your local variables here
+unsigned char n;
+
+// Interrupt system initialization
+// Optimize for speed
+#pragma optsize- 
+// Make sure the interrupts are disabled
 #asm("cli")
-	// Low level interrupt: On
-	// Round-robin scheduling for low level interrupt: Off
-	// Medium level interrupt: Off
-	// High level interrupt: Off
-	// The interrupt vectors will be placed at the start of the Application FLASH section
-	n = (PMIC.CTRL & (~(PMIC_RREN_bm | PMIC_IVSEL_bm | PMIC_HILVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_LOLVLEN_bm))) |
-		PMIC_LOLVLEN_bm;
-	CCP = CCP_IOREG_gc;
-	PMIC.CTRL = n;
-	// Set the default priority for round-robin scheduling
-	PMIC.INTPRI = 0x00;
-	// Restore optimization for size if needed
+// Low level interrupt: On
+// Round-robin scheduling for low level interrupt: On
+// Medium level interrupt: On
+// High level interrupt: On
+// The interrupt vectors will be placed at the start of the Application FLASH section
+n=(PMIC.CTRL & (~(PMIC_RREN_bm | PMIC_IVSEL_bm | PMIC_HILVLEN_bm | PMIC_MEDLVLEN_bm | PMIC_LOLVLEN_bm))) |
+	PMIC_LOLVLEN_bm | PMIC_RREN_bm | PMIC_MEDLVLEN_bm | PMIC_HILVLEN_bm;
+CCP=CCP_IOREG_gc;
+PMIC.CTRL=n;
+// Set the default priority for round-robin scheduling
+PMIC.INTPRI=0x00;
+// Restore optimization for size if needed
 #pragma optsize_default
 
-	// Watchdog timer initialization
-	watchdog_init();
+// Watchdog timer initialization
+watchdog_init();
 
-	// System clocks initialization
-	system_clocks_init();
+// System clocks initialization
+system_clocks_init();
 
-	// Event system initialization
-	event_system_init();
+// Event system initialization
+event_system_init();
 
-	// Ports initialization
-	ports_init();
+// Ports initialization
+ports_init();
 
-	// Virtual Ports initialization
-	vports_init();
+// Virtual Ports initialization
+vports_init();
 
-	// USARTE0 initialization
-	usarte0_init();
+// Timer/Counter TCC0 initialization
+tcc0_init();
 
-	// Globally enable interrupts
-	#asm("sei")
+// Timer/Counter TCC1 is disabled
+tc1_disable(&TCC1);
 
-	if (USE_USB_CONNECTION) {
-		// USB Controller initialization in Full Speed, Device mode
-		usb_init_device(&usb_config);
-		// Wait for the USB device to be enumerated by the host
-		while (!usb_enumerated);
+// Timer/Counter TCD0 initialization
+tcd0_init();
 
-		// Wait 1.5 seconds for the operating system to
-		// load any drivers needed by the USB device
-		delay_ms(1500);
-	}
-    
-	LED_ON;
-	left_or_right = LEFT_RIGHT_PORT.IN & LEFT_RIGHT_PIN_bm;
-	
-	if (left_or_right==LEFT_HALF)
-	{
-		printf("<LEFT>\n");
-	} else {
-		printf("<RIGHT>\n");
-	}
-	
-	show_scanmap(left_or_right);
-	
-	while (1) {
-		// Process input from right half
-		if (left_or_right == LEFT_HALF && rx_counter_usarte0 > 0)
-		{
-			ch = getchar();
-		}
-		update_curr_keys();
-		update_debounce_matrix();
-		n = report_debounced_keys();
-		
-		{
-			printf("Key Buffer Index: %d \n", key_buffer_index);
-			num_keys = 0;
-			num_modifiers = 0;
-			for (mm=0 ; mm < key_buffer_index; mm++)
-			{
-				key = key_buffer[mm];
-				//printf("%02x ", key);
-				if (key == FN_KEY)
-				{
-					//printf("FN Key\n");
-				} else if (key == SPECIAL_KEY)
-				{
-					//printf("Special Key\n");
-				} else if (get_modifier(key) != 0) // Modifier Keys Ctrl, Alt, Shift, Cmd/Win
-				{
-					mod_keys[num_modifiers] = key;
-					num_modifiers++;
-				} else // Regular Key
-				{
-					regular_keys[num_keys] = key;
-					num_keys++;
-				}
-			}
-			printf("Mod: %d Reg: %d \n", num_modifiers, num_keys);
+// Timer/Counter TCD1 is disabled
+tc1_disable(&TCD1);
 
-		}
-		
-		
-		for (mm=0; mm<num_modifiers ; mm++) {
-			usb_keyboard.modifier_keys |= mod_keys[mm];
-			mod_keys[mm] = 0;			
-		}
-		if (num_keys > 0 && num_modifiers > 0) {
-			usb_keyboard_keypress(regular_keys[num_keys-1], usb_keyboard.modifier_keys);			
-		}
-		if (num_keys > 0 && num_modifiers == 0) {
-			usb_keyboard_keypress(regular_keys[num_keys-1], 0);
-		}
-		if (num_keys == 0 && num_modifiers > 0) {
-			usb_keyboard_keypress(0, usb_keyboard.modifier_keys);			
-		}
-		
-		key_buffer_index = 0;
-		for (mm=0; mm<N_KEYS_BUFFER ; mm++) {
-			key_buffer[mm] = 0;
-		}
-		num_keys = 0;
-		num_modifiers = 0;
-		// Special case when right-half of the keyboard.
-		if (left_or_right == RIGHT_HALF){
-			// Send key-presses to Left-Half
-		}
-		delay_ms(4);
-	}
-}
+// Timer/Counter TCE0 is disabled
+tc0_disable(&TCE0);
 
+// RTC initialization
+rtcxm_init();
 
-int release_keys() 
-{
-	uint8_t i;
+// USARTC0 is disabled
+usart_disable(&USARTC0);
 
-	for ( i = 0; i < 6; i++)
-	{
-		usb_keyboard.keys[i] = 0;
-	}
-	usb_keyboard.modifier_keys = 0;
-	usb_keyboard_sendkeys();
+// USARTC1 is disabled
+usart_disable(&USARTC1);
 
-	//for ( i = 0; i < 8; i++)
-	//{
-		//tx_buffer[i] = 0;
-	//}
-	//usb_putbuf(tx_buffer, 8);
-	//delay_ms(10);
-	return 0;
-}
+// USARTD0 is disabled
+usart_disable(&USARTD0);
 
-uint8_t get_modifier(uint8_t key)
-{
-	uint8_t result = 0;
-	
-	switch (key) 
-	{
-		case KS_LEFT_CTRL: return KM_LEFT_CTRL;
-		case KS_LEFT_ALT: return KM_LEFT_ALT;
-		case KS_LEFT_GUI: return KM_LEFT_GUI;
-		case KS_LEFT_SHIFT: return KM_LEFT_SHIFT;
-		case KS_RIGHT_CTRL: return KM_RIGHT_CTRL;
-		case KS_RIGHT_ALT: return KM_RIGHT_ALT;
-		case KS_RIGHT_GUI: return KM_RIGHT_GUI;
-		case KS_RIGHT_SHIFT: return KM_RIGHT_SHIFT;
-	}
-	return result;
+// USARTD1 is disabled
+usart_disable(&USARTD1);
+
+// USARTE0 initialization
+usarte0_init();
+
+// SPIC initialization
+spic_init();
+
+// SPID initialization
+spid_init();
+
+// TWIC initialization
+twic_init();
+
+// TWIE initialization
+twie_init();
+
+// ADCA initialization
+adca_init();
+
+// DACB is disabled
+DACB.CTRLA=0;
+
+// Analog Comparator(s) for PORTA initialization
+aca_init();
+
+// Globally enable interrupts
+#asm("sei")
+
+// USB Controller initialization in Full Speed, Device mode
+// Note: The CDC Virtual Serial Port 0 was set
+// as default USB CDC serial input/output
+usb_init_device(&usb_config);
+
+// Wait for the USB device to be enumerated by the host
+while (!usb_enumerated);
+
+// Wait 1.5 seconds for the operating system to
+// load any drivers needed by the USB device
+delay_ms(1500);
+
+// Wait for the USB host to be ready to receive serial data by
+// setting the CDC Virtual Serial Port 0 RS-232 DTR signal high
+while (usb_cdc_serial[0].control.dtr==0);
+
+while (1)
+      {
+      // Place your code here
+
+      }
 }
