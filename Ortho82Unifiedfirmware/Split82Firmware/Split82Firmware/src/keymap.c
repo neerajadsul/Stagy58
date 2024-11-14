@@ -8,8 +8,8 @@ char * LEFT[42] = {
 	"Esc", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "F6 ",
 	"Btk", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ",
 	"Tab", " Q ", " W " , " E ", " R ", " T ", " Y ",
-	"Tab", " A ", " S " , " D ", " F ", " G ", " H ",
-	"Tab", " \\ ", " Z " , " X ", " C ", " V ", " B ",
+	"Cap", " A ", " S " , " D ", " F ", " G ", " H ",
+	"LSh", " \\ ", " Z " , " X ", " C ", " V ", " B ",
 	"---", "CTR", "Fun", "Opt", "Alt", "Mod", "Spc",
 };
 
@@ -40,6 +40,25 @@ int add_to_set(Set_t *key_set, char key)
 	return 1;
 }
 
+void copy_set(Set_t* src_keymap, Set_t* dest_keymap)
+{
+	for (int i=0; i< src_keymap->count; i++)
+	{
+		add_to_set(dest_keymap, src_keymap->buffer[i]);
+	}
+	
+		
+}
+
+int is_in_set(Set_t* keymap, int key)
+{
+	for (int i=0; i < keymap->count; i++)
+	{
+		if (key == keymap->buffer[i])
+			return 1;
+	}
+	return 0;
+}
 
 Set_t* keyboard_scan(Set_t* keymap)
 {
@@ -50,13 +69,14 @@ Set_t* keyboard_scan(Set_t* keymap)
 	for (int col=0; col < nCOLS; col++)
 	{
 		PORTC.OUT = KBD_COL_bm << col;
+		_delay_ms(1);
 		for (int row=0; row < nROWS; row++)
 		{
-			_delay_ms(2);
+			_delay_ms(1);
 			if (PORTD.IN & (KBD_ROWS_bm << row))
 			{
 				key_seq_1d_arr = row*(nROWS +1) + col  ;
-				printf("C%d, R%d, K%d, %s > \n", col, row, key_seq_1d_arr, LEFT[key_seq_1d_arr]);
+				//printf("C%d, R%d, K%d, %s > \n", col, row, key_seq_1d_arr, LEFT[key_seq_1d_arr]);
 				add_to_set(keymap, key_seq_1d_arr);
 			}
 		}

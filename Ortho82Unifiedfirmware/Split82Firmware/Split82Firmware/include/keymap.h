@@ -23,7 +23,8 @@ typedef struct
 
 void init_set(Set_t *key_set);
 int add_to_set(Set_t *key_set, char key);
-
+void copy_set(Set_t* prev_keymap, Set_t* curr_keymap);
+int is_in_set(Set_t*, int);
 Set_t* keyboard_scan(Set_t*);
 
 char* get_key_id(int);
