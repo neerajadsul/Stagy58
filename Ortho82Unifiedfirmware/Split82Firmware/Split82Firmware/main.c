@@ -2,37 +2,24 @@
 #include <util/delay.h>
 #include <stdio.h>
 
-#define nROWS 6
-#define nCOLS 7
-
-int keyboard_scan();
+#include "keymap.h"
 
 int main(void)
 {
-	/* Initializes MCU, drivers and middleware */
+	/* Initializes MCU, drivers and Middleware */
 	atmel_start_init();
 	//int row=0, col=0;
+	static Set_t keymap;
+	init_set(&keymap);
 	/* Replace with your application code */
 	while (1) {
-		keyboard_scan();
-		_delay_ms(1000);
+		keyboard_scan(&keymap);
+		for (int i=0; i < keymap.count; i++)
+		{
+			printf("%s\n", get_key_id(keymap.buffer[i]));
+		}
+		init_set(&keymap);
+		_delay_ms(20);
 		USER_LED_toggle_level();
-		//printf("Col:%d Row:%d\n", row, col);
 	}
-}
-
-int keyboard_scan()
-{	
-	int KBD_COL_bm = 0b01111111;
-	int KBD_ROWS_bm = 0b00111111;
-	
-	int row_reading = 0x00;
-	for (int col=0; col < nCOLS; col++)
-	{
-		PORTC.OUT = KBD_COL_bm & (0x01 << col);
-		_delay_ms(10);
-		row_reading = PORTD.IN & KBD_ROWS_bm;
-		printf("%d, %d\n", col, row_reading);
-	}
-	return 0;
 }

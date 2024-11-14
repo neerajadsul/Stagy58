@@ -183,7 +183,7 @@ drivers:
     api: Drivers:USART:Basic
     configuration:
       baud_rate: 115200
-      printf_support: true
+      printf_support: false
       usart_ctrlb_clk2x: false
       usart_ctrlb_mpcm: false
       usart_ctrlb_rxen: true
@@ -215,7 +215,7 @@ drivers:
           usart_clock_source: CLK CPU/PER
   USART_1:
     user_label: USART_1
-    definition: Atmel:XMEGA_A_B_C_Drivers:1.0.0::ATxmega32A4U-AU::USARTC1::driver_config_definition::Async.Polled.Mode::Drivers:USART:Basic
+    definition: Atmel:XMEGA_A_B_C_Drivers:1.0.0::ATxmega32A4U-AU::USARTD1::driver_config_definition::Async.Polled.Mode::Drivers:USART:Basic
     functionality: USART
     api: Drivers:USART:Basic
     configuration:
@@ -235,10 +235,10 @@ drivers:
     variant:
       specification: CMODE=0
       required_signals:
-      - name: USARTC1/RXD
+      - name: USARTD1/RXD
         pad: PD6
         label: RXD
-      - name: USARTC1/TXD
+      - name: USARTD1/TXD
         pad: PD7
         label: TXD
     clocks:

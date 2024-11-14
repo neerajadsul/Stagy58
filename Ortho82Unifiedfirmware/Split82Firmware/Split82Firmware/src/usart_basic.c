@@ -39,27 +39,6 @@
 #include <usart_basic.h>
 #include <atomic.h>
 
-#include <stdio.h>
-
-#if defined(__GNUC__)
-
-int USART_0_printCHAR(char character, FILE *stream)
-{
-	USART_0_write(character);
-	return 0;
-}
-
-FILE USART_0_stream = FDEV_SETUP_STREAM(USART_0_printCHAR, NULL, _FDEV_SETUP_WRITE);
-
-#elif defined(__ICCAVR__)
-
-int putchar(int outChar)
-{
-	USART_0_write(outChar);
-	return outChar;
-}
-#endif
-
 /**
  * \brief Initialize USART interface
  * If module is configured to disabled state, the clock to the USART is disabled
@@ -170,10 +149,6 @@ int8_t USART_0_init()
 	                | 0 << USART_MPCM_bp  /* Multi-processor Communication Mode: disabled */
 	                | 1 << USART_RXEN_bp  /* Receiver Enable: enabled */
 	                | 1 << USART_TXEN_bp; /* Transmitter Enable: enabled */
-
-#if defined(__GNUC__)
-	stdout = &USART_0_stream;
-#endif
 
 	return 0;
 }
@@ -419,20 +394,24 @@ int8_t USART_1_init()
 		div = (cpu_hz + baud / 2) / baud - 1;
 	}
 
-	USARTC1.BAUDCTRLB = (uint8_t)(((div >> 8) & 0X0F) | (exp << 4));
-	USARTC1.BAUDCTRLA = (uint8_t)div;
+	USARTD1.BAUDCTRLB = (uint8_t)(((div >> 8) & 0X0F) | (exp << 4));
+	USARTD1.BAUDCTRLA = (uint8_t)div;
 
-	// USARTC1.CTRLC = USART_PMODE_DISABLED_gc /* No Parity */
+	// USARTD1.CTRLC = USART_PMODE_DISABLED_gc /* No Parity */
 	//		 | 0 << USART_SBMODE_bp /* Stop Bit Mode: disabled */
 	//		 | USART_CHSIZE_8BIT_gc /* Character size: 8 bit */
 	//		 | 0 << USART_CHSIZE2_bp /* SPI Master Mode, Data Order: disabled */
 	//		 | 1 << USART_CHSIZE1_bp /* SPI Master Mode, Clock Phase: enabled */
 	//		 | USART_CMODE_ASYNCHRONOUS_gc; /* Async Polled Mode */
 
-	USARTC1.CTRLB = 0 << USART_CLK2X_bp   /* Double transmission speed: disabled */
+	USARTD1.CTRLB = 0 << USART_CLK2X_bp   /* Double transmission speed: disabled */
 	                | 0 << USART_MPCM_bp  /* Multi-processor Communication Mode: disabled */
 	                | 1 << USART_RXEN_bp  /* Receiver Enable: enabled */
 	                | 1 << USART_TXEN_bp; /* Transmitter Enable: enabled */
+
+#if defined(__GNUC__)
+	stdout = &USART_1_stream;
+#endif
 
 	return 0;
 }
@@ -446,7 +425,7 @@ int8_t USART_1_init()
  */
 void USART_1_enable()
 {
-	USARTC1.CTRLB |= USART_RXEN_bm | USART_TXEN_bm;
+	USARTD1.CTRLB |= USART_RXEN_bm | USART_TXEN_bm;
 }
 
 /**
@@ -458,7 +437,7 @@ void USART_1_enable()
  */
 void USART_1_enable_rx()
 {
-	USARTC1.CTRLB |= USART_RXEN_bm;
+	USARTD1.CTRLB |= USART_RXEN_bm;
 }
 
 /**
@@ -470,7 +449,7 @@ void USART_1_enable_rx()
  */
 void USART_1_enable_tx()
 {
-	USARTC1.CTRLB |= USART_TXEN_bm;
+	USARTD1.CTRLB |= USART_TXEN_bm;
 }
 
 /**
@@ -482,7 +461,7 @@ void USART_1_enable_tx()
  */
 void USART_1_disable()
 {
-	USARTC1.CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
+	USARTD1.CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
 }
 
 /**
@@ -492,7 +471,7 @@ void USART_1_disable()
  */
 uint8_t USART_1_get_data()
 {
-	return USARTC1.DATA;
+	return USARTD1.DATA;
 }
 
 /**
@@ -504,7 +483,7 @@ uint8_t USART_1_get_data()
  */
 bool USART_1_is_tx_ready()
 {
-	return (USARTC1.STATUS & USART_DREIF_bm);
+	return (USARTD1.STATUS & USART_DREIF_bm);
 }
 
 /**
@@ -516,7 +495,7 @@ bool USART_1_is_tx_ready()
  */
 bool USART_1_is_rx_ready()
 {
-	return (USARTC1.STATUS & USART_RXCIF_bm);
+	return (USARTD1.STATUS & USART_RXCIF_bm);
 }
 
 /**
@@ -528,7 +507,7 @@ bool USART_1_is_rx_ready()
  */
 bool USART_1_is_tx_busy()
 {
-	return (!(USARTC1.STATUS & USART_TXCIF_bm));
+	return (!(USARTD1.STATUS & USART_TXCIF_bm));
 }
 
 /**
@@ -540,9 +519,9 @@ bool USART_1_is_tx_busy()
  */
 uint8_t USART_1_read()
 {
-	while (!(USARTC1.STATUS & USART_RXCIF_bm))
+	while (!(USARTD1.STATUS & USART_RXCIF_bm))
 		;
-	return USARTC1.DATA;
+	return USARTD1.DATA;
 }
 
 /**
@@ -556,7 +535,7 @@ uint8_t USART_1_read()
  */
 void USART_1_write(const uint8_t data)
 {
-	while (!(USARTC1.STATUS & USART_DREIF_bm))
+	while (!(USARTD1.STATUS & USART_DREIF_bm))
 		;
-	USARTC1.DATA = data;
+	USARTD1.DATA = data;
 }
