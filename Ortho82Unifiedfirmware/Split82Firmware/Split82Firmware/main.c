@@ -15,6 +15,7 @@ int main(void)
 	Set_t curr_keymap;
 	init_set(&curr_keymap);
 	/* Replace with your application code */
+	//TODO: Need to implement key down and up state machine.
 	while (1) {
 		keyboard_scan(&curr_keymap);
 		for (int i=0; i < curr_keymap.count; i++)
