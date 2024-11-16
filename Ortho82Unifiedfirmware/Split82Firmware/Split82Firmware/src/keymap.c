@@ -1,5 +1,6 @@
 #include <atmel_start.h>
 #include <util/delay.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #include "keymap.h"
@@ -50,14 +51,14 @@ void copy_set(Set_t* src_keymap, Set_t* dest_keymap)
 		
 }
 
-int is_in_set(Set_t* keymap, int key)
+bool is_in_set(Set_t* keymap, int key)
 {
 	for (int i=0; i < keymap->count; i++)
 	{
 		if (key == keymap->buffer[i])
-			return 1;
+			return true;
 	}
-	return 0;
+	return false;
 }
 
 Set_t* keyboard_scan(Set_t* keymap)
@@ -69,10 +70,10 @@ Set_t* keyboard_scan(Set_t* keymap)
 	for (int col=0; col < nCOLS; col++)
 	{
 		PORTC.OUT = KBD_COL_bm << col;
-		_delay_ms(1);
+		_delay_ms(SCAN_DELAY);
 		for (int row=0; row < nROWS; row++)
 		{
-			_delay_ms(1);
+			_delay_ms(SCAN_DELAY);
 			if (PORTD.IN & (KBD_ROWS_bm << row))
 			{
 				key_seq_1d_arr = row*(nROWS +1) + col  ;
