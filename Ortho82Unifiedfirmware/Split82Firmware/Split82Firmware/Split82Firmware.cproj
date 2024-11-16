@@ -55,13 +55,13 @@
           <AcmeProjectActionInfo Action="File" Source="include/protected_io.h" IsConfig="false" Hash="kBH1k8wuaJhV5U4694Cbvg" />
           <AcmeProjectActionInfo Action="File" Source="include/sleep.h" IsConfig="false" Hash="BlnWjNXEymjJmodiXU5aLw" />
           <AcmeProjectActionInfo Action="File" Source="include/system.h" IsConfig="false" Hash="/qc0UksAE61GYNOH8J3CUw" />
-          <AcmeProjectActionInfo Action="File" Source="include/usart_basic.h" IsConfig="false" Hash="WhNAWlODMmFhs5QFVCDwHw" />
+          <AcmeProjectActionInfo Action="File" Source="include/usart_basic.h" IsConfig="false" Hash="zzASx12JggJL5VtBYJwo/Q" />
           <AcmeProjectActionInfo Action="File" Source="src/clk.c" IsConfig="false" Hash="+YnLrqUbj0BuzgbVXALnJg" />
           <AcmeProjectActionInfo Action="File" Source="src/osc.c" IsConfig="false" Hash="pTCYdCsr3pe8tHbbqFiUVQ" />
-          <AcmeProjectActionInfo Action="File" Source="src/pmic.c" IsConfig="false" Hash="BQONdQJ+Q2y0XDz+2SpbtA" />
+          <AcmeProjectActionInfo Action="File" Source="src/pmic.c" IsConfig="false" Hash="tTvd72Y1jHSXtrJJoihG4w" />
           <AcmeProjectActionInfo Action="File" Source="src/protected_io.S" IsConfig="false" Hash="sgFkmFP7h1y8L07bVZahaQ" />
           <AcmeProjectActionInfo Action="File" Source="src/sleep.c" IsConfig="false" Hash="CNTnaeRvFK6qWneyoS5C8A" />
-          <AcmeProjectActionInfo Action="File" Source="src/usart_basic.c" IsConfig="false" Hash="S7d8uA/28EKaX3S6qI/vjg" />
+          <AcmeProjectActionInfo Action="File" Source="src/usart_basic.c" IsConfig="false" Hash="dDYnEOYL2t2yhfrW/xhftA" />
           <AcmeProjectActionInfo Action="File" Source="utils/assembler.h" IsConfig="false" Hash="jaaWqpCXnRJMciuXpjSfgQ" />
           <AcmeProjectActionInfo Action="File" Source="utils/assembler/gas.h" IsConfig="false" Hash="wV+34zXWOOJ7jfwQibBgLQ" />
           <AcmeProjectActionInfo Action="File" Source="utils/assembler/iar.h" IsConfig="false" Hash="re7qP3QC0FK72z2UZ4UoFg" />

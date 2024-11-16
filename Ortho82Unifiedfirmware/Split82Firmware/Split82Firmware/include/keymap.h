@@ -27,6 +27,6 @@ void copy_set(Keys_t* prev_keymap, Keys_t* curr_keymap);
 bool is_in_set(Keys_t*, int);
 Keys_t* keyboard_scan(Keys_t* keymap);
 
-char* get_key_id(int);
+char* get_key_id(int, int);
 
 #endif /* KEYMAP_H_ */

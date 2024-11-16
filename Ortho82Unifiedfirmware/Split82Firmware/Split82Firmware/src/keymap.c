@@ -14,6 +14,16 @@ char * LEFT[42] = {
 	"---", "CTR", "Fun", "Opt", "Alt", "Mod", "Spc",
 };
 
+char * RIGHT[42] = {
+	"Esc", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "F6 ",
+	"Btk", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ",
+	"Tab", " Q ", " W " , " E ", " R ", " T ", " Y ",
+	"Cap", " A ", " S " , " D ", " F ", " G ", " H ",
+	"LSh", " \\ ", " Z " , " X ", " C ", " V ", " B ",
+	"---", "CTR", "Fun", "Opt", "Alt", "Mod", "Spc",
+};
+
+
 void init_set(Keys_t *key_set)
 {
 	for (int i=0; i<SET_MAX_SIZE; i++)
@@ -85,7 +95,9 @@ Keys_t* keyboard_scan(Keys_t* keymap)
 	return keymap;
 }
 
-char* get_key_id(int key)
+char* get_key_id(int key, int is_left)
 {
-	return LEFT[key];
+	if (is_left)
+		return LEFT[key];
+	return RIGHT[key];
 }

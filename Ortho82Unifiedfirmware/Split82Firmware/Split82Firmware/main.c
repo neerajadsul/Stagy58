@@ -29,7 +29,7 @@ int main(void)
 	static Event_t key_event;
 	int is_left_half = IS_LEFT_get_level() ? 0 : 1;
 	printf("Is Left Half %d", is_left_half);
-	
+	//while(USART_0_is_rx_ready()) USART_0_read();
 	while (1) {
 		init_set(&curr_keymap);
 		keyboard_scan(&curr_keymap);
@@ -39,7 +39,7 @@ int main(void)
 			int key = curr_keymap.keys[i];
 			if (!is_in_set(&prev_keymap, key))
 			{
-				printf("Pressed %s\n", get_key_id(key));
+				printf("%c Pressed %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 				USER_LED_toggle_level();
 				send_key_event(key, PRESSED);
 			}			
@@ -50,7 +50,7 @@ int main(void)
 			int key = prev_keymap.keys[i];
 			if (!is_in_set(&curr_keymap, key))
 			{
-				printf("Released %s\n", get_key_id(key));
+				printf("%c Released %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 				USER_LED_toggle_level();
 				send_key_event(key, RELEASED);
 			}
@@ -65,7 +65,7 @@ int main(void)
 
 			if (receive_key_event(&key_event))
 			{
-				printf("%d: %c\n", key_event.key, key_event.event);
+				printf("%c %c %s\n", is_left_half ? 'L':'R', key_event.event, get_key_id(key_event.key, is_left_half));
 			}
 		}
 		
@@ -85,42 +85,38 @@ void send_key_event(int key, int event)
 
 int receive_key_event(Event_t* event)
 {
-	char data[10]; 
-	if (!USART_0_is_rx_ready())
+	//char data[10] = "";
+	//int idx = 0;
+	//while(USART_0_is_rx_ready()) {
+		//int ch = USART_0_read();
+		//USART_1_write(ch);
+		//if (ch == '\n')
+			//break;
+		//data[idx] = ch;
+		//idx++;
+	//}
+	//printf("%s\n", data);
+	int ch = 0;
+	int packet_len = 0;
+	while (USART_0_is_rx_ready())
 	{
-		return 0;
-	}
-	
-	int idx = 0;
-	while(1) {
-		int ch = USART_0_read();
+		ch = USART_0_read();
 		if (ch == '\n')
-			break;
-		data[idx] = ch;
-		idx++;
+			return 1;
+		// If byte is a digit 0 to 9
+		if (packet_len < 2 && (ch >= '0' && ch <= '9')){
+			if (packet_len == 0)
+				event->key += (ch - '0') * 10;
+			else
+				event->key += (ch - '0');
+			packet_len++;
+		}
+		else if (packet_len == 2 && ch == ':'){
+			packet_len++;
+		}
+		else if (packet_len == 3 && (ch == PRESSED || ch == RELEASED)) {
+			event->event = ch;
+		}	
 	}
-	printf("%s\n", data);
 	return 0;
-	//int data = 0;
-	//int packet_len = 0;
-	//do 
-	//{
-		//data = USART_0_read();
-		//// If byte is a digit 0 to 9
-		//if (packet_len < 2 && (data >= '0' && data <= '9')){
-			//if (packet_len == 0)
-				//event->key += (data - '0') * 10;
-			//else
-				//event->key += (data - '0');
-			//packet_len++;
-		//}
-		//else if (packet_len == 2 && data == ':'){
-			//packet_len++;
-		//}
-		//else if (packet_len == 3 && (data == PRESSED || data == RELEASED)) {
-			//event->event = data;
-		//}
-		//
-	//} while (data != '\n');
-	//return 1;
 }

@@ -3,10 +3,10 @@
 #include "version.h"
 
 const int MAJOR = 0;
-const int MINOR = 1;
-const int PATCH = 8;
+const int MINOR = 2;
+const int PATCH = 0;
 
-const char TIMESTAMP[20] = "2024-11-16_21:30:38";
+const char TIMESTAMP[20] = "2024-11-16_22:35:16";
 
 char* get_semantic_version()
 {
