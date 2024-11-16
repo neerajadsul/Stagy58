@@ -21,8 +21,6 @@ typedef struct
 	int count;
 } Keys_t;
 
-
-
 void init_set(Keys_t *key_set);
 int add_to_set(Keys_t *key_set, char key);
 void copy_set(Keys_t* prev_keymap, Keys_t* curr_keymap);
