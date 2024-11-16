@@ -16,3 +16,4 @@ Release/
 
 # VS Code files
 .vscode/
+**.project-backup
