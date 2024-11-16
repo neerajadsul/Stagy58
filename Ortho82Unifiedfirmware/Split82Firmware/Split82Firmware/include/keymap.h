@@ -17,15 +17,17 @@
 
 typedef struct
 {
-	int buffer[SET_MAX_SIZE];
+	int keys[SET_MAX_SIZE];
 	int count;
-} Set_t;
+} Keys_t;
 
-void init_set(Set_t *key_set);
-int add_to_set(Set_t *key_set, char key);
-void copy_set(Set_t* prev_keymap, Set_t* curr_keymap);
-bool is_in_set(Set_t*, int);
-Set_t* keyboard_scan(Set_t* keymap);
+
+
+void init_set(Keys_t *key_set);
+int add_to_set(Keys_t *key_set, char key);
+void copy_set(Keys_t* prev_keymap, Keys_t* curr_keymap);
+bool is_in_set(Keys_t*, int);
+Keys_t* keyboard_scan(Keys_t* keymap);
 
 char* get_key_id(int);
 
