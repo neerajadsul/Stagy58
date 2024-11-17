@@ -77,11 +77,12 @@ Data Stack size         : 1024
 #include "usb_init.h"
 
 // Declare your global variables here
-
+extern USB_KEYBOARD_t usb_keyboard;
 void main(void)
 {
 // Declare your local variables here
-unsigned char n;
+unsigned char n, success;
+int i;
 
 // Interrupt system initialization
 // Optimize for speed
@@ -184,9 +185,28 @@ while (!usb_enumerated);
 // load any drivers needed by the USB device
 delay_ms(1500);
 
+printf("Initialized\n");
 while (1)
       {
-		delay_ms(100);
+		delay_ms(1500);
 		PORTB.OUTTGL = 0x08;
+		usb_keyboard.modifier_keys = KS_LEFT_GUI;
+		for (i=0; i<6; i++)
+		{
+			usb_keyboard.keys[i] = 0x00;
+		}
+		
+		success = usb_keyboard_sendkeys();
+		if (success != USB_RES_OK)
+		{
+			printf("Error\n");
+		}
+		delay_ms(20);
+		usb_keyboard.modifier_keys = 0x00;
+		success = usb_keyboard_sendkeys();
+		if (success != USB_RES_OK)
+		{
+			printf("Error\n");
+		}
       }
 }
