@@ -40,21 +40,21 @@
 #include <atomic.h>
 
 /* Static Variables holding the ringbuffer used in IRQ mode */
-static uint8_t          USART_0_rxbuf[USART_0_RX_BUFFER_SIZE];
-static volatile uint8_t USART_0_rx_head;
-static volatile uint8_t USART_0_rx_tail;
-static volatile uint8_t USART_0_rx_elements;
-static uint8_t          USART_0_txbuf[USART_0_TX_BUFFER_SIZE];
-static volatile uint8_t USART_0_tx_head;
-static volatile uint8_t USART_0_tx_tail;
-static volatile uint8_t USART_0_tx_elements;
+static uint8_t          USART_KBD_rxbuf[USART_KBD_RX_BUFFER_SIZE];
+static volatile uint8_t USART_KBD_rx_head;
+static volatile uint8_t USART_KBD_rx_tail;
+static volatile uint8_t USART_KBD_rx_elements;
+static uint8_t          USART_KBD_txbuf[USART_KBD_TX_BUFFER_SIZE];
+static volatile uint8_t USART_KBD_tx_head;
+static volatile uint8_t USART_KBD_tx_tail;
+static volatile uint8_t USART_KBD_tx_elements;
 
-void USART_0_default_rx_isr_cb(void);
-void (*USART_0_rx_isr_cb)(void) = &USART_0_default_rx_isr_cb;
-void USART_0_default_udre_isr_cb(void);
-void (*USART_0_udre_isr_cb)(void) = &USART_0_default_udre_isr_cb;
+void USART_KBD_default_rx_isr_cb(void);
+void (*USART_KBD_rx_isr_cb)(void) = &USART_KBD_default_rx_isr_cb;
+void USART_KBD_default_udre_isr_cb(void);
+void (*USART_KBD_udre_isr_cb)(void) = &USART_KBD_default_udre_isr_cb;
 
-void USART_0_default_rx_isr_cb(void)
+void USART_KBD_default_rx_isr_cb(void)
 {
 	uint8_t data;
 	uint8_t tmphead;
@@ -62,43 +62,43 @@ void USART_0_default_rx_isr_cb(void)
 	/* Read the received data */
 	data = USARTE0.DATA;
 	/* Calculate buffer index */
-	tmphead = (USART_0_rx_head + 1) & USART_0_RX_BUFFER_MASK;
+	tmphead = (USART_KBD_rx_head + 1) & USART_KBD_RX_BUFFER_MASK;
 
-	if (tmphead == USART_0_rx_tail) {
+	if (tmphead == USART_KBD_rx_tail) {
 		/* ERROR! Receive buffer overflow */
 	} else {
 		/* Store new index */
-		USART_0_rx_head = tmphead;
+		USART_KBD_rx_head = tmphead;
 
 		/* Store received data in buffer */
-		USART_0_rxbuf[tmphead] = data;
-		USART_0_rx_elements++;
+		USART_KBD_rxbuf[tmphead] = data;
+		USART_KBD_rx_elements++;
 	}
 }
 
-void USART_0_default_udre_isr_cb(void)
+void USART_KBD_default_udre_isr_cb(void)
 {
 	uint8_t tmptail;
 
 	/* Check if all data is transmitted */
-	if (USART_0_tx_elements != 0) {
+	if (USART_KBD_tx_elements != 0) {
 		/* Calculate buffer index */
-		tmptail = (USART_0_tx_tail + 1) & USART_0_TX_BUFFER_MASK;
+		tmptail = (USART_KBD_tx_tail + 1) & USART_KBD_TX_BUFFER_MASK;
 		/* Store new index */
-		USART_0_tx_tail = tmptail;
+		USART_KBD_tx_tail = tmptail;
 		/* Start transmission */
-		USARTE0.DATA = USART_0_txbuf[tmptail];
-		USART_0_tx_elements--;
+		USARTE0.DATA = USART_KBD_txbuf[tmptail];
+		USART_KBD_tx_elements--;
 	}
 
-	if (USART_0_tx_elements == 0) {
+	if (USART_KBD_tx_elements == 0) {
 		/* Disable UDRE interrupt */
 		USARTE0.CTRLA &= ~(USART_DREINTLVL_gm);
 	}
 }
 
 /**
- * \brief Set call back function for USART_0
+ * \brief Set call back function for USART_KBD
  *
  * \param[in] cb The call back function to set
  *
@@ -106,14 +106,14 @@ void USART_0_default_udre_isr_cb(void)
  *
  * \return Nothing
  */
-void USART_0_set_ISR_cb(usart_cb_t cb, usart_cb_type_t type)
+void USART_KBD_set_ISR_cb(usart_cb_t cb, usart_cb_type_t type)
 {
 	switch (type) {
 	case RX_CB:
-		USART_0_rx_isr_cb = cb;
+		USART_KBD_rx_isr_cb = cb;
 		break;
 	case UDRE_CB:
-		USART_0_udre_isr_cb = cb;
+		USART_KBD_udre_isr_cb = cb;
 		break;
 	default:
 		// do nothing
@@ -124,60 +124,60 @@ void USART_0_set_ISR_cb(usart_cb_t cb, usart_cb_type_t type)
 /* Interrupt service routine for RX complete */
 ISR(USARTE0_RXC_vect)
 {
-	if (USART_0_rx_isr_cb != NULL)
-		(*USART_0_rx_isr_cb)();
+	if (USART_KBD_rx_isr_cb != NULL)
+		(*USART_KBD_rx_isr_cb)();
 }
 
 /* Interrupt service routine for Data Register Empty */
 ISR(USARTE0_DRE_vect)
 {
-	if (USART_0_udre_isr_cb != NULL)
-		(*USART_0_udre_isr_cb)();
+	if (USART_KBD_udre_isr_cb != NULL)
+		(*USART_KBD_udre_isr_cb)();
 }
 
-bool USART_0_is_tx_ready()
+bool USART_KBD_is_tx_ready()
 {
-	return (USART_0_tx_elements != USART_0_TX_BUFFER_SIZE);
+	return (USART_KBD_tx_elements != USART_KBD_TX_BUFFER_SIZE);
 }
 
-bool USART_0_is_rx_ready()
+bool USART_KBD_is_rx_ready()
 {
-	return (USART_0_rx_elements != 0);
+	return (USART_KBD_rx_elements != 0);
 }
 
-bool USART_0_is_tx_busy()
+bool USART_KBD_is_tx_busy()
 {
 	return (!(USARTE0.STATUS & USART_TXCIF_bm));
 }
 
 /**
- * \brief Read one character from USART_0
+ * \brief Read one character from USART_KBD
  *
  * Function will block if a character is not available.
  *
- * \return Data read from the USART_0 module
+ * \return Data read from the USART_KBD module
  */
-uint8_t USART_0_read(void)
+uint8_t USART_KBD_read(void)
 {
 	uint8_t tmptail;
 
 	/* Wait for incoming data */
-	while (USART_0_rx_elements == 0)
+	while (USART_KBD_rx_elements == 0)
 		;
 	/* Calculate buffer index */
-	tmptail = (USART_0_rx_tail + 1) & USART_0_RX_BUFFER_MASK;
+	tmptail = (USART_KBD_rx_tail + 1) & USART_KBD_RX_BUFFER_MASK;
 	/* Store new index */
-	USART_0_rx_tail = tmptail;
+	USART_KBD_rx_tail = tmptail;
 	ENTER_CRITICAL(R);
-	USART_0_rx_elements--;
+	USART_KBD_rx_elements--;
 	EXIT_CRITICAL(R);
 
 	/* Return data */
-	return USART_0_rxbuf[tmptail];
+	return USART_KBD_rxbuf[tmptail];
 }
 
 /**
- * \brief Write one character to USART_0
+ * \brief Write one character to USART_KBD
  *
  * Function will block until a character can be accepted.
  *
@@ -185,21 +185,21 @@ uint8_t USART_0_read(void)
  *
  * \return Nothing
  */
-void USART_0_write(const uint8_t data)
+void USART_KBD_write(const uint8_t data)
 {
 	uint8_t tmphead;
 
 	/* Calculate buffer index */
-	tmphead = (USART_0_tx_head + 1) & USART_0_TX_BUFFER_MASK;
+	tmphead = (USART_KBD_tx_head + 1) & USART_KBD_TX_BUFFER_MASK;
 	/* Wait for free space in buffer */
-	while (USART_0_tx_elements == USART_0_TX_BUFFER_SIZE)
+	while (USART_KBD_tx_elements == USART_KBD_TX_BUFFER_SIZE)
 		;
 	/* Store data in buffer */
-	USART_0_txbuf[tmphead] = data;
+	USART_KBD_txbuf[tmphead] = data;
 	/* Store new index */
-	USART_0_tx_head = tmphead;
+	USART_KBD_tx_head = tmphead;
 	ENTER_CRITICAL(W);
-	USART_0_tx_elements++;
+	USART_KBD_tx_elements++;
 	EXIT_CRITICAL(W);
 	/* Enable UDRE interrupt */
 	USARTE0.CTRLA |= USART_DREINTLVL_LO_gc;
@@ -214,7 +214,7 @@ void USART_0_write(const uint8_t data)
  * \retval 0 the USART init was successful
  * \retval 1 the USART init was not successful
  */
-int8_t USART_0_init()
+int8_t USART_KBD_init()
 {
 
 	int8_t   exp;
@@ -325,70 +325,70 @@ int8_t USART_0_init()
 	/* Initialize ringbuffers */
 	x = 0;
 
-	USART_0_rx_tail     = x;
-	USART_0_rx_head     = x;
-	USART_0_rx_elements = x;
-	USART_0_tx_tail     = x;
-	USART_0_tx_head     = x;
-	USART_0_tx_elements = x;
+	USART_KBD_rx_tail     = x;
+	USART_KBD_rx_head     = x;
+	USART_KBD_rx_elements = x;
+	USART_KBD_tx_tail     = x;
+	USART_KBD_tx_head     = x;
+	USART_KBD_tx_elements = x;
 
 	return 0;
 }
 
 /**
- * \brief Enable RX and TX in USART_0
+ * \brief Enable RX and TX in USART_KBD
  * 1. If supported by the clock system, enables the clock to the USART
  * 2. Enables the USART module by setting the RX and TX enable-bits in the USART control register
  *
  * \return Nothing
  */
-void USART_0_enable()
+void USART_KBD_enable()
 {
 	USARTE0.CTRLB |= USART_RXEN_bm | USART_TXEN_bm;
 }
 
 /**
- * \brief Enable RX in USART_0
+ * \brief Enable RX in USART_KBD
  * 1. If supported by the clock system, enables the clock to the USART
  * 2. Enables the USART module by setting the RX enable-bit in the USART control register
  *
  * \return Nothing
  */
-void USART_0_enable_rx()
+void USART_KBD_enable_rx()
 {
 	USARTE0.CTRLB |= USART_RXEN_bm;
 }
 
 /**
- * \brief Enable TX in USART_0
+ * \brief Enable TX in USART_KBD
  * 1. If supported by the clock system, enables the clock to the USART
  * 2. Enables the USART module by setting the TX enable-bit in the USART control register
  *
  * \return Nothing
  */
-void USART_0_enable_tx()
+void USART_KBD_enable_tx()
 {
 	USARTE0.CTRLB |= USART_TXEN_bm;
 }
 
 /**
- * \brief Disable USART_0
+ * \brief Disable USART_KBD
  * 1. Disables the USART module by clearing the enable-bit(s) in the USART control register
  * 2. If supported by the clock system, disables the clock to the USART
  *
  * \return Nothing
  */
-void USART_0_disable()
+void USART_KBD_disable()
 {
 	USARTE0.CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
 }
 
 /**
- * \brief Get recieved data from USART_0
+ * \brief Get recieved data from USART_KBD
  *
- * \return Data register from USART_0 module
+ * \return Data register from USART_KBD module
  */
-uint8_t USART_0_get_data()
+uint8_t USART_KBD_get_data()
 {
 	return USARTE0.DATA;
 }
@@ -397,13 +397,13 @@ uint8_t USART_0_get_data()
 
 #if defined(__GNUC__)
 
-int USART_1_printCHAR(char character, FILE *stream)
+int USART_USB_printCHAR(char character, FILE *stream)
 {
-	USART_1_write(character);
+	USART_USB_write(character);
 	return 0;
 }
 
-FILE USART_1_stream = FDEV_SETUP_STREAM(USART_1_printCHAR, NULL, _FDEV_SETUP_WRITE);
+FILE USART_USB_stream = FDEV_SETUP_STREAM(USART_USB_printCHAR, NULL, _FDEV_SETUP_WRITE);
 
 #elif defined(__ICCAVR__)
 
@@ -423,7 +423,7 @@ int putchar(int outChar)
  * \retval 0 the USART init was successful
  * \retval 1 the USART init was not successful
  */
-int8_t USART_1_init()
+int8_t USART_USB_init()
 {
 
 	int8_t   exp;
@@ -434,7 +434,7 @@ int8_t USART_1_init()
 	uint32_t max_rate;
 
 	uint32_t cpu_hz = F_CPU;
-	uint32_t baud   = 115200;
+	uint32_t baud   = 9600;
 
 	/*
 	 * Check if the hardware supports the given baud rate
@@ -526,66 +526,66 @@ int8_t USART_1_init()
 	                | 1 << USART_TXEN_bp; /* Transmitter Enable: enabled */
 
 #if defined(__GNUC__)
-	stdout = &USART_1_stream;
+	stdout = &USART_USB_stream;
 #endif
 
 	return 0;
 }
 
 /**
- * \brief Enable RX and TX in USART_1
+ * \brief Enable RX and TX in USART_USB
  * 1. If supported by the clock system, enables the clock to the USART
  * 2. Enables the USART module by setting the RX and TX enable-bits in the USART control register
  *
  * \return Nothing
  */
-void USART_1_enable()
+void USART_USB_enable()
 {
 	USARTD1.CTRLB |= USART_RXEN_bm | USART_TXEN_bm;
 }
 
 /**
- * \brief Enable RX in USART_1
+ * \brief Enable RX in USART_USB
  * 1. If supported by the clock system, enables the clock to the USART
  * 2. Enables the USART module by setting the RX enable-bit in the USART control register
  *
  * \return Nothing
  */
-void USART_1_enable_rx()
+void USART_USB_enable_rx()
 {
 	USARTD1.CTRLB |= USART_RXEN_bm;
 }
 
 /**
- * \brief Enable TX in USART_1
+ * \brief Enable TX in USART_USB
  * 1. If supported by the clock system, enables the clock to the USART
  * 2. Enables the USART module by setting the TX enable-bit in the USART control register
  *
  * \return Nothing
  */
-void USART_1_enable_tx()
+void USART_USB_enable_tx()
 {
 	USARTD1.CTRLB |= USART_TXEN_bm;
 }
 
 /**
- * \brief Disable USART_1
+ * \brief Disable USART_USB
  * 1. Disables the USART module by clearing the enable-bit(s) in the USART control register
  * 2. If supported by the clock system, disables the clock to the USART
  *
  * \return Nothing
  */
-void USART_1_disable()
+void USART_USB_disable()
 {
 	USARTD1.CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
 }
 
 /**
- * \brief Get recieved data from USART_1
+ * \brief Get recieved data from USART_USB
  *
- * \return Data register from USART_1 module
+ * \return Data register from USART_USB module
  */
-uint8_t USART_1_get_data()
+uint8_t USART_USB_get_data()
 {
 	return USARTD1.DATA;
 }
@@ -597,7 +597,7 @@ uint8_t USART_1_get_data()
  * \retval false The USART can not receive data to be transmitted
  * \retval true The USART can receive data to be transmitted
  */
-bool USART_1_is_tx_ready()
+bool USART_USB_is_tx_ready()
 {
 	return (USARTD1.STATUS & USART_DREIF_bm);
 }
@@ -609,31 +609,31 @@ bool USART_1_is_tx_ready()
  * \retval true The USART has received data
  * \retval false The USART has not received data
  */
-bool USART_1_is_rx_ready()
+bool USART_USB_is_rx_ready()
 {
 	return (USARTD1.STATUS & USART_RXCIF_bm);
 }
 
 /**
- * \brief Check if USART_1 data is transmitted
+ * \brief Check if USART_USB data is transmitted
  *
  * \return Receiver ready status
  * \retval true  Data is not completely shifted out of the shift register
  * \retval false Data completely shifted out if the USART shift register
  */
-bool USART_1_is_tx_busy()
+bool USART_USB_is_tx_busy()
 {
 	return (!(USARTD1.STATUS & USART_TXCIF_bm));
 }
 
 /**
- * \brief Read one character from USART_1
+ * \brief Read one character from USART_USB
  *
  * Function will block if a character is not available.
  *
- * \return Data read from the USART_1 module
+ * \return Data read from the USART_USB module
  */
-uint8_t USART_1_read()
+uint8_t USART_USB_read()
 {
 	while (!(USARTD1.STATUS & USART_RXCIF_bm))
 		;
@@ -641,7 +641,7 @@ uint8_t USART_1_read()
 }
 
 /**
- * \brief Write one character to USART_1
+ * \brief Write one character to USART_USB
  *
  * Function will block until a character can be accepted.
  *
@@ -649,7 +649,7 @@ uint8_t USART_1_read()
  *
  * \return Nothing
  */
-void USART_1_write(const uint8_t data)
+void USART_USB_write(const uint8_t data)
 {
 	while (!(USARTD1.STATUS & USART_DREIF_bm))
 		;

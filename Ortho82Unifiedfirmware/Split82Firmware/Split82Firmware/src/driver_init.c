@@ -43,7 +43,7 @@ void SLEEP_initialization(void)
 }
 
 /* Configure pins and initialize registers */
-void USART_0_initialization(void)
+void USART_KBD_initialization(void)
 {
 
 	// Set pin direction to input
@@ -72,11 +72,11 @@ void USART_0_initialization(void)
 	    // <true"> High
 	    false);
 
-	USART_0_init();
+	USART_KBD_init();
 }
 
 /* Configure pins and initialize registers */
-void USART_1_initialization(void)
+void USART_USB_initialization(void)
 {
 
 	// Set pin direction to input
@@ -105,7 +105,7 @@ void USART_1_initialization(void)
 	    // <true"> High
 	    false);
 
-	USART_1_init();
+	USART_USB_init();
 }
 
 /**
@@ -345,7 +345,7 @@ void system_init()
 
 	SLEEP_initialization();
 
-	USART_0_initialization();
+	USART_KBD_initialization();
 
-	USART_1_initialization();
+	USART_USB_initialization();
 }

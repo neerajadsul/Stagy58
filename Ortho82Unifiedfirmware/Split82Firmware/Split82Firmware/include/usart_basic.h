@@ -35,61 +35,61 @@
 extern "C" {
 #endif
 
-/* USART_0 Ringbuffer */
+/* USART_KBD Ringbuffer */
 
-#define USART_0_RX_BUFFER_SIZE 8
-#define USART_0_TX_BUFFER_SIZE 8
-#define USART_0_RX_BUFFER_MASK (USART_0_RX_BUFFER_SIZE - 1)
-#define USART_0_TX_BUFFER_MASK (USART_0_TX_BUFFER_SIZE - 1)
+#define USART_KBD_RX_BUFFER_SIZE 8
+#define USART_KBD_TX_BUFFER_SIZE 8
+#define USART_KBD_RX_BUFFER_MASK (USART_KBD_RX_BUFFER_SIZE - 1)
+#define USART_KBD_TX_BUFFER_MASK (USART_KBD_TX_BUFFER_SIZE - 1)
 
 typedef enum { RX_CB = 1, UDRE_CB } usart_cb_type_t;
 typedef void (*usart_cb_t)(void);
 
-int8_t USART_0_init();
+int8_t USART_KBD_init();
 
-void USART_0_enable();
+void USART_KBD_enable();
 
-void USART_0_enable_rx();
+void USART_KBD_enable_rx();
 
-void USART_0_enable_tx();
+void USART_KBD_enable_tx();
 
-void USART_0_disable();
+void USART_KBD_disable();
 
-uint8_t USART_0_get_data();
+uint8_t USART_KBD_get_data();
 
-bool USART_0_is_tx_ready();
+bool USART_KBD_is_tx_ready();
 
-bool USART_0_is_rx_ready();
+bool USART_KBD_is_rx_ready();
 
-bool USART_0_is_tx_busy();
+bool USART_KBD_is_tx_busy();
 
-uint8_t USART_0_read(void);
+uint8_t USART_KBD_read(void);
 
-void USART_0_write(const uint8_t data);
+void USART_KBD_write(const uint8_t data);
 
-void USART_0_set_ISR_cb(usart_cb_t cb, usart_cb_type_t type);
+void USART_KBD_set_ISR_cb(usart_cb_t cb, usart_cb_type_t type);
 
-int8_t USART_1_init();
+int8_t USART_USB_init();
 
-void USART_1_enable();
+void USART_USB_enable();
 
-void USART_1_enable_rx();
+void USART_USB_enable_rx();
 
-void USART_1_enable_tx();
+void USART_USB_enable_tx();
 
-void USART_1_disable();
+void USART_USB_disable();
 
-uint8_t USART_1_get_data();
+uint8_t USART_USB_get_data();
 
-bool USART_1_is_tx_ready();
+bool USART_USB_is_tx_ready();
 
-bool USART_1_is_rx_ready();
+bool USART_USB_is_rx_ready();
 
-bool USART_1_is_tx_busy();
+bool USART_USB_is_tx_busy();
 
-uint8_t USART_1_read(void);
+uint8_t USART_USB_read(void);
 
-void USART_1_write(const uint8_t data);
+void USART_USB_write(const uint8_t data);
 
 #ifdef __cplusplus
 }

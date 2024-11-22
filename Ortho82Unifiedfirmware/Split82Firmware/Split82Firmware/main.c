@@ -75,11 +75,11 @@ int main(void)
 
 void send_key_event(int key, int event)
 {
-	USART_0_write('0' + (int)key/10);
-	USART_0_write('0' + key%10);
-	USART_0_write(':');
-	USART_0_write(event);
-	USART_0_write('\n');
+	USART_KBD_write('0' + (int)key/10);
+	USART_KBD_write('0' + key%10);
+	USART_KBD_write(':');
+	USART_KBD_write(event);
+	USART_KBD_write('\n');
 }
 
 
@@ -98,9 +98,9 @@ int receive_key_event(Event_t* event)
 	//printf("%s\n", data);
 	int ch = 0;
 	int packet_len = 0;
-	while (USART_0_is_rx_ready())
+	while (USART_KBD_is_rx_ready())
 	{
-		ch = USART_0_read();
+		ch = USART_KBD_read();
 		if (ch == '\n')
 			return 1;
 		// If byte is a digit 0 to 9

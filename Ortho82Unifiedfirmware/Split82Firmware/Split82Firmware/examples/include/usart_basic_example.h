@@ -28,8 +28,8 @@
 #ifndef USART_BASIC_EXAMPLE_H
 #define USART_BASIC_EXAMPLE_H
 
-uint8_t USART_0_test_usart_basic(void);
+uint8_t USART_KBD_test_usart_basic(void);
 
-uint8_t USART_1_test_usart_basic(void);
+uint8_t USART_USB_test_usart_basic(void);
 
 #endif /* USART_BASIC_EXAMPLE_H */
