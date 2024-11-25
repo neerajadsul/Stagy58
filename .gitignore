@@ -25,6 +25,7 @@ fp-info-cache
 *.cw~
 *.cci
 *.hci
+*.pyc
 
 Debug/
 
