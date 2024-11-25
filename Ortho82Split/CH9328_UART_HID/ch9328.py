@@ -4,11 +4,16 @@ import time
 
 port_id = "/dev/cu.usbserial-FTFMEY6Y"
 
+TINY_WAIT = 0.005
+SHORT_WAIT = 0.05
+MED_WAIT = 0.1
+LONG_WAIT = 0.5
 
 empty_keys = bytearray([0x00]*8)
 alt = bytearray([Keymap.LEFT_ALT, 0x00] + [0x00] + [0x00]*5)
 alt_tab = bytearray([Keymap.LEFT_ALT, 0x00] + [Keymap.TAB] + [0x00]*5)
-
+backspace = bytearray([0x00, 0x00] + [Keymap.BACKSPACE]+ [0x00]*5)
+enter = bytearray([0x00, 0x00] + [Keymap.ENTER] + [0x00]*5)
 ctrl_alt_del = bytearray([Keymap.LEFT_CTRL | Keymap.LEFT_ALT, 0x00] + [Keymap.DELETE] + [0x00]*5)
 key_del = bytearray([0x00, 0x00] + [Keymap.DELETE]+ [0x00]*5)
 key_esc = bytearray([0x00, 0x00] + [Keymap.ESC]+ [0x00]*5)
@@ -31,31 +36,48 @@ def send_string():
 def send_alt_tab():
     with Serial(port_id, baudrate=9600) as ser:
         # send_keys(empty_keys, ser=ser)    
-        time.sleep(0.05)
+        time.sleep(SHORT_WAIT)
         # send_keys(alt, ser=ser)
-        # time.sleep(0.005)    
+        # time.sleep(TINY_WAIT)    
         send_keys(alt_tab, ser=ser)
-        time.sleep(0.505)
+        time.sleep(LONG_WAIT)
         send_keys(empty_keys, ser=ser)    
-        time.sleep(0.005)
+        time.sleep(TINY_WAIT)
         send_keys(empty_keys, ser=ser)
-        time.sleep(0.005)
+        time.sleep(TINY_WAIT)
 
 
 def send_ctrl_del_then_esc():
     with Serial(port_id, baudrate=9600) as ser:
         send_keys(ctrl_alt_del, ser=ser)
-        time.sleep(0.1)
+        time.sleep(MED_WAIT)
         send_keys(empty_keys, ser=ser)
-        time.sleep(0.5)
+        time.sleep(LONG_WAIT)
         send_keys(key_esc, ser=ser)
-        time.sleep(0.5)
+        time.sleep(LONG_WAIT)
         send_keys(empty_keys, ser=ser)
-        time.sleep(0.5)
+        time.sleep(LONG_WAIT)
 
 def open_notepad():
-    
-
+    win_run = bytearray([Keymap.LEFT_GUI, 0x00] + [Keymap.R] + [0x00]*5)
+    with Serial(port_id, baudrate=9600) as ser:
+        send_keys(win_run, ser=ser)
+        time.sleep(LONG_WAIT)
+        send_keys(empty_keys, ser=ser)
+        time.sleep(SHORT_WAIT)
+        send_keys(backspace, ser=ser)
+        time.sleep(SHORT_WAIT)
+        send_keys(empty_keys, ser=ser)
+        time.sleep(SHORT_WAIT)
+        for c in [Keymap.N, Keymap.O, Keymap.T, Keymap.E, Keymap.P, Keymap.A, Keymap.D]:
+            key = bytearray([0x00, 0x00] + [c] + [0x00]*5)
+            send_keys(key, ser=ser)
+            time.sleep(SHORT_WAIT)
+            send_keys(empty_keys, ser=ser)
+            time.sleep(SHORT_WAIT)
+        send_keys(enter, ser=ser)
+        send_keys(empty_keys, ser=ser)
+        time.sleep(SHORT_WAIT)
 
 
 if __name__ == "__main__":
