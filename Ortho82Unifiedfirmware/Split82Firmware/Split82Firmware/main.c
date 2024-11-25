@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "keymap.h"
+#include "keycodes.h"
 #include "version.h"
 
 #define PRESSED		'P'
@@ -15,6 +16,7 @@ typedef struct {
 
 void send_key_event(int key, int event);
 int receive_key_event(Event_t* event);
+void send_alt_tab(void);
 
 int main(void)
 {
@@ -39,7 +41,8 @@ int main(void)
 			int key = curr_keymap.keys[i];
 			if (!is_in_set(&prev_keymap, key))
 			{
-				printf("%c Pressed %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				//send_alt_tab();
 				USER_LED_toggle_level();
 				send_key_event(key, PRESSED);
 			}			
@@ -50,7 +53,7 @@ int main(void)
 			int key = prev_keymap.keys[i];
 			if (!is_in_set(&curr_keymap, key))
 			{
-				printf("%c Released %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 				USER_LED_toggle_level();
 				send_key_event(key, RELEASED);
 			}
@@ -82,6 +85,20 @@ void send_key_event(int key, int event)
 	USART_KBD_write('\n');
 }
 
+void send_alt_tab()
+{
+	uint8_t keys[8] = {LEFT_ALT, 0x00, TAB, 0x00, 0x00, 0x00, 0x00, 0x00};
+	for (int i=0; i < 8; i++)
+	{
+		USART_USB_write(keys[i]);
+		_delay_us(10);
+	}
+	for (int i=0; i < 8; i++)
+	{
+		USART_USB_write(0x00);
+		_delay_us(10);
+	}
+}
 
 int receive_key_event(Event_t* event)
 {

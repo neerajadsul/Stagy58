@@ -4,8 +4,13 @@
 #include <stdio.h>
 
 #include "keymap.h"
+#include "keycodes.h"
 
-char * LEFT[42] = {
+#define MOD_LEFT	0x71
+#define MOD_RIGHT	0x72
+#define FN_KEY		0x73
+
+char * LEFT_KEYS[42] = {
 	"Esc", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "F6 ",
 	"Btk", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ",
 	"Tab", " Q ", " W " , " E ", " R ", " T ", " Y ",
@@ -14,7 +19,16 @@ char * LEFT[42] = {
 	"---", "CTR", "Fun", "Opt", "Alt", "Mod", "Spc",
 };
 
-char * RIGHT[42] = {
+uint8_t LEFT_CODE[42] = {
+	ESC, F1, F2, F3, F4, F5, F6,
+	TILDE, ONE, TWO, THREE, FOUR, FIVE, SIX,
+	TAB, Q, W, E, R, T, Y,
+	CAPS_LOCK, A, S , D, F, G, H,
+	LEFT_SHIFT, BACKSLASH, Z, X, C, V, B,
+	0x00, LEFT_CTRL, FN_KEY, LEFT_GUI , LEFT_ALT, MOD_LEFT, SPACE,
+};
+
+char * RIGHT_KEYS[42] = {
 	"Esc", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "F6 ",
 	"Btk", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ",
 	"Tab", " Q ", " W " , " E ", " R ", " T ", " Y ",
@@ -98,6 +112,6 @@ Keys_t* keyboard_scan(Keys_t* keymap)
 char* get_key_id(int key, int is_left)
 {
 	if (is_left)
-		return LEFT[key];
-	return RIGHT[key];
+		return LEFT_KEYS[key];
+	return RIGHT_KEYS[key];
 }
