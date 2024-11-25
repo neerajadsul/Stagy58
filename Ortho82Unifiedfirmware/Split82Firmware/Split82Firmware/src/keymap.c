@@ -115,3 +115,10 @@ char* get_key_id(int key, int is_left)
 		return LEFT_KEYS[key];
 	return RIGHT_KEYS[key];
 }
+
+uint8_t get_key_code(int key, int is_left)
+{
+	if (is_left)
+		return LEFT_CODE[key];
+	return LEFT_CODE[key];
+}

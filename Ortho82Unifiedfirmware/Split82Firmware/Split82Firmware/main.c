@@ -18,6 +18,10 @@ void send_key_event(int key, int event);
 int receive_key_event(Event_t* event);
 void send_alt_tab(void);
 
+const HID_Keys_t empty_keys = {.modifier=0x00, .keys={0,0,0,0,0,0}};
+HID_Keys_t hid_keys = {.modifier=0x00, .keys={0,0,0,0,0,0}};
+
+
 int main(void)
 {
 	/* Initializes MCU, drivers and Middleware */
@@ -31,6 +35,7 @@ int main(void)
 	static Event_t key_event;
 	int is_left_half = IS_LEFT_get_level() ? 0 : 1;
 	printf("Is Left Half %d", is_left_half);
+	bool is_key_to_send=false;
 	//while(USART_0_is_rx_ready()) USART_0_read();
 	while (1) {
 		init_set(&curr_keymap);
@@ -41,19 +46,24 @@ int main(void)
 			int key = curr_keymap.keys[i];
 			if (!is_in_set(&prev_keymap, key))
 			{
-				printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				//printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 				//send_alt_tab();
+				hid_keys.keys[i] = get_key_code(key, is_left_half);
 				USER_LED_toggle_level();
 				send_key_event(key, PRESSED);
+				is_key_to_send = true;
 			}			
 		}
+		if (is_key_to_send)
+			send_keys(&hid_keys);
+		is_key_to_send = false;
 		for (int i=0; i<prev_keymap.count ; i++)
 		{
 			// Released keys as they were previously pressed but not anymore
 			int key = prev_keymap.keys[i];
 			if (!is_in_set(&curr_keymap, key))
 			{
-				printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				//printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 				USER_LED_toggle_level();
 				send_key_event(key, RELEASED);
 			}
@@ -85,18 +95,19 @@ void send_key_event(int key, int event)
 	USART_KBD_write('\n');
 }
 
-void send_alt_tab()
+void send_keys(HID_Keys_t *keys)
 {
-	uint8_t keys[8] = {LEFT_ALT, 0x00, TAB, 0x00, 0x00, 0x00, 0x00, 0x00};
-	for (int i=0; i < 8; i++)
+	USART_USB_write(keys->modifier);
+	USART_USB_write(0x00);
+	for (int i=0; i < 6; i++)
 	{
-		USART_USB_write(keys[i]);
-		_delay_us(10);
+		USART_USB_write(keys->keys[i]);
+		//_delay_us(10);
 	}
 	for (int i=0; i < 8; i++)
 	{
 		USART_USB_write(0x00);
-		_delay_us(10);
+		//_delay_us(10);
 	}
 }
 
