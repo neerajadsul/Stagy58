@@ -23,6 +23,10 @@ def send_keys(data: bytearray, ser: Serial) -> None:
         print(f"{x:02x}", end=', ')
     print()
     print(ser.write(data))
+    for x in empty_keys:
+        print(f"{x:02x}", end=', ')
+    print()
+    print(ser.write(empty_keys))
     time.sleep(0.001)
         
 
@@ -41,10 +45,6 @@ def send_alt_tab():
         # time.sleep(TINY_WAIT)    
         send_keys(alt_tab, ser=ser)
         time.sleep(LONG_WAIT)
-        send_keys(empty_keys, ser=ser)    
-        time.sleep(TINY_WAIT)
-        send_keys(empty_keys, ser=ser)
-        time.sleep(TINY_WAIT)
 
 
 def send_ctrl_del_then_esc():
@@ -55,30 +55,29 @@ def send_ctrl_del_then_esc():
         time.sleep(LONG_WAIT)
         send_keys(key_esc, ser=ser)
         time.sleep(LONG_WAIT)
-        send_keys(empty_keys, ser=ser)
+        # send_keys(empty_keys, ser=ser)
         time.sleep(LONG_WAIT)
+
+def type_notepad(ser):
+    for c in [Keymap.N, Keymap.O, Keymap.T, Keymap.E, Keymap.P, Keymap.A, Keymap.D]:
+        key = bytearray([0x00, 0x00] + [c] + [0x00]*5)
+        send_keys(key, ser=ser)
+        time.sleep(SHORT_WAIT)
+        time.sleep(SHORT_WAIT)
 
 def open_notepad():
     win_run = bytearray([Keymap.LEFT_GUI, 0x00] + [Keymap.R] + [0x00]*5)
     with Serial(port_id, baudrate=9600) as ser:
         send_keys(win_run, ser=ser)
         time.sleep(LONG_WAIT)
-        send_keys(empty_keys, ser=ser)
         time.sleep(SHORT_WAIT)
         send_keys(backspace, ser=ser)
         time.sleep(SHORT_WAIT)
-        send_keys(empty_keys, ser=ser)
         time.sleep(SHORT_WAIT)
-        for c in [Keymap.N, Keymap.O, Keymap.T, Keymap.E, Keymap.P, Keymap.A, Keymap.D]:
-            key = bytearray([0x00, 0x00] + [c] + [0x00]*5)
-            send_keys(key, ser=ser)
-            time.sleep(SHORT_WAIT)
-            send_keys(empty_keys, ser=ser)
-            time.sleep(SHORT_WAIT)
+        type_notepad(ser)
         send_keys(enter, ser=ser)
-        send_keys(empty_keys, ser=ser)
-        time.sleep(SHORT_WAIT)
-
+        time.sleep(LONG_WAIT)
+        type_notepad(ser)
 
 if __name__ == "__main__":
     # send_string()
