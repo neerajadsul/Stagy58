@@ -19,6 +19,7 @@ int receive_key_event(Event_t* event);
 void test_sequence();
 void send_keys(HID_Keys_t*);
 bool is_modifier(uint8_t);
+void init_keyboard_zeros(void);
 
 
 int main(void)
@@ -41,8 +42,8 @@ int main(void)
 	bool is_key_to_send=false;
 	//while(USART_0_is_rx_ready()) USART_0_read();
 	_delay_ms(1500);
-	test_sequence();
-	while(1){};
+	//init_keyboard_zeros();
+	//while(1){};
 	while (1) {
 		init_set(&curr_keymap);
 		keyboard_scan(&curr_keymap);
@@ -67,13 +68,9 @@ int main(void)
 				}
 				USER_LED_toggle_level();
 				send_key_event(key, PRESSED);
-				is_key_to_send = true;
 			}			
 		}
-		if (is_key_to_send){			
-			send_keys(&hid_keys);
-		}
-		is_key_to_send = false;
+				is_key_to_send = false;
 		for (uint8_t i=0; i<prev_keymap.count ; i++)
 		{
 			// Released keys as they were previously pressed but not anymore
@@ -84,15 +81,10 @@ int main(void)
 				printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 				USER_LED_toggle_level();
 				send_key_event(key, RELEASED);
-				is_key_to_send = true;
 			}
 		}
 		init_set(&prev_keymap);
 		copy_set(&curr_keymap, &prev_keymap);
-		if (is_key_to_send) {
-			send_keys(&empty_keys);
-		}
-		is_key_to_send = false;	
 		if (is_left_half)
 		{
 			key_event.key = 0;
@@ -160,6 +152,12 @@ void test_sequence()
 	_delay_ms(500);
 	send_keys(&empty);
 	
+}
+
+void init_keyboard_zeros()
+{
+	HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
+	send_keys(&empty);
 }
 
 int receive_key_event(Event_t* event)
