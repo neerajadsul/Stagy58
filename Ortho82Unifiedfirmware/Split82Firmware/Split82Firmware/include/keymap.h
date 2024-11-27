@@ -32,10 +32,10 @@ uint8_t get_key_code(int key, int is_left);
 
 typedef struct 
 {
-	uint8_t modifier;
 	uint8_t keys[SET_MAX_SIZE];		
+	uint8_t modifier;
 } HID_Keys_t;
 
-void send_keys(HID_Keys_t *);
+//void send_keys(HID_Keys_t *);
 
 #endif /* KEYMAP_H_ */

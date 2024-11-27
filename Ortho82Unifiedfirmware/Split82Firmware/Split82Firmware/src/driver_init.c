@@ -70,7 +70,7 @@ void USART_KBD_initialization(void)
 	    // <id> pad_initial_level
 	    // <false"> Low
 	    // <true"> High
-	    false);
+	    true);
 
 	USART_KBD_init();
 }
