@@ -91,10 +91,8 @@ int main(void)
 	static Keys_t curr_keymap;
 	static Event_t key_event;
 	uint8_t is_left_half = IS_LEFT_get_level() ? 0 : 1;
-	HID_Keys_t empty_keys = {.modifier=0x00, .keys={0,0,0,0,0,0}};
 	HID_Keys_t hid_keys = {.modifier=0x00, .keys={0,0,0,0,0,0}};
 	//printf("Is Left Half %d", is_left_half);
-	bool is_key_to_send=false;
 	//while(USART_0_is_rx_ready()) USART_0_read();
 	_delay_ms(1500);
 	//init_keyboard_zeros();
@@ -103,7 +101,6 @@ int main(void)
 		init_set(&curr_keymap);
 		keyboard_scan(&curr_keymap);
 		send_pressed_events(&curr_keymap, &hid_keys, prev_keymap, is_left_half);
-		is_key_to_send = false;
 		send_released_events(&prev_keymap, &hid_keys, curr_keymap, is_left_half);
 		init_set(&prev_keymap);
 		copy_set(&curr_keymap, &prev_keymap);
