@@ -10,13 +10,13 @@
 #define MOD_RIGHT	0x72
 #define FN_KEY		0x73
 
-char * LEFT_KEYS[42] = {
-	"Esc", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "F6 ",
-	"Btk", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ",
-	"Tab", " Q ", " W " , " E ", " R ", " T ", " Y ",
-	"Cap", " A ", " S " , " D ", " F ", " G ", " H ",
-	"LSh", " \\ ", " Z " , " X ", " C ", " V ", " B ",
-	"---", "CTR", "Fun", "Opt", "Alt", "Mod", "Spc",
+char* LEFT_KEYS[42] = {
+	"Es", "F1", "F2", "F3", "F4", "F5", "F6",
+	"`¬", "1!", "2\"", "3£", "4$", "5%", "6^",
+	"Tb", "Qq", "Ww" , "Ee", "Rr", "Tt", "Yy",
+	"Cp", "Aa", "Ss" , "Dd", "Ff", "Gg", "Hh",
+	"LS", "\\|", "Zz" , "Xx", "Cc", "Vv", "Bb",
+	"--", "CT", "Fn", "Op", "At", "ML", "Sp",
 };
 
 uint8_t LEFT_CODE[42] = {
@@ -28,13 +28,13 @@ uint8_t LEFT_CODE[42] = {
 	0x00, LEFT_CTRL, FN_KEY, LEFT_GUI , LEFT_ALT, MOD_LEFT, SPACE,
 };
 
-char * RIGHT_KEYS[42] = {
-	"Esc", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "F6 ",
-	"Btk", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ",
-	"Tab", " Q ", " W " , " E ", " R ", " T ", " Y ",
-	"Cap", " A ", " S " , " D ", " F ", " G ", " H ",
-	"LSh", " \\ ", " Z " , " X ", " C ", " V ", " B ",
-	"---", "CTR", "Fun", "Opt", "Alt", "Mod", "Spc",
+char* RIGHT_KEYS[42] = {
+	"Es", "F1", "F2", "F3", "F4", "F5", "F6",
+	"`¬", "1!", "2\"", "3£", "4$", "5%", "6^",
+	"Tb", "Qq", "Ww" , "Ee", "Rr", "Tt", "Yy",
+	"Cp", "Aa", "Ss" , "Dd", "Ff", "Gg", "Hh",
+	"LS", "\\|", "Zz" , "Xx", "Cc", "Vv", "Bb",
+	"--", "CT", "Fn", "Op", "At", "ML", "Sp",
 };
 
 
