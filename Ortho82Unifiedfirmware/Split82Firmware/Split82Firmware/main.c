@@ -22,6 +22,61 @@ bool is_modifier(uint8_t);
 void init_keyboard_zeros(void);
 
 
+void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_keymap, uint8_t is_left_half)
+{
+	for (uint8_t i=0; i < curr_keymap->count; i++)
+		{	
+			// Currently pressed keys
+			uint8_t key = curr_keymap->keys[i];
+			uint8_t code;
+			hid_keys->keys[i] = 0x00;
+			if (!is_in_set(&prev_keymap, key))
+			{
+				printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				//send_alt_tab();
+				 code = get_key_code(key, is_left_half);
+				if (is_modifier(code)) {
+					hid_keys->modifier = code | hid_keys->modifier;
+				} 
+				else {
+					hid_keys->keys[i] = code;
+				}
+				USER_LED_toggle_level();
+				send_key_event(key, PRESSED);
+			}			
+		}
+}
+
+void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr_keymap, uint8_t is_left_half)
+{
+	for (uint8_t i=0; i<prev_keymap->count ; i++)
+	{
+		// Released keys as they were previously pressed but not anymore
+		uint8_t key = prev_keymap->keys[i];
+		hid_keys->keys[i] = 0x00;
+		if (!is_in_set(&curr_keymap, key))
+		{
+			printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+			USER_LED_toggle_level();
+			send_key_event(key, RELEASED);
+		}
+	}
+}
+
+void process_other_half_events(uint8_t is_left_half, Event_t *key_event)
+{
+	if (is_left_half)
+		{
+			key_event->key = 0;
+			key_event->event = 0;
+
+			if (receive_key_event(key_event))
+			{
+				printf("%c %c %s\n", is_left_half ? 'L':'R', key_event->event, get_key_id(key_event->key, is_left_half));
+			}
+		}
+}
+
 int main(void)
 {
 	/* Initializes MCU, drivers and Middleware */
@@ -47,55 +102,12 @@ int main(void)
 	while (1) {
 		init_set(&curr_keymap);
 		keyboard_scan(&curr_keymap);
-		for (uint8_t i=0; i < curr_keymap.count; i++)
-		{	
-			// Currently pressed keys
-			uint8_t key = curr_keymap.keys[i];
-			uint8_t code;
-			hid_keys.keys[i] = 0x00;
-			if (!is_in_set(&prev_keymap, key))
-			{
-				printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
-				//send_alt_tab();
-				 code = get_key_code(key, is_left_half);
-				if (is_modifier(code))
-				{
-					hid_keys.modifier = code | hid_keys.modifier;
-				} 
-				else
-				{
-					hid_keys.keys[i] = code;
-				}
-				USER_LED_toggle_level();
-				send_key_event(key, PRESSED);
-			}			
-		}
-				is_key_to_send = false;
-		for (uint8_t i=0; i<prev_keymap.count ; i++)
-		{
-			// Released keys as they were previously pressed but not anymore
-			uint8_t key = prev_keymap.keys[i];
-			hid_keys.keys[i] = 0x00;
-			if (!is_in_set(&curr_keymap, key))
-			{
-				printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
-				USER_LED_toggle_level();
-				send_key_event(key, RELEASED);
-			}
-		}
+		send_pressed_events(&curr_keymap, &hid_keys, prev_keymap, is_left_half);
+		is_key_to_send = false;
+		send_released_events(&prev_keymap, &hid_keys, curr_keymap, is_left_half);
 		init_set(&prev_keymap);
 		copy_set(&curr_keymap, &prev_keymap);
-		if (is_left_half)
-		{
-			key_event.key = 0;
-			key_event.event = 0;
-
-			if (receive_key_event(&key_event))
-			{
-				printf("%c %c %s\n", is_left_half ? 'L':'R', key_event.event, get_key_id(key_event.key, is_left_half));
-			}
-		}
-		
+		process_other_half_events(is_left_half, &key_event);
 	}
 }
 
