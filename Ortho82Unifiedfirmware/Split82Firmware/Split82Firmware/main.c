@@ -21,7 +21,7 @@ void send_keys(HID_Keys_t*, char);
 void init_keyboard_zeros(void);
 
 
-#define CH9823_CONN	0
+#define CH9823_CONN	1
 
 
 void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_keymap, uint8_t is_left_half)
@@ -135,14 +135,14 @@ void send_keys(HID_Keys_t *keys, char flag)
 	if (!CH9823_CONN)
 		printf("%c %X %X %X %X %X %X %X %X\n", flag, keys->modifier, 0x00, keys->keys[0], keys->keys[1], keys->keys[2], keys->keys[3], keys->keys[4], keys->keys[5]);
 	else {	
-		USART_KBD_write(keys->modifier);
-		USART_KBD_write(0x00);
-		USART_KBD_write(keys->keys[0]);
-		USART_KBD_write(keys->keys[1]);
-		USART_KBD_write(keys->keys[2]);
-		USART_KBD_write(keys->keys[3]);
-		USART_KBD_write(keys->keys[4]);
-		USART_KBD_write(keys->keys[5]);
+		USART_USB_write(keys->modifier);
+		USART_USB_write(0x00);
+		USART_USB_write(keys->keys[0]);
+		USART_USB_write(keys->keys[1]);
+		USART_USB_write(keys->keys[2]);
+		USART_USB_write(keys->keys[3]);
+		USART_USB_write(keys->keys[4]);
+		USART_USB_write(keys->keys[5]);
 	}
 }
 
