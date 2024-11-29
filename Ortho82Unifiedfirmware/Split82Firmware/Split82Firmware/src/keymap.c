@@ -122,3 +122,16 @@ uint8_t get_key_code(int key, int is_left)
 		return LEFT_CODE[key];
 	return LEFT_CODE[key];
 }
+
+bool is_modifier(uint8_t key)
+{
+	switch(key) {
+		case 28:
+		case 36:
+		case 38:
+		case 39:
+			return true;
+		default:
+			return false;
+	}
+}

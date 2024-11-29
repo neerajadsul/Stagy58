@@ -17,34 +17,37 @@ typedef struct {
 void send_key_event(uint8_t key, uint8_t event);
 int receive_key_event(Event_t* event);
 void test_sequence();
-void send_keys(HID_Keys_t*);
-bool is_modifier(uint8_t);
+void send_keys(HID_Keys_t*, char);
 void init_keyboard_zeros(void);
+
+
+#define CH9823_CONN	0
 
 
 void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_keymap, uint8_t is_left_half)
 {
-	for (uint8_t i=0; i < curr_keymap->count; i++)
-		{	
-			// Currently pressed keys
-			uint8_t key = curr_keymap->keys[i];
-			uint8_t code;
-			hid_keys->keys[i] = 0x00;
-			if (!is_in_set(&prev_keymap, key))
-			{
+	for (uint8_t i=0; i < curr_keymap->count; i++) {	
+		// Currently pressed keys
+		uint8_t key = curr_keymap->keys[i];
+		uint8_t code;
+		hid_keys->keys[i] = 0x00;
+		if (!is_in_set(&prev_keymap, key)) {
+			if(!CH9823_CONN)
 				printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
-				//send_alt_tab();
-				 code = get_key_code(key, is_left_half);
-				if (is_modifier(code)) {
-					hid_keys->modifier = code | hid_keys->modifier;
-				} 
-				else {
-					hid_keys->keys[i] = code;
-				}
-				USER_LED_toggle_level();
-				send_key_event(key, PRESSED);
-			}			
+			//send_alt_tab();
+			code = get_key_code(key, is_left_half);
+			if (is_modifier(key)) {
+				hid_keys->modifier = code | hid_keys->modifier;
+			} 
+			else {
+				hid_keys->keys[i] = code;
+			}
+			send_keys(hid_keys, 'P');
+			USER_LED_toggle_level();
+			send_key_event(key, PRESSED);
 		}
+	}
+	
 }
 
 void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr_keymap, uint8_t is_left_half)
@@ -53,12 +56,21 @@ void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr
 	{
 		// Released keys as they were previously pressed but not anymore
 		uint8_t key = prev_keymap->keys[i];
-		hid_keys->keys[i] = 0x00;
+		uint8_t code;
 		if (!is_in_set(&curr_keymap, key))
 		{
-			printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+			if (!CH9823_CONN)
+				printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
 			USER_LED_toggle_level();
 			send_key_event(key, RELEASED);
+			code = get_key_code(key, is_left_half);
+			if (is_modifier(key)) {
+				hid_keys->modifier = (~code) & hid_keys->modifier;
+			}
+			else {
+				hid_keys->keys[i] = 0x00;
+			}
+			send_keys(hid_keys, 'R');
 		}
 	}
 }
@@ -118,56 +130,28 @@ void send_key_event(uint8_t key, uint8_t event)
 	USART_KBD_write('\n');
 }
 
-void send_keys(HID_Keys_t *keys)
+void send_keys(HID_Keys_t *keys, char flag)
 {
-	USART_USB_write(keys->modifier);
-	USART_KBD_write(keys->modifier);
-	USART_USB_write(0x00);
-	USART_KBD_write(0x00);
-	for (uint8_t i=0; i < 6; i++)
-	{
-		USART_USB_write(keys->keys[i]);
-		USART_KBD_write(keys->keys[i]);
-	}
-	for (uint8_t i=0; i < 8; i++)
-	{
-		USART_USB_write(0x00);
-		USART_KBD_write(0x00);
-	}
+	printf("%c %X %X %X %X %X %X %X %X\n", flag, keys->modifier, 0x00, keys->keys[0], keys->keys[1], keys->keys[2], keys->keys[3], keys->keys[4], keys->keys[5]);
 }
 
-bool is_modifier(uint8_t code)
-{
-	switch(code) {
-		case LEFT_CTRL:
-		case LEFT_SHIFT:
-		case LEFT_ALT:
-		case LEFT_GUI:
-		case RIGHT_CTRL:
-		case RIGHT_SHIFT:
-		case RIGHT_ALT:
-		case RIGHT_GUI:
-			return true;
-		default:
-			return false;
-	}
-}
 
-void test_sequence()
-{
-	HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
-	HID_Keys_t ks = {.modifier = LEFT_ALT, .keys = {TAB, 0,0,0,0,0}};
-	send_keys(&ks);
-	_delay_ms(500);
-	send_keys(&empty);
-	
-}
 
-void init_keyboard_zeros()
-{
-	HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
-	send_keys(&empty);
-}
+//void test_sequence()
+//{
+	//HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
+	//HID_Keys_t ks = {.modifier = LEFT_ALT, .keys = {TAB, 0,0,0,0,0}};
+	//send_keys(&ks);
+	//_delay_ms(500);
+	//send_keys(&empty);
+	//
+//}
+
+//void init_keyboard_zeros()
+//{
+	//HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
+	//send_keys(&empty);
+//}
 
 int receive_key_event(Event_t* event)
 {

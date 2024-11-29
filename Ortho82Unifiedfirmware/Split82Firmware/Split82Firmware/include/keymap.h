@@ -29,6 +29,7 @@ Keys_t* keyboard_scan(Keys_t* keymap);
 
 char* get_key_id(int, int);
 uint8_t get_key_code(int key, int is_left);
+bool is_modifier(uint8_t);
 
 typedef struct 
 {
