@@ -21,7 +21,7 @@ void send_keys(HID_Keys_t*, char);
 void init_keyboard_zeros(void);
 
 
-#define CH9823_CONN	1
+#define CH9823_CONN	0
 
 
 void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_keymap, uint8_t is_left_half)
@@ -29,20 +29,19 @@ void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_
 	for (uint8_t i=0; i < curr_keymap->count; i++) {	
 		// Currently pressed keys
 		uint8_t key = curr_keymap->keys[i];
-		uint8_t code;
+		//uint8_t code;
 		hid_keys->keys[i] = 0x00;
 		if (!is_in_set(&prev_keymap, key)) {
 			if(!CH9823_CONN)
-				printf("%c 1 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				printf("%c 1 %d %s\n", is_left_half ? 'L':'R', key, get_key_id(key, is_left_half));
 			//send_alt_tab();
-			code = get_key_code(key, is_left_half);
-			if (is_modifier(key)) {
-				hid_keys->modifier = code | hid_keys->modifier;
-			} 
-			else {
-				hid_keys->keys[i] = code;
-			}
-			send_keys(hid_keys, 'P');
+			//code = get_key_code(key, is_left_half);
+			//if (is_modifier(key)) {
+				//hid_keys->modifier = code | hid_keys->modifier;
+			//} 
+			//else {
+				//hid_keys->keys[i] = code;
+			//}
 			USER_LED_toggle_level();
 			send_key_event(key, PRESSED);
 		}
@@ -56,21 +55,20 @@ void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr
 	{
 		// Released keys as they were previously pressed but not anymore
 		uint8_t key = prev_keymap->keys[i];
-		uint8_t code;
+		//uint8_t code;
 		if (!is_in_set(&curr_keymap, key))
 		{
 			if (!CH9823_CONN)
-				printf("%c 0 %s\n", is_left_half ? 'L':'R', get_key_id(key, is_left_half));
+				printf("%c 0 %d %s\n", is_left_half ? 'L':'R', key, get_key_id(key, is_left_half));
 			USER_LED_toggle_level();
 			send_key_event(key, RELEASED);
-			code = get_key_code(key, is_left_half);
-			if (is_modifier(key)) {
-				hid_keys->modifier = (~code) & hid_keys->modifier;
-			}
-			else {
-				hid_keys->keys[i] = 0x00;
-			}
-			send_keys(hid_keys, 'R');
+			//code = get_key_code(key, is_left_half);
+			//if (is_modifier(key)) {
+				//hid_keys->modifier = (~code) & hid_keys->modifier;
+			//}
+			//else {
+				//hid_keys->keys[i] = 0x00;
+			//}
 		}
 	}
 }
@@ -107,8 +105,6 @@ int main(void)
 	//printf("Is Left Half %d", is_left_half);
 	//while(USART_0_is_rx_ready()) USART_0_read();
 	_delay_ms(1500);
-	//init_keyboard_zeros();
-	//while(1){};
 	while (1) {
 		init_set(&curr_keymap);
 		keyboard_scan(&curr_keymap);
@@ -130,39 +126,6 @@ void send_key_event(uint8_t key, uint8_t event)
 	USART_KBD_write('\n');
 }
 
-void send_keys(HID_Keys_t *keys, char flag)
-{
-	if (!CH9823_CONN)
-		printf("%c %X %X %X %X %X %X %X %X\n", flag, keys->modifier, 0x00, keys->keys[0], keys->keys[1], keys->keys[2], keys->keys[3], keys->keys[4], keys->keys[5]);
-	else {	
-		USART_USB_write(keys->modifier);
-		USART_USB_write(0x00);
-		USART_USB_write(keys->keys[0]);
-		USART_USB_write(keys->keys[1]);
-		USART_USB_write(keys->keys[2]);
-		USART_USB_write(keys->keys[3]);
-		USART_USB_write(keys->keys[4]);
-		USART_USB_write(keys->keys[5]);
-	}
-}
-
-
-
-//void test_sequence()
-//{
-	//HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
-	//HID_Keys_t ks = {.modifier = LEFT_ALT, .keys = {TAB, 0,0,0,0,0}};
-	//send_keys(&ks);
-	//_delay_ms(500);
-	//send_keys(&empty);
-	//
-//}
-
-//void init_keyboard_zeros()
-//{
-	//HID_Keys_t empty = {.modifier = 0, .keys = {0,0,0,0,0,0}};
-	//send_keys(&empty);
-//}
 
 int receive_key_event(Event_t* event)
 {

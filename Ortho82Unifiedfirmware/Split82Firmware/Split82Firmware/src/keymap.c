@@ -19,22 +19,22 @@ char* LEFT_KEYS[42] = {
 	"--", "CT", "Fn", "Op", "At", "ML", "Sp",
 };
 
-uint8_t LEFT_CODE[42] = {
-	ESC, F1, F2, F3, F4, F5, F6,
-	TILDE, ONE, TWO, THREE, FOUR, FIVE, SIX,
-	TAB, Q, W, E, R, T, Y,
-	CAPS_LOCK, A, S , D, F, G, H,
-	LEFT_SHIFT, BACKSLASH, Z, X, C, V, B,
-	0x00, LEFT_CTRL, FN_KEY, LEFT_GUI , LEFT_ALT, MOD_LEFT, SPACE,
-};
+//uint8_t LEFT_CODE[42] = {
+	//ESC, F1, F2, F3, F4, F5, F6,
+	//TILDE, ONE, TWO, THREE, FOUR, FIVE, SIX,
+	//TAB, Q, W, E, R, T, Y,
+	//CAPS_LOCK, A, S , D, F, G, H,
+	//LEFT_SHIFT, BACKSLASH, Z, X, C, V, B,
+	//0x00, LEFT_CTRL, FN_KEY, LEFT_GUI , LEFT_ALT, MOD_LEFT, SPACE,
+//};
 
 char* RIGHT_KEYS[42] = {
-	"Es", "F1", "F2", "F3", "F4", "F5", "F6",
-	"`¬", "1!", "2\"", "3£", "4$", "5%", "6^",
-	"Tb", "Qq", "Ww" , "Ee", "Rr", "Tt", "Yy",
-	"Cp", "Aa", "Ss" , "Dd", "Ff", "Gg", "Hh",
-	"LS", "\\|", "Zz" , "Xx", "Cc", "Vv", "Bb",
-	"--", "CT", "Fn", "Op", "At", "ML", "Sp",
+	"DL", "12", "11", "10", "F9", "F8", "F7",
+	"Bk", "=+", "-_", "0)", "9(", "8*", "7&",
+	"LF", "]}", "[{" , "Pp", "Oo", "Ii", "Uu",
+	"LF", "#~", "'@" , ";:", "Ll", "Kk", "Jj",
+	"RS", "Up", "/?" , ".>", ",<", "Mm", "Nn",
+	"--", "Rt", "Dw", "Lt", "At", "Op", "Sp"
 };
 
 
@@ -116,12 +116,12 @@ char* get_key_id(int key, int is_left)
 	return RIGHT_KEYS[key];
 }
 
-uint8_t get_key_code(int key, int is_left)
-{
-	if (is_left)
-		return LEFT_CODE[key];
-	return LEFT_CODE[key];
-}
+//uint8_t get_key_code(int key, int is_left)
+//{
+	//if (is_left)
+		//return LEFT_CODE[key];
+	//return LEFT_CODE[key];
+//}
 
 bool is_modifier(uint8_t key)
 {
