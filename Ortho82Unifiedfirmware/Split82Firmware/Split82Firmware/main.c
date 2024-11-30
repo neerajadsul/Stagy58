@@ -9,6 +9,7 @@
 #define PRESSED		'P'
 #define RELEASED	'R'
 
+
 typedef struct {
 	uint8_t key;
 	uint8_t event;	
@@ -75,6 +76,7 @@ void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr
 
 void process_other_half_events(uint8_t is_left_half, Event_t *key_event)
 {
+	uint8_t ch = 0;
 	if (is_left_half)
 		{
 			key_event->key = 0;
@@ -82,7 +84,11 @@ void process_other_half_events(uint8_t is_left_half, Event_t *key_event)
 
 			if (receive_key_event(key_event))
 			{
-				printf("%c %c %s\n", is_left_half ? 'L':'R', key_event->event, get_key_id(key_event->key, is_left_half));
+				if (key_event->event == PRESSED)
+					ch = 1;
+				else
+					ch = 0;
+				printf("R %d %d %s\n", ch, key_event->key, get_key_id(key_event->key, false));
 			}
 		}
 }
