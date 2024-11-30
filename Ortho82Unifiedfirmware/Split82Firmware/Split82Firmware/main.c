@@ -54,20 +54,32 @@ void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr
 	}
 }
 
-void process_other_half_events(Event_t *key_event)
-{
-	uint8_t ch = 0;
-	key_event->key = 0;
-	key_event->event = 0;
+#define START_OF_FRAME	'<'
+#define END_OF_FRAME	'>'
+#define FRAME_SEPARATOR	':'
+#define EOL	'\n'
 
-	if (receive_key_event(key_event))
-	{
-		if (key_event->event == PRESSED)
-			ch = 1;
-		else
-			ch = 0;
-		printf("R %d %d %s\n", key_event->event, key_event->key, get_key_id(key_event->key, false));
+void process_other_half_events()
+{
+	uint8_t packet_len = 0;
+	char ch = 0;
+	while (ch != EOL) {
+		ch = USART_KBD_read();
+		switch (ch) {
+			case START_OF_FRAME:
+			break;
+			case FRAME_SEPARATOR:
+			break;
+			case END_OF_FRAME:
+			break;
+			case EOL:
+			break;
+			default:
+			break;
+		}
 	}
+		
+	
 }
 
 int main(void)
@@ -81,7 +93,6 @@ int main(void)
 	static Keys_t prev_keymap;
 	init_set(&prev_keymap);
 	static Keys_t curr_keymap;
-	static Event_t key_event;
 	uint8_t is_left_half = IS_LEFT_get_level() ? 0 : 1;
 	HID_Keys_t hid_keys = {.modifier=0x00, .keys={0,0,0,0,0,0}};
 	printf("Is Left Half %d", is_left_half);
@@ -94,7 +105,7 @@ int main(void)
 		init_set(&prev_keymap);
 		copy_set(&curr_keymap, &prev_keymap);
 		if (is_left_half) {
-			process_other_half_events(&key_event);
+			process_other_half_events();
 		}
 	}
 }
@@ -102,50 +113,24 @@ int main(void)
 
 void send_key_event(uint8_t key, uint8_t event)
 {
+	USART_KBD_write('<');
+	_delay_ms(1);
 	USART_KBD_write('0' + (uint8_t)key/10);
+	_delay_ms(1);
 	USART_KBD_write('0' + key%10);
+	_delay_ms(1);
 	USART_KBD_write(':');
+	_delay_ms(1);
 	if (event == PRESSED) {
 		USART_KBD_write('1');
 	} 
 	else {
 		USART_KBD_write('0');
 	}
+	_delay_ms(1);
+	USART_KBD_write('>');
+	_delay_ms(1);
 	USART_KBD_write('\n');
+	_delay_ms(1);
 }
 
-
-int receive_key_event(Event_t* event)
-{
-	uint8_t ch = 0;
-	uint8_t packet_len = 0;
-	uint8_t once = 0;
-	
-	while (USART_KBD_is_rx_ready())
-	{
-		ch = USART_KBD_read();
-		if (ch == '\n' && once > 0) {
-			return 1;
-		} else {
-			once++;
-		}
-		// If byte is a digit 0 to 9
-		if (packet_len < 2 && (ch >= '0' && ch <= '9')){
-			if (packet_len == 0)
-				event->key += (ch - '0') * 10;
-			else
-				event->key += (ch - '0');
-			packet_len++;
-			continue;
-		}
-		if (packet_len == 2 && ch == ':'){
-			packet_len++;
-			continue;
-		}
-		if (packet_len == 3 && (ch == PRESSED || ch == RELEASED)) {
-			event->event = ch;
-			continue;
-		}	
-	}
-	return 0;
-}

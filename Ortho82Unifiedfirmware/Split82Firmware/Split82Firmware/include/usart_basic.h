@@ -57,6 +57,16 @@ uint8_t USART_KBD_read(void);
 
 void USART_KBD_write(const uint8_t data);
 
+/* USART_USB Ringbuffer */
+
+#define USART_USB_RX_BUFFER_SIZE 8
+#define USART_USB_TX_BUFFER_SIZE 8
+#define USART_USB_RX_BUFFER_MASK (USART_USB_RX_BUFFER_SIZE - 1)
+#define USART_USB_TX_BUFFER_MASK (USART_USB_TX_BUFFER_SIZE - 1)
+
+typedef enum { RX_CB = 1, UDRE_CB } usart_cb_type_t;
+typedef void (*usart_cb_t)(void);
+
 int8_t USART_USB_init();
 
 void USART_USB_enable();
@@ -78,6 +88,8 @@ bool USART_USB_is_tx_busy();
 uint8_t USART_USB_read(void);
 
 void USART_USB_write(const uint8_t data);
+
+void USART_USB_set_ISR_cb(usart_cb_t cb, usart_cb_type_t type);
 
 #ifdef __cplusplus
 }
