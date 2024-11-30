@@ -123,29 +123,7 @@ int receive_key_event(Event_t* event)
 	
 	while (USART_KBD_is_rx_ready())
 	{
-		ch = USART_KBD_read();
-		if (ch == '\n' && once > 0) {
-			return 1;
-		} else {
-			once++;
-		}
-		// If byte is a digit 0 to 9
-		if (packet_len < 2 && (ch >= '0' && ch <= '9')){
-			if (packet_len == 0)
-				event->key += (ch - '0') * 10;
-			else
-				event->key += (ch - '0');
-			packet_len++;
-			continue;
-		}
-		if (packet_len == 2 && ch == ':'){
-			packet_len++;
-			continue;
-		}
-		if (packet_len == 3 && (ch == PRESSED || ch == RELEASED)) {
-			event->event = ch;
-			continue;
-		}	
+		printf("%c", USART_KBD_read());
 	}
 	return 0;
 }

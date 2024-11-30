@@ -47,7 +47,7 @@ int8_t PMIC_init()
 
 	ENABLE_INTERRUPTS();
 
-	PMIC.CTRL = 0 << PMIC_RREN_bp       /* Round-Robin Priority Enable: disabled */
+	PMIC.CTRL = 1 << PMIC_RREN_bp       /* Round-Robin Priority Enable: enabled */
 	            | 0 << PMIC_IVSEL_bp    /* Interrupt Vector Select: disabled */
 	            | 0 << PMIC_HILVLEN_bp  /* High Level Enable: disabled */
 	            | 0 << PMIC_MEDLVLEN_bp /* Medium Level Enable: disabled */

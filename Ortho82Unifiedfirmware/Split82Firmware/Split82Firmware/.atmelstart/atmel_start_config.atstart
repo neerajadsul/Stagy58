@@ -134,7 +134,7 @@ drivers:
       pmic_ctrl_ivsel: false
       pmic_ctrl_lolvlen: true
       pmic_ctrl_medlvlen: false
-      pmic_ctrl_rren: false
+      pmic_ctrl_rren: true
     optional_signals: []
     variant: null
     clocks:
@@ -178,18 +178,23 @@ drivers:
       domain_group: null
   USART_KBD:
     user_label: USART_KBD
-    definition: Atmel:XMEGA_A_B_C_Drivers:1.0.0::ATxmega32A4U-AU::USARTE0::driver_config_definition::Async.Polled.Mode::Drivers:USART:Basic
+    definition: Atmel:XMEGA_A_B_C_Drivers:1.0.0::ATxmega32A4U-AU::USARTE0::driver_config_definition::Async.IRQ.Mode::Drivers:USART:Basic
     functionality: USART
     api: Drivers:USART:Basic
     configuration:
       baud_rate: 115200
+      driver_rx_buffer_size: '16'
+      driver_tx_buffer_size: '8'
       printf_support: false
+      usart_ctrla_dreintlvl: Low Level
+      usart_ctrla_rxcintlvl: Low Level
+      usart_ctrla_txcintlvl: 'Off'
       usart_ctrlb_clk2x: false
       usart_ctrlb_mpcm: false
       usart_ctrlb_rxen: true
       usart_ctrlb_txen: true
       usart_ctrlc_chsize: 'Character size: 8 bit'
-      usart_ctrlc_cmode: Async Polled Mode
+      usart_ctrlc_cmode: Async IRQ Mode
       usart_ctrlc_pmode: No Parity
       usart_ctrlc_sbmode: 1 stop bit
       usart_ctrlc_ucpha: Sample DATA on Falling edge of XCK
