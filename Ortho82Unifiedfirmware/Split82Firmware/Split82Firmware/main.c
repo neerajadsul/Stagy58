@@ -123,7 +123,18 @@ int receive_key_event(Event_t* event)
 	
 	while (USART_KBD_is_rx_ready())
 	{
-		printf("%c", USART_KBD_read());
+		ch = USART_KBD_read();
+		if (ch == '\n') return 1;
+		if (packet_len == 0)
+		{
+			event->key += (uint8_t)(ch - '0')*10;
+		} else if (packet_len == 1) {
+			event->key += (uint8_t)(ch - '0');
+		} else if (packet_len == 3) {
+			event->event = (uint8_t)(ch - '0');
+		}
+		packet_len++;
+		//printf("%c", ch);
 	}
 	return 0;
 }
