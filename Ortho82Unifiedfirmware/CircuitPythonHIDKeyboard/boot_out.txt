@@ -1,0 +1,3 @@
+Adafruit CircuitPython 9.2.1 on 2024-11-20; Seeeduino XIAO with samd21g18
+Board ID:seeeduino_xiao
+UID:903171115431545120202032220712FF
