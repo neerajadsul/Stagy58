@@ -22,9 +22,6 @@ void send_keys(HID_Keys_t*, char);
 void init_keyboard_zeros(void);
 
 
-#define CH9823_CONN	0
-
-
 void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_keymap, uint8_t is_left_half)
 {
 	for (uint8_t i=0; i < curr_keymap->count; i++) {	
@@ -33,16 +30,7 @@ void send_pressed_events(Keys_t *curr_keymap, HID_Keys_t *hid_keys, Keys_t prev_
 		//uint8_t code;
 		hid_keys->keys[i] = 0x00;
 		if (!is_in_set(&prev_keymap, key)) {
-			if(!CH9823_CONN)
-				printf("%c 1 %d %s\n", is_left_half ? 'L':'R', key, get_key_id(key, is_left_half));
-			//send_alt_tab();
-			//code = get_key_code(key, is_left_half);
-			//if (is_modifier(key)) {
-				//hid_keys->modifier = code | hid_keys->modifier;
-			//} 
-			//else {
-				//hid_keys->keys[i] = code;
-			//}
+			printf("%c 1 %d %s\n", is_left_half ? 'L':'R', key, get_key_id(key, is_left_half));
 			USER_LED_toggle_level();
 			send_key_event(key, PRESSED);
 		}
@@ -59,38 +47,27 @@ void send_released_events(Keys_t *prev_keymap, HID_Keys_t *hid_keys, Keys_t curr
 		//uint8_t code;
 		if (!is_in_set(&curr_keymap, key))
 		{
-			if (!CH9823_CONN)
-				printf("%c 0 %d %s\n", is_left_half ? 'L':'R', key, get_key_id(key, is_left_half));
+			printf("%c 0 %d %s\n", is_left_half ? 'L':'R', key, get_key_id(key, is_left_half));
 			USER_LED_toggle_level();
 			send_key_event(key, RELEASED);
-			//code = get_key_code(key, is_left_half);
-			//if (is_modifier(key)) {
-				//hid_keys->modifier = (~code) & hid_keys->modifier;
-			//}
-			//else {
-				//hid_keys->keys[i] = 0x00;
-			//}
 		}
 	}
 }
 
-void process_other_half_events(uint8_t is_left_half, Event_t *key_event)
+void process_other_half_events(Event_t *key_event)
 {
 	uint8_t ch = 0;
-	if (is_left_half)
-		{
-			key_event->key = 0;
-			key_event->event = 0;
+	key_event->key = 0;
+	key_event->event = 0;
 
-			if (receive_key_event(key_event))
-			{
-				if (key_event->event == PRESSED)
-					ch = 1;
-				else
-					ch = 0;
-				printf("R %d %d %s\n", ch, key_event->key, get_key_id(key_event->key, false));
-			}
-		}
+	if (receive_key_event(key_event))
+	{
+		if (key_event->event == PRESSED)
+			ch = 1;
+		else
+			ch = 0;
+		printf("R %d %d %s\n", key_event->event, key_event->key, get_key_id(key_event->key, false));
+	}
 }
 
 int main(void)
@@ -100,17 +77,15 @@ int main(void)
 	_delay_ms(100);
 	atmel_start_init();
 	// Send firmware version
-	//printf("Version: %s\n", get_semantic_version());
-	//int row=0, col=0;
+	printf("Version: %s\n", get_semantic_version());
 	static Keys_t prev_keymap;
 	init_set(&prev_keymap);
 	static Keys_t curr_keymap;
 	static Event_t key_event;
 	uint8_t is_left_half = IS_LEFT_get_level() ? 0 : 1;
 	HID_Keys_t hid_keys = {.modifier=0x00, .keys={0,0,0,0,0,0}};
-	//printf("Is Left Half %d", is_left_half);
-	//while(USART_0_is_rx_ready()) USART_0_read();
-	_delay_ms(1500);
+	printf("Is Left Half %d", is_left_half);
+	_delay_ms(500);
 	while (1) {
 		init_set(&curr_keymap);
 		keyboard_scan(&curr_keymap);
@@ -118,7 +93,9 @@ int main(void)
 		send_released_events(&prev_keymap, &hid_keys, curr_keymap, is_left_half);
 		init_set(&prev_keymap);
 		copy_set(&curr_keymap, &prev_keymap);
-		process_other_half_events(is_left_half, &key_event);
+		if (is_left_half) {
+			process_other_half_events(&key_event);
+		}
 	}
 }
 
@@ -128,31 +105,30 @@ void send_key_event(uint8_t key, uint8_t event)
 	USART_KBD_write('0' + (uint8_t)key/10);
 	USART_KBD_write('0' + key%10);
 	USART_KBD_write(':');
-	USART_KBD_write(event);
+	if (event == PRESSED) {
+		USART_KBD_write('1');
+	} 
+	else {
+		USART_KBD_write('0');
+	}
 	USART_KBD_write('\n');
 }
 
 
 int receive_key_event(Event_t* event)
 {
-	//char data[10] = "";
-	//int idx = 0;
-	//while(USART_0_is_rx_ready()) {
-		//int ch = USART_0_read();
-		//USART_1_write(ch);
-		//if (ch == '\n')
-			//break;
-		//data[idx] = ch;
-		//idx++;
-	//}
-	//printf("%s\n", data);
 	uint8_t ch = 0;
 	uint8_t packet_len = 0;
+	uint8_t once = 0;
+	
 	while (USART_KBD_is_rx_ready())
 	{
 		ch = USART_KBD_read();
-		if (ch == '\n')
+		if (ch == '\n' && once > 0) {
 			return 1;
+		} else {
+			once++;
+		}
 		// If byte is a digit 0 to 9
 		if (packet_len < 2 && (ch >= '0' && ch <= '9')){
 			if (packet_len == 0)
@@ -160,12 +136,15 @@ int receive_key_event(Event_t* event)
 			else
 				event->key += (ch - '0');
 			packet_len++;
+			continue;
 		}
-		else if (packet_len == 2 && ch == ':'){
+		if (packet_len == 2 && ch == ':'){
 			packet_len++;
+			continue;
 		}
-		else if (packet_len == 3 && (ch == PRESSED || ch == RELEASED)) {
+		if (packet_len == 3 && (ch == PRESSED || ch == RELEASED)) {
 			event->event = ch;
+			continue;
 		}	
 	}
 	return 0;
