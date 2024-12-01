@@ -14,8 +14,6 @@ Project : SplitKeyboardPS2
 void tc0_disable(TC0_t *ptc);
 // Disable a Timer/Counter type TC1
 void tc1_disable(TC1_t *ptc);
-// Timer/Counter TCC0 initialization
-void tcc0_init(void);
 // Timer/Counter TCD0 initialization
 void tcd0_init(void);
 

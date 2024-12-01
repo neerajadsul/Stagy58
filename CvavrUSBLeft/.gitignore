@@ -1,0 +1,6 @@
+*.i
+Debug/
+Release/
+*.cci
+[tT]humnbs.db
+.DS_Store

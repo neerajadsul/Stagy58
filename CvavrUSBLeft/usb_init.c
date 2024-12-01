@@ -190,8 +190,8 @@ flash USB_CONFIG_t usb_config=
 .timeout={.tx=USB_TX_TIMEOUT,.rx=USB_RX_TIMEOUT},
 // Use the PLL running at 48 MHz as USB clock source
 .usb_clock=USB_CLOCK_PLL_48M,
-// USB interrupt priority level: Low Level
-.int_level=USB_INTLVL_LO_gc,
+// USB interrupt priority level: Medium Level
+.int_level=USB_INTLVL_MED_gc,
 // No device suspend handler is used
 .usb_suspend_handler=NULL,
 // No device resume handler is used
