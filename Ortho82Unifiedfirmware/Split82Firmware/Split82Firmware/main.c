@@ -66,7 +66,7 @@ void process_other_half_events(Event_t *key_event)
 			ch = 1;
 		else
 			ch = 0;
-		printf("R %d %d %s\n", key_event->event, key_event->key, get_key_id(key_event->key, false));
+		printf("L %d %d %s\n", key_event->event, key_event->key, get_key_id(key_event->key, false));
 	}
 }
 
@@ -93,7 +93,7 @@ int main(void)
 		send_released_events(&prev_keymap, &hid_keys, curr_keymap, is_left_half);
 		init_set(&prev_keymap);
 		copy_set(&curr_keymap, &prev_keymap);
-		if (is_left_half) {
+		if (!is_left_half) {
 			process_other_half_events(&key_event);
 		}
 	}
