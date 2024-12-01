@@ -186,7 +186,8 @@ delay_ms(1500);
 
 while (1)
       {
-      // Place your code here
-
+		  TGLBIT(PORTB.OUT, 3);
+		  delay_ms(250);	
+		  printf("CVAVR\n");
       }
 }
