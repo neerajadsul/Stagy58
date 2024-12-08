@@ -13,6 +13,7 @@ class DummyEvent():
         s = event_string.split(' ')
         self.key_number = int(s[1])
         self._pressed = s[2][:-1]
+        self._modkey = True if "True" in s[3] else False
 
     @property
     def pressed(self):
@@ -21,6 +22,10 @@ class DummyEvent():
     @property
     def released(self):
         return self._pressed == 'released'
+        
+    @property
+    def modkey(self):
+        return self._modkey
 
 class DummyEventQueue():
     """ Emulates Keymatrix event queue"""
@@ -44,6 +49,7 @@ if LR_side.value:
 else:
     LR = 'R'
 
+print("Half:", LR)
 uart = busio.UART(board.GP8, board.GP9, baudrate=115200, timeout=0.005)
 uart.reset_input_buffer()
 
@@ -84,22 +90,35 @@ KEYCODES_R = (
     # 18, 19, 20, 21, 22, 23
     Keycode.RIGHT_SHIFT, Keycode.FORWARD_SLASH, Keycode.PERIOD, Keycode.COMMA, Keycode.M, Keycode.N,
     # 24, 25, 26, 27, 28, 29
-    Keycode.RIGHT_CONTROL, Keycode.OPTION, Keycode.COMMAND, Keycode.SPACE, Keycode.BACKSPACE, Keycode.BACKSLASH,
+    Keycode.RIGHT_CONTROL, Keycode.OPTION, Keycode.COMMAND, Keycode.SPACE, Keycode.BACKSLASH, Keycode.BACKSPACE,
 )
+
+KEYCODES = {
+    "R": KEYCODES_R,
+    "L": KEYCODES_L,
+}
 
 MOD_KEY_NUM = 28
 
 # H, J, K, L as Arrow Keys
-ARROW_KEYCODES = {
-    17:Keycode.LEFT_ARROW,
-    16:Keycode.DOWN_ARROW,
-    15:Keycode.UP_ARROW,
-    14:Keycode.RIGHT_ARROW,
-    11:Keycode.QUOTE,
-    10:Keycode.GRAVE_ACCENT,
+ARROW_KEYCODES = { "L" :
+    {
+        0: Keycode.F1,
+        1: Keycode.F2,
+        2: Keycode.F3,
+        3: Keycode.F4,
+        4: Keycode.F5,
+    },
+    "R": {
+        17:Keycode.LEFT_ARROW,
+        16:Keycode.DOWN_ARROW,
+        15:Keycode.UP_ARROW,
+        14:Keycode.RIGHT_ARROW,
+        11:Keycode.QUOTE,
+        10:Keycode.GRAVE_ACCENT,
+    }
 }
 
-#
 
 led = DigitalInOut(board.GP25)
 led.direction = Direction.OUTPUT
@@ -107,8 +126,7 @@ led.direction = Direction.OUTPUT
 kbd = Keyboard(usb_hid.devices)
 
 events_R = DummyEventQueue()
-mod_flag_L = False
-mod_flag_R = False
+mod_flag = {"R": False, "L": False}
 # print("Welcome to Keypad")
 while True:
     event = km.events.get()
@@ -117,20 +135,24 @@ while True:
         if event.pressed:
             led.value = True
             if key_id == MOD_KEY_NUM:
-                mod_flag_L = True
-                print("main", mod_flag_L)
+                mod_flag[LR] = True
+                # print("main", mod_flag[LR])
+            elif key_id in ARROW_KEYCODES[LR].keys():
+                kbd.press(ARROW_KEYCODES[LR][key_id])
             else:
-                kbd.press(KEYCODES_L[key_id])
+                kbd.press(KEYCODES[LR][key_id])
         if event.released:
             led.value = False
             if key_id == MOD_KEY_NUM:
-                mod_flag_L = False
-                print("main", mod_flag_L)
+                mod_flag[LR] = False
+                # gprint("main", mod_flag[LR])
+            elif key_id in ARROW_KEYCODES[LR].keys():
+                    kbd.release(ARROW_KEYCODES[LR][key_id])
             else:
-                kbd.release(KEYCODES_L[key_id])
+                kbd.release(KEYCODES[LR][key_id])
 
         action = str(event).split(' ')[-1]
-        data = f"<{LR} {key_id} {action}\n"
+        data = f"<{LR} {key_id} {action} {mod_flag[LR]}\n"
         print(data, end='')
         # print(str(event))
         if LR == 'R':
@@ -140,21 +162,22 @@ while True:
         event_R = events_R.get()
         if event_R:
             key_id = event_R.key_number
+            print(event_R.modkey)
             if event_R.pressed:
-                if mod_flag_L:
-                    if key_id in ARROW_KEYCODES.keys():
-                        kbd.press(ARROW_KEYCODES[key_id])
+                if event_R.modkey or mod_flag[LR]:
+                    if key_id in ARROW_KEYCODES["R"].keys():
+                        kbd.press(ARROW_KEYCODES["R"][key_id])
                 else:
                     kbd.press(KEYCODES_R[key_id])
-                    print(mod_flag_L)
+#                     print(mod_flag["R"])
             if event_R.released:
-                if key_id in ARROW_KEYCODES.keys():
-                    kbd.release(ARROW_KEYCODES[key_id])
+                if key_id in ARROW_KEYCODES["R"].keys():
+                    kbd.release(ARROW_KEYCODES["R"][key_id])
                 kbd.release(KEYCODES_R[key_id])
-                print(mod_flag_L)
+#                 print(mod_flag["R"])
 
         bytes_read = uart.readline()
-        if not bytes_read:
+        if not bytes_read or len(bytes_read) < 2:
             continue
         else:
             received = bytes_read.decode().strip()
