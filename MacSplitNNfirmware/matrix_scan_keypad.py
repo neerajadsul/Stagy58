@@ -110,12 +110,20 @@ ARROW_KEYCODES = { "L" :
         4: Keycode.F5,
     },
     "R": {
+        5: Keycode.F6,
+        4: Keycode.F7,
+        3: Keycode.F8,
+        2: Keycode.F9,
+        1: Keycode.F10,
+        0: Keycode.F11,
+        29: Keycode.F12,
         17:Keycode.LEFT_ARROW,
         16:Keycode.DOWN_ARROW,
         15:Keycode.UP_ARROW,
         14:Keycode.RIGHT_ARROW,
         11:Keycode.QUOTE,
         10:Keycode.GRAVE_ACCENT,
+        9: Keycode.BACKSLASH,
     }
 }
 
@@ -147,7 +155,7 @@ while True:
                 mod_flag[LR] = False
                 # gprint("main", mod_flag[LR])
             elif key_id in ARROW_KEYCODES[LR].keys():
-                    kbd.release(ARROW_KEYCODES[LR][key_id])
+                kbd.release(ARROW_KEYCODES[LR][key_id])
             else:
                 kbd.release(KEYCODES[LR][key_id])
 
