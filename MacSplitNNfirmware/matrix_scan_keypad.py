@@ -7,6 +7,7 @@ from adafruit_hid.keycode import Keycode
 import keypad
 import busio
 
+
 class DummyEvent():
     """ Emulates Keymatrix event based on data on serial port"""
     def __init__(self, event_string):
@@ -22,7 +23,7 @@ class DummyEvent():
     @property
     def released(self):
         return self._pressed == 'released'
-        
+
     @property
     def modkey(self):
         return self._modkey
@@ -103,11 +104,11 @@ MOD_KEY_NUM = 28
 # H, J, K, L as Arrow Keys
 ARROW_KEYCODES = { "L" :
     {
-        0: Keycode.F1,
-        1: Keycode.F2,
-        2: Keycode.F3,
-        3: Keycode.F4,
-        4: Keycode.F5,
+#         0: Keycode.F1,
+#         1: Keycode.F2,
+#         2: Keycode.F3,
+#         3: Keycode.F4,
+#         4: Keycode.F5,
     },
     "R": {
         5: Keycode.F6,
@@ -145,8 +146,8 @@ while True:
             if key_id == MOD_KEY_NUM:
                 mod_flag[LR] = True
                 # print("main", mod_flag[LR])
-            elif key_id in ARROW_KEYCODES[LR].keys():
-                kbd.press(ARROW_KEYCODES[LR][key_id])
+            # elif mod_flag and key_id in ARROW_KEYCODES[LR].keys():
+#                 kbd.press(ARROW_KEYCODES[LR][key_id])
             else:
                 kbd.press(KEYCODES[LR][key_id])
         if event.released:
@@ -154,8 +155,8 @@ while True:
             if key_id == MOD_KEY_NUM:
                 mod_flag[LR] = False
                 # gprint("main", mod_flag[LR])
-            elif key_id in ARROW_KEYCODES[LR].keys():
-                kbd.release(ARROW_KEYCODES[LR][key_id])
+#             elif key_id in ARROW_KEYCODES[LR].keys():
+#                 kbd.release(ARROW_KEYCODES[LR][key_id])
             else:
                 kbd.release(KEYCODES[LR][key_id])
 
