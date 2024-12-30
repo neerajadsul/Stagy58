@@ -1,0 +1,13 @@
+[package]
+name = "Ortho66Firmware"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cortex-m = { version = "0.7.7", features = ["critical-section"] }
+cortex-m-rt = "0.7.5"
+critical-section = "1"
+embedded-hal = "1.0.0"
+panic-probe = { version = "0.3.2" }
+stm32-usbd = "0.7.0"
+stm32f0xx-hal = { version = "0.18.0", features = ["stm32f072", "stm32-usbd"] }

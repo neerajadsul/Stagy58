@@ -1,0 +1,8 @@
+build/
+cmake/
+*.hex
+*.bin
+CMakeFiles
+build.ninja
+*.cmake
+CMakeCache.*
