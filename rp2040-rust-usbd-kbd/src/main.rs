@@ -12,6 +12,8 @@ use embedded_hal::digital::*;
 use fugit::ExtU32;
 use hal::gpio::{DynPinId, FunctionSioInput, FunctionSioOutput, Pin, PullDown, PullUp};
 use panic_probe as _;
+use rp2040_hal::gpio::{PullBusKeep, PullNone};
+use rp2040_hal::pio::Buffers;
 use rp2040_hal::{self as hal, entry};
 use usb_device::class_prelude::*;
 use usb_device::prelude::*;
@@ -77,12 +79,12 @@ fn main() -> ! {
     let mut led_pin = pins.gpio25.into_push_pull_output();
     led_pin.set_low().ok();
 
-    let mut rows: [Pin<DynPinId, FunctionSioInput, PullUp>; 5] = [
-        pins.gpio16.into_pull_up_input().into_dyn_pin(),
-        pins.gpio15.into_pull_up_input().into_dyn_pin(),
-        pins.gpio14.into_pull_up_input().into_dyn_pin(),
-        pins.gpio13.into_pull_up_input().into_dyn_pin(),
-        pins.gpio12.into_pull_up_input().into_dyn_pin(),
+    let mut rows: [Pin<DynPinId, FunctionSioInput, PullDown>; 5] = [
+        pins.gpio16.into_pull_down_input().into_dyn_pin(),
+        pins.gpio15.into_pull_down_input().into_dyn_pin(),
+        pins.gpio14.into_pull_down_input().into_dyn_pin(),
+        pins.gpio13.into_pull_down_input().into_dyn_pin(),
+        pins.gpio12.into_pull_down_input().into_dyn_pin(),
     ];
     let mut cols: [Pin<DynPinId, FunctionSioOutput, PullDown>; 6] = [
         pins.gpio22.into_push_pull_output().into_dyn_pin(),
@@ -143,35 +145,51 @@ fn main() -> ! {
 }
 
 fn get_keys(
-    rows: &mut [Pin<DynPinId, FunctionSioInput, PullUp>],
+    rows: &mut [Pin<DynPinId, FunctionSioInput, PullDown>],
     cols: &mut [Pin<DynPinId, FunctionSioOutput, PullDown>],
 ) -> [Keyboard; 5] {
+    let mut sw_matrix: [[u8; 5]; 6] = [[0x00; 5]; 6];
+
+    for (idx, col) in cols.into_iter().enumerate() {
+        col.set_state(PinState::High);
+        for (jdx, row) in rows.into_iter().enumerate() {
+            if row.is_high().unwrap() {
+                sw_matrix[idx][jdx] = 1;
+            } else {
+                sw_matrix[idx][jdx] = 0;
+            }
+        }
+        col.set_state(PinState::Low);
+    }
+    debug!("RS: {:?}", sw_matrix);
+
     [Keyboard::NoEventIndicated; 5]
-    // [
-    //     if keys[0].is_low().unwrap() {
-    //         Keyboard::Keyboard1
-    //     } else {
-    //         Keyboard::NoEventIndicated
-    //     },
-    //     if keys[1].is_low().unwrap() {
-    //         Keyboard::Keyboard2
-    //     } else {
-    //         Keyboard::NoEventIndicated
-    //     },
-    //     if keys[2].is_low().unwrap() {
-    //         Keyboard::Keyboard3
-    //     } else {
-    //         Keyboard::NoEventIndicated
-    //     },
-    //     if keys[3].is_low().unwrap() {
-    //         Keyboard::Keyboard4
-    //     } else {
-    //         Keyboard::NoEventIndicated
-    //     },
-    //     if keys[4].is_low().unwrap() {
-    //         Keyboard::Keyboard5
-    //     } else {
-    //         Keyboard::NoEventIndicated
-    //     },
-    // ]
 }
+
+// [
+//     if keys[0].is_low().unwrap() {
+//         Keyboard::Keyboard1
+//     } else {
+//         Keyboard::NoEventIndicated
+//     },
+//     if keys[1].is_low().unwrap() {
+//         Keyboard::Keyboard2
+//     } else {
+//         Keyboard::NoEventIndicated
+//     },
+//     if keys[2].is_low().unwrap() {
+//         Keyboard::Keyboard3
+//     } else {
+//         Keyboard::NoEventIndicated
+//     },
+//     if keys[3].is_low().unwrap() {
+//         Keyboard::Keyboard4
+//     } else {
+//         Keyboard::NoEventIndicated
+//     },
+//     if keys[4].is_low().unwrap() {
+//         Keyboard::Keyboard5
+//     } else {
+//         Keyboard::NoEventIndicated
+//     },
+// ]
